@@ -1,0 +1,17 @@
+.modal_window {
+  position: absolute;
+  top: 15vh;
+  left: 25vw;
+  width: 50vw;
+  height: 50vh;
+  background: silver;
+  border-radius: 1vw;
+ 
+}
+
+.caption {
+  display: flex;
+  justify-content: space-between;
+  padding: 1vw;
+  align-items: center;
+}
