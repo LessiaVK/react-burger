@@ -36,7 +36,6 @@ function Modal(props) {
         </div>
       </div>
           {props.children}
-          modal Window
       </div>
     </>
   ,element);

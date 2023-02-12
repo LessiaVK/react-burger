@@ -34,9 +34,11 @@ const ShowIngredients = (props) => {
 
   return (
       <>
-      <p className="text text_type_main-large">
-        {props.name}
-      </p>
+      <div style={{display:'flex', flex:'none', justifyContent:'flex-start'}}>
+          <p className="text text_type_main-medium p-10">
+            {props.name}
+          </p>
+      </div>
       <div style={{display:"flex",flexWrap:"wrap", width:"600px"}}>
       {dataForShow.map((element, key) => {
           let keyId= props.type+key;
@@ -56,30 +58,33 @@ function BurgerIngredients(props) {
   const [current, setCurrent] = React.useState('one')
   const [showProps, setShowProps] = React.useState(false);
   return (
-    <div><div style={{ display: 'flex' }}>
-      <Tab value="one" active={current === 'one'} onClick={setCurrent}>
-        Булки
-      </Tab>
-      <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-        Соусы
-      </Tab>
-      <Tab value="three" active={current === 'three'} onClick={setCurrent}>
-        Начинки
-      </Tab>
-    </div>
-    <div style={{overflowY:"scroll", height:"70vh"}}>
-      <ShowIngredients name="Булки" type="bun"     data={props.data} onSetShowProps={setShowProps}/>
-      <ShowIngredients name="Соусы" type="sauce"   data={props.data}/>
-      <ShowIngredients name="Начинки"  type="main" data={props.data}/>
-      </div>
-      {showProps && <Modal modalProps="modalId" overflow = "visible" caption="Инградиент" close= {setShowProps} />}
+    <div>
+        <p className="text text_type_main-large p-10" style={{display:'flex', flex:'none', justifyContent:'flex-start'}}>
+          Соберите бургер
+        </p>
+        <div style={{ display: 'flex' }}> 
+          <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+            Булки
+          </Tab>
+          <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+            Соусы
+          </Tab>
+          <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+            Начинки
+          </Tab>
+        </div>
+        <div style={{overflowY:"scroll", height:"80vh"}}>
+          <ShowIngredients name="Булки" type="bun"     data={props.data} onSetShowProps={setShowProps}/>
+          <ShowIngredients name="Соусы" type="sauce"   data={props.data}/>
+          <ShowIngredients name="Начинки"  type="main" data={props.data}/>
+          </div>
+        {showProps && <Modal modalProps="modalId" overflow = "visible" caption="Инградиент" close= {setShowProps} />}
     </div>
   );
 }
 
 BurgerIngredients.propTypes = {
   data: PropTypes.array 
-
 }; 
 
 export default BurgerIngredients;
