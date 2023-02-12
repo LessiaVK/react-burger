@@ -73,7 +73,7 @@ function BurgerIngredients(props) {
             Начинки
           </Tab>
         </div>
-        <div style={{overflowY:"scroll", height:"80vh"}}>
+        <div style={{overflowY:"scroll", height:"90vh"}}>
           <ShowIngredients name="Булки" type="bun"     data={props.data} onSetShowProps={setShowProps}/>
           <ShowIngredients name="Соусы" type="sauce"   data={props.data}/>
           <ShowIngredients name="Начинки"  type="main" data={props.data}/>

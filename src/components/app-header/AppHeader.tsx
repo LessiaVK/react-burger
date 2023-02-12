@@ -20,7 +20,7 @@ function AppHeader() {
             </p>
       
           <ListIcon type="primary" />
-          <p style={st} className="text text_type_main-default">
+          <p style={st} className="text text_type_main-default text_color_inactive">
           Лента заказов
           </p>
   </div>
@@ -30,7 +30,7 @@ function AppHeader() {
       <div style={{display: 'flex', alignItems: 'center'}}>
   <ProfileIcon type="primary" />
 
-  <p style={st} className="text text_type_main-default">
+  <p style={st} className="text text_type_main-default text_color_inactive">
 Личный кабинет
 </p>
 </div>

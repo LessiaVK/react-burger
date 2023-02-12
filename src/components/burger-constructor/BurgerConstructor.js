@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConstructorElement, Button, CurrencyIcon, CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, Button, CurrencyIcon, CheckMarkIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/Modal';
 
 
@@ -10,17 +10,21 @@ function BurgerConstructor(props) {
   return (
     <div  style={{ display: 'flex',flexDirection: 'column',}}>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', 
-      overflowY:"scroll", height:"70vh", marginTop: '140px'}}>
+      overflowY:"scroll", height:"87vh", marginTop: '140px'}}>
        {props.data.map((element ,key )=> {
-        return  (<ConstructorElement
-        type={element.type}
-        key={key}
-        isLocked={true}
-        text={element.name}
-        price={element.price}
-        thumbnail={element.image}
-      />)
-      })} 
+        return  (
+          <div> 
+            <DragIcon style={{width: '13px'}} type='primary' />
+            <ConstructorElement
+                type={element.type}
+                key={key}
+                isLocked={true}
+                text={element.name}
+                price={element.price}
+                thumbnail={element.image}
+              />
+          </div>
+      )})} 
   </div>
       <div className='p-4' style={{ display: 'flex',justifyContent: 'center',
     alignItems: 'center',
@@ -45,9 +49,9 @@ function BurgerConstructor(props) {
             <p className='text text_type_main-medium p-8'>
                 идентификатор заказа
             </p>
-            <div className='p-12'> 
+            <p className='p-15' style={{transform: 'scale(2)'}}> 
                 <CheckMarkIcon style={{width: '120px', height: '120px'}} type='primary' />
-            </div>
+            </p>
             <p className='text text_type_main-default'>
                 Ваш заказ начали готовить
             </p>
