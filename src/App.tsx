@@ -13,9 +13,7 @@ function App() {
       <AppHeader />
        <div style={{display:"flex", justifyContent:"center"}}> 
           <BurgerIngredients data={Data} />
-          <BurgerConstructor />
-
-         
+          <BurgerConstructor data={Data} />
        </div>
         <div id="modalId"/>
     </div>

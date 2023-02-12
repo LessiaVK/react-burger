@@ -1,25 +1,34 @@
 import React from 'react';
 import { Tab, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/Modal';
+import PropTypes from 'prop-types';
 
 import bIStyles from './BurgerIngredients.module.css';
+// import { log } from 'console';
 
 const ElementMenu = (props) => {
   return (
-    <div className={bIStyles.setka} onClick={el => {props.onSetShowProps(true)} }>
+    <div key={props.key} className={bIStyles.setka}
+      style={{width:"280px"}}
+      onClick={el => {props.onSetShowProps(true)} }>
       <img className={bIStyles.size_icon} src={props.element.image} alt=''/>
       <p className={`text text_type_digits-default`}> 
           {props.element.price} &nbsp;
           <CurrencyIcon style={{width: '22', height: '22'}} type='primary' />
       </p>
+      <p>
       {props.element.name}
+      </p>
     </div>
   )
 }
 
+ElementMenu.propTypes = {
+  element: PropTypes.object
+}; 
 
 const ShowIngredients = (props) => {
-  console.log(props.data);
+  // console.log(props.data);
   const dataForShow = props.data.filter(elem => elem.type === props.type);
 
 
@@ -28,10 +37,17 @@ const ShowIngredients = (props) => {
       <p className="text text_type_main-large">
         {props.name}
       </p>
-      {dataForShow.map(element => {
-          return <ElementMenu element={element} onSetShowProps={props.onSetShowProps}/>
+      <div style={{display:"flex",flexWrap:"wrap", width:"600px"}}>
+      {dataForShow.map((element, key) => {
+          let keyId= props.type+key;
+          console.log("keyId",keyId);
+
+          return <ElementMenu 
+          //  key={keyId}
+           element={element} onSetShowProps={props.onSetShowProps}/>
       })}
-      </>  
+      </div>  
+      </>
   )
 }
 
@@ -56,9 +72,14 @@ function BurgerIngredients(props) {
       <ShowIngredients name="Соусы" type="sauce"   data={props.data}/>
       <ShowIngredients name="Начинки"  type="main" data={props.data}/>
       </div>
-      {showProps && <Modal modalProps="modalId" caption="Инградиент" close= {setShowProps} />}
+      {showProps && <Modal modalProps="modalId" overflow = "visible" caption="Инградиент" close= {setShowProps} />}
     </div>
   );
 }
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.array 
+
+}; 
 
 export default BurgerIngredients;
