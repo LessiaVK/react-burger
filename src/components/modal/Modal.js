@@ -29,7 +29,8 @@ function Modal(props) {
       <ModalOverlay close={props.close} />
      }
       <div className={ModalStyles.modal_window} >
-      <div className={ModalStyles.caption} >
+      <div className={'text text_type_main-large p-10'} 
+          style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}} >
         <p>{props.caption} </p>
         <div onClick={el => {props.close(false)}}>
         <CloseIcon type="primary" />
@@ -47,5 +48,4 @@ export default Modal;
 Modal.propTypes = {
   close: PropTypes.func.isRequired,
   caption: PropTypes.string
-
 }; 

@@ -3,7 +3,6 @@ import { ConstructorElement, Button, CurrencyIcon, CheckMarkIcon, DragIcon } fro
 import Modal from '../modal/Modal';
 
 
-
 function BurgerConstructor(props) {
   // const [current, setCurrent] = React.useState('one')
   const [showProps, setShowProps] = React.useState(false);
@@ -30,8 +29,8 @@ function BurgerConstructor(props) {
     alignItems: 'center',
     width:"600px"}}>
         <p>
-        <p className={`text text_type_digits-medium p-6`}> 
-          600&nbsp;
+        <p className={`text text_type_digits-medium p-6`} style={{gap:'10px'}}> 
+          600
           <CurrencyIcon style={{width: '22', height: '22'}} type='primary' />
       </p>
         </p>

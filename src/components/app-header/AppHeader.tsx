@@ -19,7 +19,7 @@ function AppHeader() {
               Конструктор
             </p>
       
-          <ListIcon type="primary" />
+          <ListIcon type="secondary" />
           <p style={st} className="text text_type_main-default text_color_inactive">
           Лента заказов
           </p>
@@ -28,7 +28,7 @@ function AppHeader() {
       <Logo />
 
       <div style={{display: 'flex', alignItems: 'center'}}>
-  <ProfileIcon type="primary" />
+  <ProfileIcon type="secondary" />
 
   <p style={st} className="text text_type_main-default text_color_inactive">
 Личный кабинет
