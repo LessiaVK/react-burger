@@ -2,19 +2,19 @@ import React from "react";
 import {
   Tab,
   CurrencyIcon,
+  Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/Modal";
 import PropTypes from "prop-types";
 
 import bIStyles from "./BurgerIngredients.module.css";
 
-const DetailesIngredient = (props) => {
+const IngredientDetails = (props) => {
   let elements = props.data.filter((item) => item._id === props.keyForShow);
   let element = {};
   if (elements.length === 1) {
     element = elements[0];
   }
-  // console.log("DetailesIngredient", props, element);
 
   return (
     <div className={bIStyles.sizeMain + " mb-10"}>
@@ -58,24 +58,23 @@ const DetailesIngredient = (props) => {
   );
 };
 
-DetailesIngredient.propTypes = {
+IngredientDetails.propTypes = {
   data: PropTypes.array.isRequired,
   keyForShow: PropTypes.string.isRequired,
 };
 
 const ElementMenu = (props) => {
-  // console.log("ElementMenu",props);
   return (
     <div
       key={props.tempId}
       className={bIStyles.elementMenu}
       onClick={(el) => {
         props.onSetShowProps(true);
-        console.log("props", props, props.element._id);
         props.onSetCurrentKey(props.element._id);
       }}
     >
       <img src={props.element.image} alt="" />
+      {/* {props.count > 0 && <Counter count={props.count} className='m-1' size='default'/>} */}
       <div className={bIStyles.bIDescription}>
         <p className={`text text_type_digits-default`}>
           {props.element.price} &nbsp;
@@ -131,6 +130,9 @@ function BurgerIngredients(props) {
   const [current, setCurrent] = React.useState("one");
   const [showProps, setShowProps] = React.useState(false);
   const [currentKey, setCurrentKey] = React.useState("");
+  const close = () => {
+    setShowProps(false);
+  };
   return (
     <div>
       <p className={bIStyles.main + " text text_type_main-large pb-10 pt-10"}>
@@ -147,7 +149,7 @@ function BurgerIngredients(props) {
           Начинки
         </Tab>
       </div>
-      <div style={{ overflowY: "scroll", height: "660px" }}>
+      <div className={bIStyles.biScroll}>
         <ShowIngredients
           name="Булки"
           type="bun"
@@ -173,12 +175,11 @@ function BurgerIngredients(props) {
       {showProps && (
         <Modal
           modalProps="modals"
-          overflow="visible"
           caption="Детали ингредиента"
           key={currentKey}
-          close={setShowProps}
+          close={close}
         >
-          <DetailesIngredient keyForShow={currentKey} data={props.data} />
+          <IngredientDetails keyForShow={currentKey} data={props.data} />
         </Modal>
       )}
     </div>

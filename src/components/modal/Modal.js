@@ -11,9 +11,8 @@ function Modal(props) {
 
   useEffect(() => {
     const handleEsc = (event) => {
-      if (event.keyCode === 27) {
-        // console.log('Close')
-        props.close(false);
+      if (event.key === "Escape") {
+        props.close();
       }
     };
     window.addEventListener("keydown", handleEsc);
@@ -25,15 +24,13 @@ function Modal(props) {
 
   return createPortal(
     <>
-      {props.overflow !== "hidden" && <ModalOverlay close={props.close} />}
+      <ModalOverlay close={props.close} />
       <div className={modalStyles.modal_window}>
-        <div
-          className={modalStyles.cap + " " + "text text_type_main-large p-10"}
-        >
+        <div className={modalStyles.cap + " text text_type_main-large p-10"}>
           <p>{props.caption} </p>
-          <div
+          <div className={modalStyles.close} 
             onClick={(el) => {
-              props.close(false);
+              props.close();
             }}
           >
             <CloseIcon type="primary" />
@@ -53,5 +50,4 @@ Modal.propTypes = {
   modalProps: PropTypes.string.isRequired,
   children: PropTypes.any.isRequired,
   caption: PropTypes.string,
-  overflow: PropTypes.string,
 };

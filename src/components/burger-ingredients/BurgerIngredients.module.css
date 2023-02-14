@@ -13,8 +13,8 @@
 }
 
 .biScroll {
-  overflow-y: "scroll";
-  height: 520px;
+  overflow-y: scroll;
+  height: 660px;
 }
 
 .sizeImg {

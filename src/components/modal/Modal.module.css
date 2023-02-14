@@ -1,11 +1,16 @@
 .modal_window {
-  position: absolute;
-  top: 10vh;
-  left: 25vw;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 720px;
-  /* height: 718px; */
-  background: #1C1C21;
+  background: #1c1c21;
   border-radius: 40px;
+}
+
+.close {
+  position: fixed;
+  right: 40px;
 }
 
 .caption {
@@ -18,10 +23,10 @@
 .overlay {
   width: 100vw;
   height: 130vh;
-  background:#E5E5E5E5;
+  background: rgba(0, 0, 0, 0.6);
   left: 0px;
   top: 0px;
-  position: absolute;
+  position: fixed;
 }
 
 .cap {

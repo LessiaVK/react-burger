@@ -13,7 +13,7 @@ async function getDataJson(url, callback) {
     callback(json);
   } else {
     console.log(`Ошибка HTTP: ${response.status}`);
-    //callback(default);
+    return Promise.reject(`Ошибка HTTP: ${response.status}`);
   }
 }
 
@@ -28,7 +28,7 @@ function App() {
     try {
       getDataJson(url, setFetchedData);
     } catch (error) {
-      // console.log("getDataJson", error);
+      console.log("getDataJson", error);
     }
   }, []);
 

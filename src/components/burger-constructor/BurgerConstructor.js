@@ -10,9 +10,31 @@ import Modal from "../modal/Modal";
 import bCStyles from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
 
+function OrderDetails() {
+  return (
+    <div className={bCStyles.text}>
+      <p className="text text_type_digits-large p-4">034536</p>
+      <p className="text text_type_main-medium p-8">идентификатор заказа</p>
+
+      <div className="p-15">
+        {/* <CheckMarkIcon type="primary" /> */}
+        <img width="80px" src="./check.svg" alt="" />
+      </div>
+
+      <p className="text text_type_main-default">Ваш заказ начали готовить</p>
+      <p className="text text_type_main-default text_color_inactive p-2 mb-15">
+        Дождитесь готовности на орбитальной станции
+      </p>
+    </div>
+  );
+}
+
 function BurgerConstructor(props) {
   // const [current, setCurrent] = React.useState('one')
   const [showProps, setShowProps] = React.useState(false);
+  const close = () => {
+    setShowProps(false);
+  };
   let t = new Date();
   let time = t.getTime().toString();
   let elementBorder;
@@ -88,25 +110,10 @@ function BurgerConstructor(props) {
         <Modal
           className={bCStyles.bgMain}
           modalProps="modals"
-          overflow="visible"
           caption=""
-          close={setShowProps}
+          close={close}
         >
-          <div className={bCStyles.text}>
-            <p className="text text_type_digits-large p-4">034536</p>
-            <p className="text text_type_main-medium p-8">
-              идентификатор заказа
-            </p>
-            <p className={bCStyles.transform2 + " p-15"}>
-              <CheckMarkIcon type="primary" />
-            </p>
-            <p className="text text_type_main-default">
-              Ваш заказ начали готовить
-            </p>
-            <p className="text text_type_main-default text_color_inactive p-2 mb-15">
-              Дождитесь готовности на орбитальной станции
-            </p>
-          </div>
+          <OrderDetails />
         </Modal>
       )}
     </div>

@@ -18,7 +18,7 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: scroll;
-  height:440px;
+  height: 440px;
 }
 
 .bgFooter {
@@ -33,14 +33,10 @@
   height: 33px;
 }
 
-.transform2 {
-  transform: scale(2);
-}
-
 .scale_1_5 {
   scale: 1.5;
 }
 
-.text{
+.text {
   text-align: center;
 }
