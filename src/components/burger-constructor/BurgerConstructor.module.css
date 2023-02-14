@@ -23,7 +23,7 @@
 
 .bgFooter {
   display: flex;
-  justify-content: space-around;
+  justify-content: end;
   align-items: center;
   width: 600px;
 }

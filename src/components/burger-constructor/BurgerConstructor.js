@@ -88,8 +88,8 @@ function BurgerConstructor(props) {
           />
         </div>
       )}
-      <div className={bCStyles.bgFooter + " p-4 ml-10"}>
-        <div className={`text text_type_digits-default p-5`}>
+      <div className={bCStyles.bgFooter + " pt-10 pr-4"}>
+        <div className={`text text_type_digits-default pr-10 m-6`}>
           <div className={bCStyles.scale_1_5}>
             610 &nbsp;
             <CurrencyIcon type="primary" />
