@@ -1,10 +1,42 @@
 .appHeaderMain {
-  width:100vw;
+  width: 94vw;
+  box-sizing: border-box;
+  /* border: 2px solid #4c4cff; */
+  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 0px 1px rgba(0, 0, 0, 0.04);
 }
 
 .appHeaderNet {
   display: flex;
-  justify-content: space-around;
+  flex-direction: row;
   align-items: center;
+  background: #1c1c21;
 }
 
+.logo {
+  width: 289.15px;
+  height: 40px;
+  background: #1c1c21;
+  /* border: 1px dashed #4c4cff; */
+}
+
+.buttonMenu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 207px;
+  height: 56px;
+  background: #1c1c21;
+  text-decoration: none;
+  color: white;
+  /* border: 1px dashed #4c4cff;
+  border-radius: 40px; */
+}
+
+.buttonMenuContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* border: 1px dashed #4c4cff; */
+}
