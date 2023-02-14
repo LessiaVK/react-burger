@@ -1,9 +1,9 @@
-import React , { useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { Tab, CurrencyIcon,CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalStyles from './Modal.module.css';
-import ModalOverlay from './ModalOverlay';
-import PropTypes from 'prop-types';
+import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import modalStyles from "./Modal.module.css";
+import ModalOverlay from "./ModalOverlay";
+import PropTypes from "prop-types";
 
 function Modal(props) {
   // const [current, setCurrent] = React.useState('one')
@@ -11,41 +11,47 @@ function Modal(props) {
 
   useEffect(() => {
     const handleEsc = (event) => {
-       if (event.keyCode === 27) {
+      if (event.keyCode === 27) {
         // console.log('Close')
         props.close(false);
       }
     };
-    window.addEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
 
     return () => {
-      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener("keydown", handleEsc);
     };
   }, []);
 
   return createPortal(
     <>
-     {props.overflow !== "hidden" &&
-      <ModalOverlay close={props.close} />
-     }
-      <div className={ModalStyles.modal_window} >
-      <div className={'text text_type_main-large p-10'} 
-          style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}} >
-        <p>{props.caption} </p>
-        <div onClick={el => {props.close(false)}}>
-        <CloseIcon type="primary" />
+      {props.overflow !== "hidden" && <ModalOverlay close={props.close} />}
+      <div className={modalStyles.modal_window}>
+        <div
+          className={modalStyles.cap + " " + "text text_type_main-large p-10"}
+        >
+          <p>{props.caption} </p>
+          <div
+            onClick={(el) => {
+              props.close(false);
+            }}
+          >
+            <CloseIcon type="primary" />
+          </div>
         </div>
+        {props.children}
       </div>
-          {props.children}
-      </div>
-    </>
-  ,element);
+    </>,
+    element
+  );
 }
 
 export default Modal;
 
-
 Modal.propTypes = {
   close: PropTypes.func.isRequired,
-  caption: PropTypes.string
-}; 
+  modalProps: PropTypes.string.isRequired,
+  children: PropTypes.any.isRequired,
+  caption: PropTypes.string,
+  overflow: PropTypes.string,
+};

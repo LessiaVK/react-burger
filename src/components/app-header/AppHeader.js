@@ -5,17 +5,17 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import AppHeaderStyles from "./AppHeader.module.css";
+import appHeaderStyles from "./AppHeader.module.css";
 
 function AppHeader() {
   const [current, setCurrent] = React.useState("one");
   return (
-    <div
+    <header
       className={
-        AppHeaderStyles.appHeaderMain + " " + AppHeaderStyles.appHeaderNet
+        appHeaderStyles.appHeaderMain + " " + appHeaderStyles.appHeaderNet
       }
     >
-      <div className={AppHeaderStyles.appHeaderNet}>
+      <div className={appHeaderStyles.appHeaderNet}>
         <BurgerIcon type="primary" />
         <p className="text text_type_main-default p-2 m-5">Конструктор</p>
 
@@ -27,14 +27,14 @@ function AppHeader() {
 
       <Logo />
 
-      <div className={AppHeaderStyles.appHeaderNet}>
+      <div className={appHeaderStyles.appHeaderNet}>
         <ProfileIcon type="secondary" />
 
         <p className="text text_type_main-default text_color_inactive p-2 m-5">
           Личный кабинет
         </p>
       </div>
-    </div>
+    </header>
   );
 }
 
