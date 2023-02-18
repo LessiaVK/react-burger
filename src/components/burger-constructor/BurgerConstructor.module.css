@@ -1,0 +1,42 @@
+.sizeIcon {
+  width: 240;
+  height: 120;
+}
+
+.bgMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.bgListStart {
+  gap: 10px;
+  margin-top: 140px;
+}
+.bgList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: scroll;
+  height: 440px;
+}
+
+.bgFooter {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 600px;
+}
+
+.currency {
+  width: 33px;
+  height: 33px;
+}
+
+.scale_1_5 {
+  scale: 1.5;
+}
+
+.text {
+  text-align: center;
+}

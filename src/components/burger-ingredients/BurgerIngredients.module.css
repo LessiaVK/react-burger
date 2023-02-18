@@ -1,0 +1,53 @@
+.sizeMain {
+  text-align: center;
+}
+
+.main {
+  display: flex;
+  flex: none;
+  justify-content: flex-start;
+}
+
+.biFlex {
+  display: flex;
+}
+
+.biScroll {
+  overflow-y: scroll;
+  height: 664px;
+}
+
+.sizeImg {
+  width: 480px;
+}
+
+.elementMenu {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sizeIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.bIDescriptionMain {
+  display: flex;
+  justify-content: center;
+}
+
+.bIDescription {
+  width: 300px;
+  flex-direction: column;
+  text-align: center;
+}
+
+.bIDescription2 {
+  width: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
