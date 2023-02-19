@@ -18,7 +18,6 @@ function reducer(state, action) {
     case "init":
       return { totalPrice: action.price };
     case "increment":
-      console.log("reducer", state.totalPrice, action.price);
       return { totalPrice: state.totalPrice + action.price };
     case "decrement":
       return { totalPrice: state.totalPrice - action.price };
@@ -28,9 +27,45 @@ function reducer(state, action) {
 }
 
 function OrderDetails() {
+  const data = React.useContext(DataContext);
+
+  const [orderData, setOrderData] = React.useState(0);
+
+  const sendOrder = async (callback) => {
+    const listIngredients = data.data.map((item) => item._id);
+    const orderBurger = (listIngredients) => {
+      return fetch("https://norma.nomoreparties.space/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          ingredients: listIngredients,
+        }),
+      });
+    };
+
+    const loadOrderNumber = async (orderBurger, listIngredients, callback) => {
+      const response = await orderBurger(listIngredients);
+      if (response.ok) {
+        const json = await response.json();
+        callback(json.order.number);
+      } else {
+        console.log(`Ошибка HTTP: ${response.status}`);
+        return Promise.reject(`Ошибка HTTP: ${response.status}`);
+      }
+    };
+
+    loadOrderNumber(orderBurger, listIngredients, callback);
+  };
+
+  useEffect(() => {
+    sendOrder(setOrderData);
+  }, []);
+
   return (
     <div className={bCStyles.text}>
-      <p className="text text_type_digits-large p-4">034536</p>
+      <p className="text text_type_digits-large p-4">{orderData}</p>
       <p className="text text_type_main-medium p-8">идентификатор заказа</p>
 
       <div className="p-15">
@@ -63,24 +98,23 @@ function BurgerConstructor(props) {
   });
   const initTotalPriceState = () => {
     let price = elementBorder.price * 2;
-    console.log("price", elementBorder.price);
     return { totalPrice: price };
-     // totalPricetDispatcher({ type: "increment", price: price });
-    
-    // console.log("totalPriceState", totalPriceState);
   };
-  const [totalPriceState, totalPricetDispatcher] = React.useReducer(reducer, priceInitState, initTotalPriceState);
-  
-  useEffect( () => {
+  const [totalPriceState, totalPricetDispatcher] = React.useReducer(
+    reducer,
+    priceInitState,
+    initTotalPriceState
+  );
+
+  useEffect(() => {
     let price = initTotalPriceState();
     totalPricetDispatcher({ type: "init", price: price.totalPrice });
     data.map((element, key) => {
       if (element.type !== "bun") {
         let keyId = key + time;
-        console.log(element.price,keyId);
         totalPricetDispatcher({ type: "increment", price: element.price });
       }
-    })
+    });
   }, []);
 
   return (
@@ -131,9 +165,7 @@ function BurgerConstructor(props) {
       <div className={bCStyles.bgFooter + " pt-10 pr-4"}>
         <div className={`text text_type_digits-default pr-10 m-6`}>
           <div className={bCStyles.iconFlexRow + " " + bCStyles.scale_1_5}>
-            <>
-            {totalPriceState.totalPrice}
-            </>
+            <>{totalPriceState.totalPrice}</>
             <CurrencyIcon type="primary" />
           </div>
         </div>

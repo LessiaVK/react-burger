@@ -16,19 +16,6 @@ async function getDataJson(url, callback) {
   }
 }
 
-// const discountInitialState = { discount: null };
-
-//  function reducer(state, action) {
-//   switch (action.type) {
-//     case "set":
-//       return { discount: action.payload };
-//     case "reset":
-//       return discountInitialState;
-//     default:
-//       throw new Error(`Wrong type of action: ${action.type}`);
-//   }
-// }
-
 function App() {
   const [getsData, setgetsData] = React.useState({
     success: false,
@@ -49,7 +36,7 @@ function App() {
       <AppHeader />
       <main className={appStyles.appMain}>
         {getsData.success ? (
-          <DataContext.Provider value={ getsData }>
+          <DataContext.Provider value={getsData}>
             <BurgerIngredients />
             <BurgerConstructor />
           </DataContext.Provider>

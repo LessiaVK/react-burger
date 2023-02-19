@@ -78,8 +78,10 @@ const ElementMenu = (props) => {
       <img src={props.element.image} alt="" />
       {/* {props.count > 0 && <Counter count={props.count} className='m-1' size='default'/>} */}
       <div className={bIStyles.bIDescription}>
-        <p className={`text text_type_digits-default`}>
-          {props.element.price} &nbsp;
+        <p
+          className={`constructor-element__price text text_type_digits-default`}
+        >
+          {props.element.price}
           <CurrencyIcon className={bIStyles.sizeIcon} type="primary" />
         </p>
         <p>{props.element.name}</p>
