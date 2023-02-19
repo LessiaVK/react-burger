@@ -33,6 +33,12 @@
   height: 33px;
 }
 
+.iconFlexRow {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 .scale_1_5 {
   scale: 1.5;
 }

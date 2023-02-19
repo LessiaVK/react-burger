@@ -8,9 +8,11 @@ import Modal from "../modal/Modal";
 import PropTypes from "prop-types";
 
 import bIStyles from "./BurgerIngredients.module.css";
+import { DataContext } from "../../services/AppContext.js";
 
 const IngredientDetails = (props) => {
-  let elements = props.data.filter((item) => item._id === props.keyForShow);
+  const { data } = React.useContext(DataContext);
+  let elements = data.filter((item) => item._id === props.keyForShow);
   let element = {};
   if (elements.length === 1) {
     element = elements[0];
@@ -59,7 +61,7 @@ const IngredientDetails = (props) => {
 };
 
 IngredientDetails.propTypes = {
-  data: PropTypes.array.isRequired,
+  // data: PropTypes.array.isRequired,
   keyForShow: PropTypes.string.isRequired,
 };
 
@@ -92,8 +94,9 @@ ElementMenu.propTypes = {
 };
 
 const ShowIngredients = (props) => {
+  const { data } = React.useContext(DataContext);
   // console.log(props.data);
-  const dataForShow = props.data.filter((elem) => elem.type === props.type);
+  const dataForShow = data.filter((elem) => elem.type === props.type);
   let t = new Date();
   let time = t.getTime().toString();
   return (
@@ -120,19 +123,21 @@ const ShowIngredients = (props) => {
   );
 };
 ShowIngredients.propTypes = {
-  data: PropTypes.array.isRequired,
+  // data: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
   onSetShowProps: PropTypes.func.isRequired,
   onSetCurrentKey: PropTypes.func.isRequired,
 };
 
 function BurgerIngredients(props) {
+  const { data } = React.useContext(DataContext);
   const [current, setCurrent] = React.useState("one");
   const [showProps, setShowProps] = React.useState(false);
   const [currentKey, setCurrentKey] = React.useState("");
   const close = () => {
     setShowProps(false);
   };
+
   return (
     <div>
       <p className={bIStyles.main + " text text_type_main-large pb-10 pt-10"}>
@@ -153,21 +158,21 @@ function BurgerIngredients(props) {
         <ShowIngredients
           name="Булки"
           type="bun"
-          data={props.data}
+          data={data}
           onSetShowProps={setShowProps}
           onSetCurrentKey={setCurrentKey}
         />
         <ShowIngredients
           name="Соусы"
           type="sauce"
-          data={props.data}
+          data={data}
           onSetShowProps={setShowProps}
           onSetCurrentKey={setCurrentKey}
         />
         <ShowIngredients
           name="Начинки"
           type="main"
-          data={props.data}
+          data={data}
           onSetShowProps={setShowProps}
           onSetCurrentKey={setCurrentKey}
         />
@@ -179,14 +184,14 @@ function BurgerIngredients(props) {
           key={currentKey}
           close={close}
         >
-          <IngredientDetails keyForShow={currentKey} data={props.data} />
+          <IngredientDetails keyForShow={currentKey} />
         </Modal>
       )}
     </div>
   );
 }
 BurgerIngredients.propTypes = {
-  data: PropTypes.array.isRequired,
+  // data: PropTypes.array.isRequired,
 };
 
 export default BurgerIngredients;

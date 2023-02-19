@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ConstructorElement,
   Button,
@@ -9,6 +9,23 @@ import {
 import Modal from "../modal/Modal";
 import bCStyles from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
+import { DataContext } from "../../services/AppContext.js";
+
+const priceInitState = { totalPrice: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "init":
+      return { totalPrice: action.price };
+    case "increment":
+      console.log("reducer", state.totalPrice, action.price);
+      return { totalPrice: state.totalPrice + action.price };
+    case "decrement":
+      return { totalPrice: state.totalPrice - action.price };
+    default:
+      throw new Error(`Wrong type of action: ${action.type}`);
+  }
+}
 
 function OrderDetails() {
   return (
@@ -31,6 +48,7 @@ function OrderDetails() {
 
 function BurgerConstructor(props) {
   // const [current, setCurrent] = React.useState('one')
+  const { data } = React.useContext(DataContext);
   const [showProps, setShowProps] = React.useState(false);
   const close = () => {
     setShowProps(false);
@@ -38,11 +56,33 @@ function BurgerConstructor(props) {
   let t = new Date();
   let time = t.getTime().toString();
   let elementBorder;
-  props.data.map((element, key) => {
-    if (element.type == "bun" && !elementBorder) {
+  data.map((element, key) => {
+    if (element.type === "bun" && !elementBorder) {
       elementBorder = element;
     }
   });
+  const initTotalPriceState = () => {
+    let price = elementBorder.price * 2;
+    console.log("price", elementBorder.price);
+    return { totalPrice: price };
+     // totalPricetDispatcher({ type: "increment", price: price });
+    
+    // console.log("totalPriceState", totalPriceState);
+  };
+  const [totalPriceState, totalPricetDispatcher] = React.useReducer(reducer, priceInitState, initTotalPriceState);
+  
+  useEffect( () => {
+    let price = initTotalPriceState();
+    totalPricetDispatcher({ type: "init", price: price.totalPrice });
+    data.map((element, key) => {
+      if (element.type !== "bun") {
+        let keyId = key + time;
+        console.log(element.price,keyId);
+        totalPricetDispatcher({ type: "increment", price: element.price });
+      }
+    })
+  }, []);
+
   return (
     <div className={bCStyles.bgMain}>
       <div className={bCStyles.bgListStart + " ml-10 mb-2"}>
@@ -58,7 +98,7 @@ function BurgerConstructor(props) {
         )}
       </div>
       <div className={bCStyles.bgList + " ml-10"}>
-        {props.data.map((element, key) => {
+        {data.map((element, key) => {
           if (element.type !== "bun") {
             let keyId = key + time;
             return (
@@ -90,8 +130,10 @@ function BurgerConstructor(props) {
       )}
       <div className={bCStyles.bgFooter + " pt-10 pr-4"}>
         <div className={`text text_type_digits-default pr-10 m-6`}>
-          <div className={bCStyles.scale_1_5}>
-            610 &nbsp;
+          <div className={bCStyles.iconFlexRow + " " + bCStyles.scale_1_5}>
+            <>
+            {totalPriceState.totalPrice}
+            </>
             <CurrencyIcon type="primary" />
           </div>
         </div>
@@ -121,7 +163,7 @@ function BurgerConstructor(props) {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.array.isRequired,
+  // data: PropTypes.array.isRequired,
 };
 
 export default BurgerConstructor;
