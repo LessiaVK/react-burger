@@ -10,6 +10,8 @@ import Modal from "../modal/Modal";
 import bCStyles from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
 import { DataContext } from "../../services/AppContext.js";
+import { checkResponse } from "../../utils/checkResponse";
+import { BASE_URL } from "../../utils/constants";
 
 const priceInitState = { totalPrice: 0 };
 
@@ -34,7 +36,7 @@ function OrderDetails() {
   const sendOrder = async (callback) => {
     const listIngredients = data.data.map((item) => item._id);
     const orderBurger = (listIngredients) => {
-      return fetch("https://norma.nomoreparties.space/api/orders", {
+      return fetch(BASE_URL + "/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
@@ -46,13 +48,12 @@ function OrderDetails() {
     };
 
     const loadOrderNumber = async (orderBurger, listIngredients, callback) => {
-      const response = await orderBurger(listIngredients);
-      if (response.ok) {
-        const json = await response.json();
-        callback(json.order.number);
-      } else {
-        console.log(`Ошибка HTTP: ${response.status}`);
-        return Promise.reject(`Ошибка HTTP: ${response.status}`);
+      try {
+        orderBurger(listIngredients)
+          .then(checkResponse)
+          .then((json) => callback(json.order.number));
+      } catch (error) {
+        console.log("getDataJson", error);
       }
     };
 
@@ -70,7 +71,7 @@ function OrderDetails() {
 
       <div className="p-15">
         {/* <CheckMarkIcon type="primary" /> */}
-        <img width="80px" src="./check.svg" alt="" />
+        <img width="80px" src="./check.svg" alt="Знак 'галочка'" />
       </div>
 
       <p className="text text_type_main-default">Ваш заказ начали готовить</p>

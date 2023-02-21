@@ -20,7 +20,11 @@ const IngredientDetails = (props) => {
 
   return (
     <div className={bIStyles.sizeMain + " mb-10"}>
-      <img className={bIStyles.sizeImg} src={element.image} alt="" />
+      <img
+        className={bIStyles.sizeImg}
+        src={element.image}
+        alt={"Изображение ингредиента"}
+      />
       <p className="text text_type_main-medium m-8">{element.name}</p>
       <div className={bIStyles.bIDescriptionMain}>
         <div className={bIStyles.bIDescription + " mb-15"}>
@@ -75,7 +79,7 @@ const ElementMenu = (props) => {
         props.onSetCurrentKey(props.element._id);
       }}
     >
-      <img src={props.element.image} alt="" />
+      <img src={props.element.image} alt="Изображение ингредиента" />
       {/* {props.count > 0 && <Counter count={props.count} className='m-1' size='default'/>} */}
       <div className={bIStyles.bIDescription}>
         <p

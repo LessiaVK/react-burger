@@ -4,28 +4,23 @@ import { DataContext } from "../../services/AppContext.js";
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
 import BurgerConstructor from "../burger-constructor/BurgerConstructor";
+import { checkResponse } from "../../utils/checkResponse";
+import { BASE_URL } from "../../utils/constants";
 
 async function getDataJson(url, callback) {
-  const response = await fetch(url);
-  if (response.ok) {
-    const json = await response.json();
-    callback(json);
-  } else {
-    console.log(`Ошибка HTTP: ${response.status}`);
-    return Promise.reject(`Ошибка HTTP: ${response.status}`);
-  }
+  fetch(url).then(checkResponse).then(callback);
 }
 
 function App() {
-  const [getsData, setgetsData] = React.useState({
+  const [getsData, setGetsData] = React.useState({
     success: false,
     data: [],
   });
-  const url = "https://norma.nomoreparties.space/api/ingredients";
+  const url = BASE_URL + "/ingredients";
 
   React.useEffect(() => {
     try {
-      getDataJson(url, setgetsData);
+      getDataJson(url, setGetsData);
     } catch (error) {
       console.log("getDataJson", error);
     }
