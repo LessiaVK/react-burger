@@ -1,40 +1,29 @@
 import React from "react";
 import appStyles from "./App.module.css";
-import { DataContext } from "../../services/AppContext.js";
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
 import BurgerConstructor from "../burger-constructor/BurgerConstructor";
-import { checkResponse } from "../../utils/checkResponse";
-import { BASE_URL } from "../../utils/constants";
 
-async function getDataJson(url, callback) {
-  fetch(url).then(checkResponse).then(callback);
-}
+import { useSelector, useDispatch } from "react-redux";
+import { fetchData } from "../../services/reducers/getIngredients";
+import { fetchIngredientsSelector } from "../../services/selectors";
 
 function App() {
-  const [getsData, setGetsData] = React.useState({
-    success: false,
-    data: [],
-  });
-  const url = BASE_URL + "/ingredients";
-
+  const dispatch = useDispatch();
+  const fetchDataState = useSelector(fetchIngredientsSelector);
   React.useEffect(() => {
-    try {
-      getDataJson(url, setGetsData);
-    } catch (error) {
-      console.log("getDataJson", error);
-    }
+    dispatch(fetchData());
   }, []);
 
   return (
     <div className="App">
       <AppHeader />
       <main className={appStyles.appMain}>
-        {getsData.success ? (
-          <DataContext.Provider value={getsData}>
+        {fetchDataState == "success" ? (
+          <>
             <BurgerIngredients />
             <BurgerConstructor />
-          </DataContext.Provider>
+          </>
         ) : (
           <></>
         )}

@@ -12,6 +12,9 @@ import PropTypes from "prop-types";
 import { DataContext } from "../../services/AppContext.js";
 import { checkResponse } from "../../utils/checkResponse";
 import { BASE_URL } from "../../utils/constants";
+import { useSelector } from "react-redux";
+import { ingredientsSelector } from "../../services/selectors";
+
 
 const priceInitState = { totalPrice: 0 };
 
@@ -84,7 +87,7 @@ function OrderDetails() {
 
 function BurgerConstructor(props) {
   // const [current, setCurrent] = React.useState('one')
-  const { data } = React.useContext(DataContext);
+  const data = useSelector(ingredientsSelector);
   const [showProps, setShowProps] = React.useState(false);
   const close = () => {
     setShowProps(false);

@@ -4,14 +4,22 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useSelector } from "react-redux";
 import Modal from "../modal/Modal";
 import PropTypes from "prop-types";
 
 import bIStyles from "./BurgerIngredients.module.css";
 import { DataContext } from "../../services/AppContext.js";
+import {
+  ingredientsSelector,
+  openModalSelector,
+  currentIngredientSelector,
+} from "../../services/selectors";
 
 const IngredientDetails = (props) => {
-  const { data } = React.useContext(DataContext);
+  const data = useSelector(ingredientsSelector);
+  const ingredientKey = useSelector(currentIngredientSelector);
+
   let elements = data.filter((item) => item._id === props.keyForShow);
   let element = {};
   if (elements.length === 1) {
@@ -100,15 +108,14 @@ ElementMenu.propTypes = {
 };
 
 const ShowIngredients = (props) => {
-  const { data } = React.useContext(DataContext);
-  // console.log(props.data);
+  const data = useSelector(ingredientsSelector);
   const dataForShow = data.filter((elem) => elem.type === props.type);
   let t = new Date();
   let time = t.getTime().toString();
   return (
     <>
       <div className={bIStyles.main}>
-        <p className="text text_type_main-medium pb-10 pt-10">{props.name}</p>
+        <p ref={props.ref1} className="text text_type_main-medium pb-10 pt-10">{props.name}</p>
       </div>
       <div className={bIStyles.bIDescription2}>
         {dataForShow.map((element, key) => {
@@ -136,13 +143,46 @@ ShowIngredients.propTypes = {
 };
 
 function BurgerIngredients(props) {
-  const { data } = React.useContext(DataContext);
+  const bunRef = React.useRef(null); //represents main section
+  const sauceRef = React.useRef(null); //represents about section
+  const mainRef = React.useRef(null); //represents how to use section
+  
+  const data = useSelector(ingredientsSelector);
   const [current, setCurrent] = React.useState("one");
   const [showProps, setShowProps] = React.useState(false);
   const [currentKey, setCurrentKey] = React.useState("");
   const close = () => {
     setShowProps(false);
   };
+  const handleScroll = (ref) => {
+    
+    let elem = document.getElementById("ShowIngredients");
+    console.log("ref",ref,elem);
+    elem.scrollTo({
+      top: (ref.offsetTop-elem.offsetTop),
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+ 
+  const onClickTab = (e) => {
+    console.log("onClickTab",e,this);
+     setCurrent(e);
+     switch (e) {
+      case "one":
+          handleScroll(bunRef.current);
+        break;
+      case "two":
+          handleScroll(sauceRef.current);
+        break;
+      case "three":
+          handleScroll(mainRef.current);
+        break;
+      default:
+        break;
+     }
+    
+  }
 
   return (
     <div>
@@ -150,21 +190,22 @@ function BurgerIngredients(props) {
         Соберите бургер
       </p>
       <div className={bIStyles.biFlex}>
-        <Tab value="one" active={current === "one"} onClick={setCurrent}>
+        <Tab value="one" active={current === "one"} onClick={onClickTab}>
           Булки
         </Tab>
-        <Tab value="two" active={current === "two"} onClick={setCurrent}>
+        <Tab value="two" active={current === "two"} onClick={onClickTab}>
           Соусы
         </Tab>
-        <Tab value="three" active={current === "three"} onClick={setCurrent}>
+        <Tab value="three" active={current === "three"} onClick={onClickTab}>
           Начинки
         </Tab>
       </div>
-      <div className={bIStyles.biScroll}>
+      <div id="ShowIngredients" className={bIStyles.biScroll}>
         <ShowIngredients
           name="Булки"
           type="bun"
           data={data}
+          ref1={bunRef}
           onSetShowProps={setShowProps}
           onSetCurrentKey={setCurrentKey}
         />
@@ -172,6 +213,7 @@ function BurgerIngredients(props) {
           name="Соусы"
           type="sauce"
           data={data}
+          ref1={sauceRef}
           onSetShowProps={setShowProps}
           onSetCurrentKey={setCurrentKey}
         />
@@ -179,6 +221,7 @@ function BurgerIngredients(props) {
           name="Начинки"
           type="main"
           data={data}
+          ref1={mainRef}
           onSetShowProps={setShowProps}
           onSetCurrentKey={setCurrentKey}
         />
