@@ -14,9 +14,10 @@ import { checkResponse } from "../../utils/checkResponse";
 import { BASE_URL } from "../../utils/constants";
 import { useSelector, useDispatch } from "react-redux";
 import { constructorSelector } from "../../services/selectors";
-import { useDrop } from "react-dnd";
+import { useDrop,useDrag } from "react-dnd";
 import uuid from "react-uuid";
 import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
+import { ElementIngredient } from "./ElementIngredient";
 
 const priceInitState = { totalPrice: 0 };
 
@@ -122,6 +123,8 @@ function BurgerConstructor(props) {
   const close = () => {
     setShowProps(false);
   };
+  
+
   const [{ handlerId }, drop] = useDrop({
     accept: "ingredient",
     canDrop: true,
@@ -235,16 +238,26 @@ function BurgerConstructor(props) {
           if (element.type !== "bun") {
             let keyId = key + time;
             return (
-              <div key={keyId}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  key={key}
-                  text={element.name}
-                  price={element.price}
-                  thumbnail={element.image}
-                  handleClose={() => onDeleteIngredient(element)}
-                />
+              <div key={key}> 
+              <ElementIngredient 
+                    keyId={keyId}
+                  
+                   text={element.name}
+                   price={element.price}
+                   thumbnail={element.image}
+                   onDell={() => onDeleteIngredient(element)}
+              />
               </div>
+              // <div  key={keyId}>
+              //   <DragIcon type="primary" />
+              //   <ConstructorElement
+              //     key={key}
+              //     text={element.name}
+              //     price={element.price}
+              //     thumbnail={element.image}
+              //     handleClose={() => onDeleteIngredient(element)}
+              //   />
+              // </div>
             );
           }
         })}
