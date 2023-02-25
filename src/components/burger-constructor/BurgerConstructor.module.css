@@ -18,7 +18,8 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: scroll;
-  height: 440px;
+  /* height: 440px; */
+  max-height: 440px;
 }
 
 .bgFooter {

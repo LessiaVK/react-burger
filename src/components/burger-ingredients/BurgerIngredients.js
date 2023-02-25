@@ -15,6 +15,7 @@ import {
   openModalSelector,
   currentIngredientSelector,
 } from "../../services/selectors";
+import { useDrag } from "react-dnd";
 
 const IngredientDetails = (props) => {
   const data = useSelector(ingredientsSelector);
@@ -25,6 +26,7 @@ const IngredientDetails = (props) => {
   if (elements.length === 1) {
     element = elements[0];
   }
+
 
   return (
     <div className={bIStyles.sizeMain + " mb-10"}>
@@ -78,6 +80,15 @@ IngredientDetails.propTypes = {
 };
 
 const ElementMenu = (props) => {
+
+  const [{ opacity }, dragRef] = useDrag({
+    type: 'ingredient', 
+    item: { ...props },
+    collect: monitor => ({
+        opacity: monitor.isDragging() ? 0.3 : 1
+    })
+  })
+
   return (
     <div
       key={props.tempId}
@@ -86,6 +97,8 @@ const ElementMenu = (props) => {
         props.onSetShowProps(true);
         props.onSetCurrentKey(props.element._id);
       }}
+      ref={dragRef} 
+      style={{ opacity }}
     >
       <img src={props.element.image} alt="Изображение ингредиента" />
       {/* {props.count > 0 && <Counter count={props.count} className='m-1' size='default'/>} */}

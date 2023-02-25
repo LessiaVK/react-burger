@@ -12,9 +12,11 @@ import PropTypes from "prop-types";
 import { DataContext } from "../../services/AppContext.js";
 import { checkResponse } from "../../utils/checkResponse";
 import { BASE_URL } from "../../utils/constants";
-import { useSelector } from "react-redux";
-import { ingredientsSelector } from "../../services/selectors";
-
+import { useSelector, useDispatch } from "react-redux";
+import { constructorSelector } from "../../services/selectors";
+import { useDrop } from "react-dnd";
+import uuid from "react-uuid";
+import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
 
 const priceInitState = { totalPrice: 0 };
 
@@ -85,13 +87,88 @@ function OrderDetails() {
   );
 }
 
+const BurgerElement = (props) => {
+  console.log("BurgerElement", props);
+  const [{ isHover }, dropTargerElementRef] = useDrop({
+    accept: "ingredient",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+
+    drop(item) {
+      console.log("dropTargerElementRef");
+      console.log(item);
+    },
+  });
+  return (
+    <div ref={dropTargerElementRef}>
+      <ConstructorElement
+        type={props.type}
+        isLocked={true}
+        text={props.text}
+        price={props.price}
+        thumbnail={props.thumbnail}
+        extraClass="ml-6"
+      />
+    </div>
+  );
+};
+
 function BurgerConstructor(props) {
-  // const [current, setCurrent] = React.useState('one')
-  const data = useSelector(ingredientsSelector);
+  const dispatch = useDispatch();
+  const data = useSelector(constructorSelector);
+  console.log("BurgerConstructor", data);
   const [showProps, setShowProps] = React.useState(false);
   const close = () => {
     setShowProps(false);
   };
+  const [{ handlerId }, drop] = useDrop({
+    accept: "ingredient",
+    canDrop: true,
+    collect(monitor) {
+      console.log("collect", monitor);
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+
+    hover(item, monitor) {
+      console.log("BurgerElement", item, monitor);
+    },
+  });
+
+  const [{ isHover }, dropTargerRef] = useDrop({
+    accept: "ingredient",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+
+    drop(item) {
+      console.log("drop", item, data);
+
+      let flagNotBun = true;
+      data.forEach((element, i) => {
+        if (element.type == "bun" && item.element.type == "bun") {
+          console.log("data.forEach", element);
+          data[i] = item.element;
+          flagNotBun = false;
+        }
+      });
+      console.log("drop", item, data);
+      if (flagNotBun) {
+        dispatch({
+          type: GET_CONSTRUCTOR,
+          payload: [...data, { ...item.element, dragId: uuid() }],
+        });
+      } else {
+        dispatch({
+          type: GET_CONSTRUCTOR,
+          payload: [...data],
+        });
+      }
+    },
+  });
+
   let t = new Date();
   let time = t.getTime().toString();
   let elementBorder;
@@ -101,8 +178,13 @@ function BurgerConstructor(props) {
     }
   });
   const initTotalPriceState = () => {
-    let price = elementBorder.price * 2;
-    return { totalPrice: price };
+    console.log("initTotalPriceState", elementBorder);
+    if (elementBorder) {
+      let price = elementBorder.price * 2;
+      return { totalPrice: price };
+    } else {
+      return { totalPrice: 0 };
+    }
   };
   const [totalPriceState, totalPricetDispatcher] = React.useReducer(
     reducer,
@@ -119,13 +201,26 @@ function BurgerConstructor(props) {
         totalPricetDispatcher({ type: "increment", price: element.price });
       }
     });
-  }, []);
+  }, [data]);
+
+  const onDeleteIngredient = (e) => {
+    console.log("onDeleteIngredient", e);
+    let data2 = data.filter(function(element, index, arr){ 
+      return element.dragId != e.dragId;
+    });
+    
+    dispatch({
+      type: GET_CONSTRUCTOR,
+      payload: [...data2],
+    });
+  };
 
   return (
-    <div className={bCStyles.bgMain}>
+    <div className={bCStyles.bgMain} ref={dropTargerRef}>
       <div className={bCStyles.bgListStart + " ml-10 mb-2"}>
         {elementBorder && (
-          <ConstructorElement
+          // <BurgerElement type = "top" />
+          <BurgerElement
             type="top"
             isLocked={true}
             text={`${elementBorder.name} (верх)`}
@@ -147,6 +242,7 @@ function BurgerConstructor(props) {
                   text={element.name}
                   price={element.price}
                   thumbnail={element.image}
+                  handleClose={() => onDeleteIngredient(element)}
                 />
               </div>
             );

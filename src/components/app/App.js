@@ -7,6 +7,8 @@ import BurgerConstructor from "../burger-constructor/BurgerConstructor";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchData } from "../../services/reducers/getIngredients";
 import { fetchIngredientsSelector } from "../../services/selectors";
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
   const dispatch = useDispatch();
@@ -20,10 +22,10 @@ function App() {
       <AppHeader />
       <main className={appStyles.appMain}>
         {fetchDataState == "success" ? (
-          <>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </>
+          <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+          </DndProvider>
         ) : (
           <></>
         )}
