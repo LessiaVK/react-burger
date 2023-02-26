@@ -140,8 +140,7 @@ function BurgerConstructor(props) {
       };
     },
 
-    hover(item, monitor) {
-    },
+    hover(item, monitor) {},
   });
 
   const [{ isHover }, dropTargerRef] = useDrop({
@@ -170,15 +169,14 @@ function BurgerConstructor(props) {
         }
       });
       if (flagNotBun) {
-        dispatch({
-          type: GET_CONSTRUCTOR,
-          payload: [...data, { ...item.element, dragId: uuid() }],
-        });
+        dispatch(
+          actionBurgerCompound.getConstructor([
+            ...data,
+            { ...item.element, dragId: uuid() },
+          ])
+        );
       } else {
-        dispatch({
-          type: GET_CONSTRUCTOR,
-          payload: [...buter],
-        });
+        dispatch(actionBurgerCompound.getConstructor([...buter]));
       }
     },
   });
