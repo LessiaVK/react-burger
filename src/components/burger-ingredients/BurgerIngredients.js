@@ -13,6 +13,7 @@ import { DataContext } from "../../services/AppContext.js";
 import {
   ingredientsSelector,
   openModalSelector,
+  constructorSelector ,
   currentIngredientSelector,
 } from "../../services/selectors";
 import { useDrag } from "react-dnd";
@@ -80,7 +81,8 @@ IngredientDetails.propTypes = {
 };
 
 const ElementMenu = (props) => {
-
+  let orderList = useSelector(constructorSelector);
+  const count = orderList.filter(item => item._id == props.element._id).length
   const [{ opacity }, dragRef] = useDrag({
     type: 'ingredient', 
     item: { ...props },
@@ -88,6 +90,7 @@ const ElementMenu = (props) => {
         opacity: monitor.isDragging() ? 0.3 : 1
     })
   })
+  // console.log("ElementMenu",orderList,a,count,props);
 
   return (
     <div
@@ -101,7 +104,10 @@ const ElementMenu = (props) => {
       style={{ opacity }}
     >
       <img src={props.element.image} alt="Изображение ингредиента" />
-      {/* {props.count > 0 && <Counter count={props.count} className='m-1' size='default'/>} */}
+      <div className={bIStyles.count}>
+     
+      {count > 0 && <Counter count={count} className='m-1' size='default'/>}
+      </div>
       <div className={bIStyles.bIDescription}>
         <p
           className={`constructor-element__price text text_type_digits-default`}

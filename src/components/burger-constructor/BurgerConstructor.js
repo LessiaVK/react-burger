@@ -23,7 +23,7 @@ import uuid from "react-uuid";
 import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
 import { ElementIngredient } from "./BurgerConstructorElementIngredient";
 import { actionCreators } from "../../services/actions/actionCreator";
-// import { fetchIngredientsSelector } from "../../services/selectors";
+
 
 const priceInitState = { totalPrice: 0 };
 
@@ -157,8 +157,13 @@ function BurgerConstructor(props) {
 
     drop(item) {
       console.log("drop", item, data);
-
+      let buter = [];
       let flagNotBun = true;
+      if (item.element.type == "bun") {
+         let ingred = data.filter( item => item.type !== "bun");
+         buter = [{ ...item.element, dragId: uuid() },...ingred, {...item.element, dragId: uuid() } ]
+         flagNotBun = false;
+      }
       data.forEach((element, i) => {
         if (element.type == "bun" && item.element.type == "bun") {
           console.log("data.forEach", element);
@@ -175,7 +180,7 @@ function BurgerConstructor(props) {
       } else {
         dispatch({
           type: GET_CONSTRUCTOR,
-          payload: [...data],
+          payload: [...buter],
         });
       }
     },
