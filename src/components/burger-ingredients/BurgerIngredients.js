@@ -16,16 +16,11 @@ import {
   currentIngredientSelector,
 } from "../../services/selectors";
 import { useDrag } from "react-dnd";
+import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 
 const IngredientDetails = (props) => {
   const data = useSelector(ingredientsSelector);
-  const ingredientKey = useSelector(currentIngredientSelector);
-
-  let elements = data.filter((item) => item._id === props.keyForShow);
-  let element = {};
-  if (elements.length === 1) {
-    element = elements[0];
-  }
+  const element = useSelector(currentIngredientSelector);
 
   return (
     <div className={bIStyles.sizeMain + " mb-10"}>
@@ -79,7 +74,8 @@ IngredientDetails.propTypes = {
 };
 
 const ElementMenu = (props) => {
-  let orderList = useSelector(constructorSelector);
+  const orderList = useSelector(constructorSelector);
+  const dispatch = useDispatch();
   const count = orderList.filter(
     (item) => item._id == props.element._id
   ).length;
@@ -98,6 +94,7 @@ const ElementMenu = (props) => {
       onClick={(el) => {
         props.onSetShowProps(true);
         props.onSetCurrentKey(props.element._id);
+        dispatch(actionIngredientDetails.addIngredientDetails(props.element));
       }}
       ref={dragRef}
       style={{ opacity }}
