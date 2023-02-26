@@ -7,6 +7,7 @@ import {
   FETCH_ORDER,
   IS_MODAL_OPEN,
   FETCH_INGREDIENTS_ID,
+  ORDER_NUMBER,
 } from "./actionTypes";
 
 export const actionCreators = {
@@ -24,4 +25,5 @@ export const actionCreators = {
   fetchOrder: (data) => ({ type: FETCH_ORDER, payload: data }),
   openModal: (data) => ({ type: IS_MODAL_OPEN, payload: data }),
   fetchIngredientsID: (data) => ({ type: FETCH_INGREDIENTS_ID, payload: data }),
+  orderNumber: (data) => ({ type: ORDER_NUMBER, payload: data }),
 };

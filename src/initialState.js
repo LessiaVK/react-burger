@@ -7,5 +7,6 @@ export const initialState = {
     currentIngredient: "60666c42cc7b410027a1a9b2",
     currentOrder: {},
     currentItemsID: [],
+    orderNumber: 0,
   },
 };

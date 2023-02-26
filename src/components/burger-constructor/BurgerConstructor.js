@@ -17,13 +17,13 @@ import {
   constructorSelector,
   fetchIngredientsSelector,
   fetchcurrentItemsID,
+  orderNumber,
 } from "../../services/selectors";
 import { useDrop, useDrag } from "react-dnd";
 import uuid from "react-uuid";
 import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
 import { ElementIngredient } from "./BurgerConstructorElementIngredient";
 import { actionCreators } from "../../services/actions/actionCreator";
-
 
 const priceInitState = { totalPrice: 0 };
 
@@ -44,8 +44,8 @@ function OrderDetails() {
   const dispatch = useDispatch();
   const data = useSelector(constructorSelector);
   const listIngredients = useSelector(fetchcurrentItemsID);
-
-  const [orderData, setOrderData] = React.useState(0);
+  const orderId = useSelector(orderNumber);
+  // const [orderData, setOrderData] = React.useState(0);
 
   const sendOrder = async (callback) => {
     // const listIngredients = data.data.map((item) => item._id);
@@ -65,7 +65,7 @@ function OrderDetails() {
       try {
         orderBurger(listIngredients)
           .then(checkResponse)
-          .then((json) => callback(json.order.number));
+          .then((json) => dispatch(callback(json.order.number)));
       } catch (error) {
         console.log("getDataJson", error);
       }
@@ -75,13 +75,13 @@ function OrderDetails() {
   };
 
   useEffect(() => {
-    sendOrder(setOrderData);
+    sendOrder(actionCreators.orderNumber);
     console.log("listIngredients", listIngredients);
   }, [listIngredients]);
 
   return (
     <div className={bCStyles.text}>
-      <p className="text text_type_digits-large p-4">{orderData}</p>
+      <p className="text text_type_digits-large p-4">{orderId}</p>
       <p className="text text_type_main-medium p-8">идентификатор заказа</p>
 
       <div className="p-15">
@@ -160,9 +160,13 @@ function BurgerConstructor(props) {
       let buter = [];
       let flagNotBun = true;
       if (item.element.type == "bun") {
-         let ingred = data.filter( item => item.type !== "bun");
-         buter = [{ ...item.element, dragId: uuid() },...ingred, {...item.element, dragId: uuid() } ]
-         flagNotBun = false;
+        let ingred = data.filter((item) => item.type !== "bun");
+        buter = [
+          { ...item.element, dragId: uuid() },
+          ...ingred,
+          { ...item.element, dragId: uuid() },
+        ];
+        flagNotBun = false;
       }
       data.forEach((element, i) => {
         if (element.type == "bun" && item.element.type == "bun") {
@@ -247,6 +251,7 @@ function BurgerConstructor(props) {
           />
         )}
       </div>
+      {data.length == 0 && <div className={bCStyles.bgList + " ml-10"}>Hi</div>}
       <div className={bCStyles.bgList + " ml-10"}>
         {data.map((element, key) => {
           if (element.type !== "bun") {
@@ -302,6 +307,7 @@ function BurgerConstructor(props) {
           size="medium"
           onClick={(e) => {
             dispatch(actionCreators.fetchIngredientsID(data));
+
             setShowProps(true);
 
             console.log("orderIngerdiens", orderIngerdiens, "---", data);

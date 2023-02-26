@@ -8,6 +8,7 @@ import {
   FETCH_ORDER,
   IS_MODAL_OPEN,
   FETCH_INGREDIENTS_ID,
+  ORDER_NUMBER,
 } from "../actions/actionTypes";
 import { initialState } from "../../initialState";
 
@@ -97,6 +98,12 @@ export const rootReducer1 = (state = initialState, action) => {
       return {
         ...state,
         isOpenModal: action.payload,
+      };
+
+    case ORDER_NUMBER:
+      return {
+        ...state,
+        orderNumber: action.payload,
       };
 
     default:

@@ -7,3 +7,4 @@ export const currentOrderSelector = (state) => state.rootReducer1.currentOrder;
 export const fetchIngredientsSelector = (state) =>
   state.rootReducer1.fetchIngredients;
 export const fetchcurrentItemsID = (state) => state.rootReducer1.currentItemsID;
+export const orderNumber = (state) => state.rootReducer1.orderNumber;

@@ -10,3 +10,4 @@ export const FETCH_ORDER = "FETCH_ORDER";
 
 export const IS_MODAL_OPEN = "IS_MODAL_OPEN";
 export const FETCH_INGREDIENTS_ID = "FETCH_INGREDIENTS_ID";
+export const ORDER_NUMBER = "ORDER_NUMBER";
