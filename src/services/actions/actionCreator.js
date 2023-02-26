@@ -6,6 +6,7 @@ import {
   DELETE_INGREDIENT_DETAILS,
   FETCH_ORDER,
   IS_MODAL_OPEN,
+  FETCH_INGREDIENTS_ID,
 } from "./actionTypes";
 
 export const actionCreators = {
@@ -22,4 +23,5 @@ export const actionCreators = {
   deleteIngredientDetails: () => ({ type: DELETE_INGREDIENT_DETAILS }),
   fetchOrder: (data) => ({ type: FETCH_ORDER, payload: data }),
   openModal: (data) => ({ type: IS_MODAL_OPEN, payload: data }),
+  fetchIngredientsID: (data) => ({ type: FETCH_INGREDIENTS_ID, payload: data }),
 };

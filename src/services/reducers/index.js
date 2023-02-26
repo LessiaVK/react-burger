@@ -7,6 +7,7 @@ import {
   DELETE_INGREDIENT_DETAILS,
   FETCH_ORDER,
   IS_MODAL_OPEN,
+  FETCH_INGREDIENTS_ID,
 } from "../actions/actionTypes";
 import { initialState } from "../../initialState";
 
@@ -83,6 +84,13 @@ export const rootReducer1 = (state = initialState, action) => {
       return {
         ...state,
         currentOrder: action.payload,
+      };
+
+    case FETCH_INGREDIENTS_ID:
+      return {
+        ...state,
+        // currentItemsID: action.payload.map(item => item._id) ,
+        currentItemsID: action.payload.map((item) => item._id),
       };
 
     case IS_MODAL_OPEN:

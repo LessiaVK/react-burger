@@ -13,11 +13,17 @@ import { DataContext } from "../../services/AppContext.js";
 import { checkResponse } from "../../utils/checkResponse";
 import { BASE_URL } from "../../utils/constants";
 import { useSelector, useDispatch } from "react-redux";
-import { constructorSelector } from "../../services/selectors";
-import { useDrop,useDrag } from "react-dnd";
+import {
+  constructorSelector,
+  fetchIngredientsSelector,
+  fetchcurrentItemsID,
+} from "../../services/selectors";
+import { useDrop, useDrag } from "react-dnd";
 import uuid from "react-uuid";
 import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
-import { ElementIngredient } from "./ElementIngredient";
+import { ElementIngredient } from "./BurgerConstructorElementIngredient";
+import { actionCreators } from "../../services/actions/actionCreator";
+// import { fetchIngredientsSelector } from "../../services/selectors";
 
 const priceInitState = { totalPrice: 0 };
 
@@ -35,12 +41,14 @@ function reducer(state, action) {
 }
 
 function OrderDetails() {
-  const data = React.useContext(DataContext);
+  const dispatch = useDispatch();
+  const data = useSelector(constructorSelector);
+  const listIngredients = useSelector(fetchcurrentItemsID);
 
   const [orderData, setOrderData] = React.useState(0);
 
   const sendOrder = async (callback) => {
-    const listIngredients = data.data.map((item) => item._id);
+    // const listIngredients = data.data.map((item) => item._id);
     const orderBurger = (listIngredients) => {
       return fetch(BASE_URL + "/orders", {
         method: "POST",
@@ -68,7 +76,8 @@ function OrderDetails() {
 
   useEffect(() => {
     sendOrder(setOrderData);
-  }, []);
+    console.log("listIngredients", listIngredients);
+  }, [listIngredients]);
 
   return (
     <div className={bCStyles.text}>
@@ -89,7 +98,7 @@ function OrderDetails() {
 }
 
 const BurgerElement = (props) => {
-  console.log("BurgerElement", props);
+  // console.log("BurgerElement", props);
   const [{ isHover }, dropTargerElementRef] = useDrop({
     accept: "ingredient",
     collect: (monitor) => ({
@@ -118,25 +127,25 @@ const BurgerElement = (props) => {
 function BurgerConstructor(props) {
   const dispatch = useDispatch();
   const data = useSelector(constructorSelector);
-  console.log("BurgerConstructor", data);
+  const orderIngerdiens = useSelector(fetchcurrentItemsID);
+  // console.log("BurgerConstructor", data);
   const [showProps, setShowProps] = React.useState(false);
   const close = () => {
     setShowProps(false);
   };
-  
 
   const [{ handlerId }, drop] = useDrop({
     accept: "ingredient",
     canDrop: true,
     collect(monitor) {
-      console.log("collect", monitor);
+      // console.log("collect", monitor);
       return {
         handlerId: monitor.getHandlerId(),
       };
     },
 
     hover(item, monitor) {
-      console.log("BurgerElement", item, monitor);
+      // console.log("BurgerElement", item, monitor);
     },
   });
 
@@ -181,7 +190,7 @@ function BurgerConstructor(props) {
     }
   });
   const initTotalPriceState = () => {
-    console.log("initTotalPriceState", elementBorder);
+    // console.log("initTotalPriceState", elementBorder);
     if (elementBorder) {
       let price = elementBorder.price * 2;
       return { totalPrice: price };
@@ -208,10 +217,10 @@ function BurgerConstructor(props) {
 
   const onDeleteIngredient = (e) => {
     console.log("onDeleteIngredient", e);
-    let data2 = data.filter(function(element, index, arr){ 
+    let data2 = data.filter(function (element, index, arr) {
       return element.dragId != e.dragId;
     });
-    
+
     dispatch({
       type: GET_CONSTRUCTOR,
       payload: [...data2],
@@ -238,15 +247,15 @@ function BurgerConstructor(props) {
           if (element.type !== "bun") {
             let keyId = key + time;
             return (
-              <div key={key}> 
-              <ElementIngredient 
-                    keyId={keyId}
-                  
-                   text={element.name}
-                   price={element.price}
-                   thumbnail={element.image}
-                   onDell={() => onDeleteIngredient(element)}
-              />
+              <div key={key}>
+                <ElementIngredient
+                  keyId={keyId}
+                  index={key}
+                  text={element.name}
+                  price={element.price}
+                  thumbnail={element.image}
+                  onDell={() => onDeleteIngredient(element)}
+                />
               </div>
               // <div  key={keyId}>
               //   <DragIcon type="primary" />
@@ -287,7 +296,10 @@ function BurgerConstructor(props) {
           type="primary"
           size="medium"
           onClick={(e) => {
+            dispatch(actionCreators.fetchIngredientsID(data));
             setShowProps(true);
+
+            console.log("orderIngerdiens", orderIngerdiens, "---", data);
           }}
         >
           Оформить заказ
