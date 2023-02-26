@@ -1,10 +1,12 @@
-export const ingredientsSelector = (state) => state.rootReducer1.ingredients;
-export const constructorSelector = (state) => state.rootReducer1.constructor;
-export const openModalSelector = (state) => state.rootReducer1.isOpenModal;
+export const ingredientsSelector = (state) =>
+  state.fetchDataReducer.ingredients;
+export const constructorSelector = (state) => state.burgerReducer.constructor;
+export const openModalSelector = (state) => state.ingredientReducer.isOpenModal;
 export const currentIngredientSelector = (state) =>
-  state.rootReducer1.currentIngredient;
-export const currentOrderSelector = (state) => state.rootReducer1.currentOrder;
+  state.ingredientReducer.currentIngredient;
+export const currentOrderSelector = (state) => state.orderReducer.currentOrder;
 export const fetchIngredientsSelector = (state) =>
-  state.rootReducer1.fetchIngredients;
-export const fetchcurrentItemsID = (state) => state.rootReducer1.currentItemsID;
-export const orderNumber = (state) => state.rootReducer1.orderNumber;
+  state.fetchDataReducer.fetchIngredients;
+export const fetchcurrentItemsID = (state) =>
+  state.burgerReducer.currentItemsID;
+export const orderNumber = (state) => state.orderReducer.orderNumber;

@@ -1,37 +1,21 @@
-import { guid } from '../utils'
-import { ADD_TODO, TOGGLE_TODO } from './constants'
- 
-// Исходное состояние
-const initialState = [
-    {
-        id: guid(),
-        completed: false,
-        expiresAt: '08.04.20201',
-        text: 'Купить авокадо 4 шт.'
-    }
-]
+import { GET_CONSTRUCTOR, FETCH_INGREDIENTS_ID } from "../actions/actionTypes";
+import { initialState } from "../../initialState";
 
-// Редьюсер
-const todoList = (state = initialState, action) => {
+export const burgerReducer = (state = initialState, action) => {
   switch (action.type) {
-        // Добавление новой задачи в список дел
-    case ADD_TODO:
-      return [
+    case GET_CONSTRUCTOR:
+      return {
         ...state,
-        {
-          id: guid(),
-          text: action.text,
-                    expiresAt: action.expiresAt,
-          completed: false
-        }
-      ]
-        // Изменение статуса задачи в списке дел
-    case TOGGLE_TODO:
-      return state.map(todo =>
-        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-      )
-        // Реакция на прочие типы экшенов
+        constructor: action.payload,
+      };
+
+    case FETCH_INGREDIENTS_ID:
+      return {
+        ...state,
+        currentItemsID: action.payload.map((item) => item._id),
+      };
+
     default:
-      return state
+      return state;
   }
-} 
+};

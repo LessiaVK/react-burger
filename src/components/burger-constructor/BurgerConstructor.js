@@ -23,7 +23,8 @@ import { useDrop, useDrag } from "react-dnd";
 import uuid from "react-uuid";
 import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
 import { ElementIngredient } from "./BurgerConstructorElementIngredient";
-import { actionCreators } from "../../services/actions/actionCreator";
+import { actionBurgerCompound } from "../../services/actions/burgerСompound";
+import { actionOrderDetails } from "../../services/actions/orderDetails";
 
 const priceInitState = { totalPrice: 0 };
 
@@ -45,7 +46,6 @@ function OrderDetails() {
   const data = useSelector(constructorSelector);
   const listIngredients = useSelector(fetchcurrentItemsID);
   const orderId = useSelector(orderNumber);
-  // const [orderData, setOrderData] = React.useState(0);
 
   const sendOrder = async (callback) => {
     // const listIngredients = data.data.map((item) => item._id);
@@ -75,8 +75,7 @@ function OrderDetails() {
   };
 
   useEffect(() => {
-    sendOrder(actionCreators.orderNumber);
-    console.log("listIngredients", listIngredients);
+    sendOrder(actionOrderDetails.orderNumber);
   }, [listIngredients]);
 
   return (
@@ -98,7 +97,6 @@ function OrderDetails() {
 }
 
 const BurgerElement = (props) => {
-  // console.log("BurgerElement", props);
   const [{ isHover }, dropTargerElementRef] = useDrop({
     accept: "ingredient",
     collect: (monitor) => ({
@@ -106,8 +104,8 @@ const BurgerElement = (props) => {
     }),
 
     drop(item) {
-      console.log("dropTargerElementRef");
-      console.log(item);
+      // console.log("dropTargerElementRef");
+      // console.log(item);
     },
   });
   return (
@@ -128,7 +126,6 @@ function BurgerConstructor(props) {
   const dispatch = useDispatch();
   const data = useSelector(constructorSelector);
   const orderIngerdiens = useSelector(fetchcurrentItemsID);
-  // console.log("BurgerConstructor", data);
   const [showProps, setShowProps] = React.useState(false);
   const close = () => {
     setShowProps(false);
@@ -138,14 +135,12 @@ function BurgerConstructor(props) {
     accept: "ingredient",
     canDrop: true,
     collect(monitor) {
-      // console.log("collect", monitor);
       return {
         handlerId: monitor.getHandlerId(),
       };
     },
 
     hover(item, monitor) {
-      // console.log("BurgerElement", item, monitor);
     },
   });
 
@@ -156,7 +151,7 @@ function BurgerConstructor(props) {
     }),
 
     drop(item) {
-      console.log("drop", item, data);
+      // console.log("drop", item, data);
       let buter = [];
       let flagNotBun = true;
       if (item.element.type == "bun") {
@@ -170,12 +165,10 @@ function BurgerConstructor(props) {
       }
       data.forEach((element, i) => {
         if (element.type == "bun" && item.element.type == "bun") {
-          console.log("data.forEach", element);
           data[i] = item.element;
           flagNotBun = false;
         }
       });
-      console.log("drop", item, data);
       if (flagNotBun) {
         dispatch({
           type: GET_CONSTRUCTOR,
@@ -199,7 +192,6 @@ function BurgerConstructor(props) {
     }
   });
   const initTotalPriceState = () => {
-    // console.log("initTotalPriceState", elementBorder);
     if (elementBorder) {
       let price = elementBorder.price * 2;
       return { totalPrice: price };
@@ -225,7 +217,6 @@ function BurgerConstructor(props) {
   }, [data]);
 
   const onDeleteIngredient = (e) => {
-    console.log("onDeleteIngredient", e);
     let data2 = data.filter(function (element, index, arr) {
       return element.dragId != e.dragId;
     });
@@ -251,7 +242,11 @@ function BurgerConstructor(props) {
           />
         )}
       </div>
-      {data.length == 0 && <div className={bCStyles.bgList + " ml-10"}>Hi</div>}
+      {data.length == 0 && (
+        <div className={bCStyles.text + " ml-10"}>
+          Соберите свой бургер. Перетащите нужные ингредиенты
+        </div>
+      )}
       <div className={bCStyles.bgList + " ml-10"}>
         {data.map((element, key) => {
           if (element.type !== "bun") {
@@ -267,16 +262,6 @@ function BurgerConstructor(props) {
                   onDell={() => onDeleteIngredient(element)}
                 />
               </div>
-              // <div  key={keyId}>
-              //   <DragIcon type="primary" />
-              //   <ConstructorElement
-              //     key={key}
-              //     text={element.name}
-              //     price={element.price}
-              //     thumbnail={element.image}
-              //     handleClose={() => onDeleteIngredient(element)}
-              //   />
-              // </div>
             );
           }
         })}
@@ -306,11 +291,8 @@ function BurgerConstructor(props) {
           type="primary"
           size="medium"
           onClick={(e) => {
-            dispatch(actionCreators.fetchIngredientsID(data));
-
+            dispatch(actionBurgerCompound.fetchIngredientsID(data));
             setShowProps(true);
-
-            console.log("orderIngerdiens", orderIngerdiens, "---", data);
           }}
         >
           Оформить заказ

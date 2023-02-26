@@ -9,11 +9,10 @@ import Modal from "../modal/Modal";
 import PropTypes from "prop-types";
 
 import bIStyles from "./BurgerIngredients.module.css";
-import { DataContext } from "../../services/AppContext.js";
 import {
   ingredientsSelector,
   openModalSelector,
-  constructorSelector ,
+  constructorSelector,
   currentIngredientSelector,
 } from "../../services/selectors";
 import { useDrag } from "react-dnd";
@@ -27,7 +26,6 @@ const IngredientDetails = (props) => {
   if (elements.length === 1) {
     element = elements[0];
   }
-
 
   return (
     <div className={bIStyles.sizeMain + " mb-10"}>
@@ -82,15 +80,16 @@ IngredientDetails.propTypes = {
 
 const ElementMenu = (props) => {
   let orderList = useSelector(constructorSelector);
-  const count = orderList.filter(item => item._id == props.element._id).length
+  const count = orderList.filter(
+    (item) => item._id == props.element._id
+  ).length;
   const [{ opacity }, dragRef] = useDrag({
-    type: 'ingredient', 
+    type: "ingredient",
     item: { ...props },
-    collect: monitor => ({
-        opacity: monitor.isDragging() ? 0.3 : 1
-    })
-  })
-  // console.log("ElementMenu",orderList,a,count,props);
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.3 : 1,
+    }),
+  });
 
   return (
     <div
@@ -100,13 +99,12 @@ const ElementMenu = (props) => {
         props.onSetShowProps(true);
         props.onSetCurrentKey(props.element._id);
       }}
-      ref={dragRef} 
+      ref={dragRef}
       style={{ opacity }}
     >
       <img src={props.element.image} alt="Изображение ингредиента" />
       <div className={bIStyles.count}>
-     
-      {count > 0 && <Counter count={count} className='m-1' size='default'/>}
+        {count > 0 && <Counter count={count} className="m-1" size="default" />}
       </div>
       <div className={bIStyles.bIDescription}>
         <p
@@ -133,8 +131,10 @@ const ShowIngredients = (props) => {
   let time = t.getTime().toString();
   return (
     <>
-      <div className={bIStyles.main}>
-        <p ref={props.ref1} className="text text_type_main-medium pb-10 pt-10">{props.name}</p>
+      <div data-group="group" className={bIStyles.main}>
+        <p ref={props.ref1} className="text text_type_main-medium pb-10 pt-10">
+          {props.name}
+        </p>
       </div>
       <div className={bIStyles.bIDescription2}>
         {dataForShow.map((element, key) => {
@@ -165,7 +165,7 @@ function BurgerIngredients(props) {
   const bunRef = React.useRef(null); //represents main section
   const sauceRef = React.useRef(null); //represents about section
   const mainRef = React.useRef(null); //represents how to use section
-  
+
   const data = useSelector(ingredientsSelector);
   const [current, setCurrent] = React.useState("one");
   const [showProps, setShowProps] = React.useState(false);
@@ -173,35 +173,48 @@ function BurgerIngredients(props) {
   const close = () => {
     setShowProps(false);
   };
+
+  const groupList = document.querySelectorAll("[data-group]");
+  const arrTab = ["one", "two", "three"];
+  const scroll = () => {
+    const scrolltop = document.getElementById("ShowIngredients").scrollTop;
+    let groupListArr = [...groupList];
+    let selectElement = -1;
+    groupListArr.map((item, id) => {
+      if (item.offsetTop > scrolltop && selectElement == -1) {
+        selectElement = id;
+      }
+    });
+    if (selectElement >= 0) {
+      setCurrent(arrTab[selectElement]);
+    }
+  };
+
   const handleScroll = (ref) => {
-    
     let elem = document.getElementById("ShowIngredients");
-    console.log("ref",ref,elem);
     elem.scrollTo({
-      top: (ref.offsetTop-elem.offsetTop),
+      top: ref.offsetTop - elem.offsetTop,
       left: 0,
       behavior: "smooth",
     });
   };
- 
+
   const onClickTab = (e) => {
-    console.log("onClickTab",e,this);
-     setCurrent(e);
-     switch (e) {
+    setCurrent(e);
+    switch (e) {
       case "one":
-          handleScroll(bunRef.current);
+        handleScroll(bunRef.current);
         break;
       case "two":
-          handleScroll(sauceRef.current);
+        handleScroll(sauceRef.current);
         break;
       case "three":
-          handleScroll(mainRef.current);
+        handleScroll(mainRef.current);
         break;
       default:
         break;
-     }
-    
-  }
+    }
+  };
 
   return (
     <div>
@@ -219,7 +232,7 @@ function BurgerIngredients(props) {
           Начинки
         </Tab>
       </div>
-      <div id="ShowIngredients" className={bIStyles.biScroll}>
+      <div id="ShowIngredients" className={bIStyles.biScroll} onScroll={scroll}>
         <ShowIngredients
           name="Булки"
           type="bun"

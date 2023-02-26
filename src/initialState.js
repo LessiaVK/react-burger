@@ -1,12 +1,18 @@
 export const initialState = {
-  rootReducer1: {
+  fetchDataReducer: {
     ingredients: [],
-    constructor: [],
     fetchIngredients: "none",
-    isOpenModal: false,
-    currentIngredient: "60666c42cc7b410027a1a9b2",
-    currentOrder: {},
+  },
+  burgerReducer: {
+    constructor: [],
     currentItemsID: [],
+  },
+  ingredientReducer: {
+    isOpenModal: false,
+    currentIngredient: "",
+  },
+  orderReducer: {
+    currentOrder: {},
     orderNumber: 0,
   },
 };

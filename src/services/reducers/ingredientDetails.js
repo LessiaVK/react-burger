@@ -1,37 +1,31 @@
-import { guid } from '../utils'
-import { ADD_TODO, TOGGLE_TODO } from './constants'
- 
-// Исходное состояние
-const initialState = [
-    {
-        id: guid(),
-        completed: false,
-        expiresAt: '08.04.20201',
-        text: 'Купить авокадо 4 шт.'
-    }
-]
+import {
+  ADD_INGREDIENT_DETAILS,
+  DELETE_INGREDIENT_DETAILS,
+  IS_MODAL_OPEN,
+} from "../actions/actionTypes";
+import { initialState } from "../../initialState";
 
-// Редьюсер
-const todoList = (state = initialState, action) => {
+export const ingredientReducer = (state = initialState, action) => {
   switch (action.type) {
-        // Добавление новой задачи в список дел
-    case ADD_TODO:
-      return [
+    case ADD_INGREDIENT_DETAILS:
+      return {
         ...state,
-        {
-          id: guid(),
-          text: action.text,
-                    expiresAt: action.expiresAt,
-          completed: false
-        }
-      ]
-        // Изменение статуса задачи в списке дел
-    case TOGGLE_TODO:
-      return state.map(todo =>
-        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-      )
-        // Реакция на прочие типы экшенов
+        currentIngredient: action.payload,
+      };
+
+    case DELETE_INGREDIENT_DETAILS:
+      return {
+        ...state,
+        currentIngredient: {},
+      };
+    
+    case IS_MODAL_OPEN:
+      return {
+        ...state,
+        isOpenModal: action.payload,
+      };
+
     default:
-      return state
+      return state;
   }
-} 
+};

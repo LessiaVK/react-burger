@@ -2,7 +2,7 @@ import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
 import { useRef, useCallback } from "react";
-import { actionCreators } from "../../services/actions/actionCreator";
+import { actionBurgerCompound } from "../../services/actions/burgerСompound";
 import { useDispatch, useSelector } from "react-redux";
 import { constructorSelector } from "../../services/selectors";
 
@@ -17,7 +17,7 @@ export const ElementIngredient = (props) => {
       const newCards = [...data];
       newCards.splice(dragIndex, 1);
       newCards.splice(hoverIndex, 0, dragCard);
-      dispatch(actionCreators.getConstructor(newCards));
+      dispatch(actionBurgerCompound.getConstructor(newCards));
     },
     [data]
   );
