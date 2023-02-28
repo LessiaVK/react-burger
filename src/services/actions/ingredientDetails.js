@@ -1,7 +1,6 @@
 import {
     ADD_INGREDIENT_DETAILS,
     DELETE_INGREDIENT_DETAILS,
-    IS_MODAL_OPEN,
   } from "./actionTypes";
   
   export const actionIngredientDetails = {
@@ -10,6 +9,5 @@ import {
       payload: data,
     }),
     deleteIngredientDetails: () => ({ type: DELETE_INGREDIENT_DETAILS }),
-    openModal: (data) => ({ type: IS_MODAL_OPEN, payload: data }),
   };
   

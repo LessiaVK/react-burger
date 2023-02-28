@@ -3,21 +3,17 @@ import {
   ConstructorElement,
   Button,
   CurrencyIcon,
-  CheckMarkIcon,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/Modal";
 import bCStyles from "./BurgerConstructor.module.css";
-import PropTypes from "prop-types";
-import { DataContext } from "../../services/AppContext.js";
-import { checkResponse } from "../../utils/checkResponse";
 import { BASE_URL } from "../../utils/constants";
 import { useSelector, useDispatch } from "react-redux";
 import {
   constructorSelector,
-  fetchIngredientsSelector,
-  fetchcurrentItemsID,
+  currentItemsIDSelector,
   orderNumber,
+  orderRequest,
+  orderFailed,
 } from "../../services/selectors";
 import { useDrop, useDrag } from "react-dnd";
 import uuid from "react-uuid";
@@ -25,6 +21,7 @@ import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
 import { ElementIngredient } from "./BurgerConstructorElementIngredient";
 import { actionBurgerCompound } from "../../services/actions/burgerСompound";
 import { actionOrderDetails } from "../../services/actions/orderDetails";
+import { getOrderNumber } from "../../services/thunks";
 
 const priceInitState = { totalPrice: 0 };
 
@@ -42,41 +39,7 @@ function reducer(state, action) {
 }
 
 function OrderDetails() {
-  const dispatch = useDispatch();
-  const data = useSelector(constructorSelector);
-  const listIngredients = useSelector(fetchcurrentItemsID);
   const orderId = useSelector(orderNumber);
-
-  const sendOrder = async (callback) => {
-    // const listIngredients = data.data.map((item) => item._id);
-    const orderBurger = (listIngredients) => {
-      return fetch(BASE_URL + "/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
-          ingredients: listIngredients,
-        }),
-      });
-    };
-
-    const loadOrderNumber = async (orderBurger, listIngredients, callback) => {
-      try {
-        orderBurger(listIngredients)
-          .then(checkResponse)
-          .then((json) => dispatch(callback(json.order.number)));
-      } catch (error) {
-        console.log("getDataJson", error);
-      }
-    };
-
-    loadOrderNumber(orderBurger, listIngredients, callback);
-  };
-
-  useEffect(() => {
-    sendOrder(actionOrderDetails.orderNumber);
-  }, [listIngredients]);
 
   return (
     <div className={bCStyles.text}>
@@ -125,11 +88,9 @@ const BurgerElement = (props) => {
 function BurgerConstructor(props) {
   const dispatch = useDispatch();
   const data = useSelector(constructorSelector);
-  const orderIngerdiens = useSelector(fetchcurrentItemsID);
-  const [showProps, setShowProps] = React.useState(false);
-  const close = () => {
-    setShowProps(false);
-  };
+  const orderDetailsID = useSelector(currentItemsIDSelector);
+  const orderIdRequest = useSelector(orderRequest);
+  const orderIdFailed = useSelector(orderFailed);
 
   const [{ handlerId }, drop] = useDrop({
     accept: "ingredient",
@@ -208,7 +169,6 @@ function BurgerConstructor(props) {
     totalPricetDispatcher({ type: "init", price: price.totalPrice });
     data.map((element, key) => {
       if (element.type !== "bun") {
-        let keyId = key + time;
         totalPricetDispatcher({ type: "increment", price: element.price });
       }
     });
@@ -229,7 +189,6 @@ function BurgerConstructor(props) {
     <div className={bCStyles.bgMain} ref={dropTargerRef}>
       <div className={bCStyles.bgListStart + " ml-10 mb-2"}>
         {elementBorder && (
-          // <BurgerElement type = "top" />
           <BurgerElement
             type="top"
             isLocked={true}
@@ -241,7 +200,7 @@ function BurgerConstructor(props) {
         )}
       </div>
       {data.length == 0 && (
-        <div className={bCStyles.text + " ml-10"}>
+        <div className={bCStyles.text + " text text_type_main-default ml-10"}>
           Соберите свой бургер. Перетащите нужные ингредиенты
         </div>
       )}
@@ -289,29 +248,19 @@ function BurgerConstructor(props) {
           type="primary"
           size="medium"
           onClick={(e) => {
-            dispatch(actionBurgerCompound.fetchIngredientsID(data));
-            setShowProps(true);
+            dispatch(getOrderNumber(orderDetailsID));
           }}
         >
           Оформить заказ
         </Button>
       </div>
-      {showProps && (
-        <Modal
-          className={bCStyles.bgMain}
-          modalProps="modals"
-          caption=""
-          close={close}
-        >
+      {!orderIdRequest && !orderIdFailed && (
+        <Modal className={bCStyles.bgMain} modalProps="modals" caption="">
           <OrderDetails />
         </Modal>
       )}
     </div>
   );
 }
-
-BurgerConstructor.propTypes = {
-  // data: PropTypes.array.isRequired,
-};
 
 export default BurgerConstructor;

@@ -11,15 +11,13 @@ import PropTypes from "prop-types";
 import bIStyles from "./BurgerIngredients.module.css";
 import {
   ingredientsSelector,
-  openModalSelector,
   constructorSelector,
   currentIngredientSelector,
 } from "../../services/selectors";
 import { useDrag } from "react-dnd";
 import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 
-const IngredientDetails = (props) => {
-  const data = useSelector(ingredientsSelector);
+const IngredientDetails = () => {
   const element = useSelector(currentIngredientSelector);
 
   return (
@@ -68,11 +66,6 @@ const IngredientDetails = (props) => {
   );
 };
 
-IngredientDetails.propTypes = {
-  // data: PropTypes.array.isRequired,
-  keyForShow: PropTypes.string.isRequired,
-};
-
 const ElementMenu = (props) => {
   const orderList = useSelector(constructorSelector);
   const dispatch = useDispatch();
@@ -92,8 +85,6 @@ const ElementMenu = (props) => {
       key={props.tempId}
       className={bIStyles.elementMenu}
       onClick={(el) => {
-        props.onSetShowProps(true);
-        props.onSetCurrentKey(props.element._id);
         dispatch(actionIngredientDetails.addIngredientDetails(props.element));
       }}
       ref={dragRef}
@@ -138,24 +129,12 @@ const ShowIngredients = (props) => {
           let keyId = props.type + key + time;
 
           return (
-            <ElementMenu
-              key={element._id}
-              tempId={keyId}
-              element={element}
-              onSetShowProps={props.onSetShowProps}
-              onSetCurrentKey={props.onSetCurrentKey}
-            />
+            <ElementMenu key={element._id} tempId={keyId} element={element} />
           );
         })}
       </div>
     </>
   );
-};
-ShowIngredients.propTypes = {
-  // data: PropTypes.array.isRequired,
-  type: PropTypes.string.isRequired,
-  onSetShowProps: PropTypes.func.isRequired,
-  onSetCurrentKey: PropTypes.func.isRequired,
 };
 
 function BurgerIngredients(props) {
@@ -164,12 +143,8 @@ function BurgerIngredients(props) {
   const mainRef = React.useRef(null); //represents how to use section
 
   const data = useSelector(ingredientsSelector);
+  const currentIngredient = useSelector(currentIngredientSelector);
   const [current, setCurrent] = React.useState("one");
-  const [showProps, setShowProps] = React.useState(false);
-  const [currentKey, setCurrentKey] = React.useState("");
-  const close = () => {
-    setShowProps(false);
-  };
 
   const groupList = document.querySelectorAll("[data-group]");
   const arrTab = ["one", "two", "three"];
@@ -230,46 +205,27 @@ function BurgerIngredients(props) {
         </Tab>
       </div>
       <div id="ShowIngredients" className={bIStyles.biScroll} onScroll={scroll}>
-        <ShowIngredients
-          name="Булки"
-          type="bun"
-          data={data}
-          ref1={bunRef}
-          onSetShowProps={setShowProps}
-          onSetCurrentKey={setCurrentKey}
-        />
+        <ShowIngredients name="Булки" type="bun" data={data} ref1={bunRef} />
         <ShowIngredients
           name="Соусы"
           type="sauce"
           data={data}
           ref1={sauceRef}
-          onSetShowProps={setShowProps}
-          onSetCurrentKey={setCurrentKey}
         />
         <ShowIngredients
           name="Начинки"
           type="main"
           data={data}
           ref1={mainRef}
-          onSetShowProps={setShowProps}
-          onSetCurrentKey={setCurrentKey}
         />
       </div>
-      {showProps && (
-        <Modal
-          modalProps="modals"
-          caption="Детали ингредиента"
-          key={currentKey}
-          close={close}
-        >
-          <IngredientDetails keyForShow={currentKey} />
+      {currentIngredient && (
+        <Modal modalProps="modals" caption="Детали ингредиента">
+          <IngredientDetails />
         </Modal>
       )}
     </div>
   );
 }
-BurgerIngredients.propTypes = {
-  // data: PropTypes.array.isRequired,
-};
 
 export default BurgerIngredients;

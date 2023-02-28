@@ -1,4 +1,3 @@
-import { getDataJson } from "../../utils/checkResponse";
 import { BASE_URL } from "../../utils/constants";
 import {
   FETCH_INGREDIENTS,
@@ -15,14 +14,4 @@ export const actionGetData = {
   }),
 };
 
-export const fetchData = () => {
-  return (dispatch, getState, extra) => {
-    dispatch(actionGetData.fetchIngredientsState("process"));
 
-    const setIngredients = (incomingData) => {
-      dispatch(actionGetData.fetchIngredients(incomingData.data));
-      dispatch(actionGetData.fetchIngredientsState("success"));
-    };
-    getDataJson(url, setIngredients);
-  };
-};

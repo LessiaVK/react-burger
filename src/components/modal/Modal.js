@@ -4,9 +4,12 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import modalStyles from "./Modal.module.css";
 import ModalOverlay from "./ModalOverlay";
 import PropTypes from "prop-types";
+import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
+import { actionOrderDetails } from "../../services/actions/orderDetails";
+import { useDispatch } from "react-redux";
 
 function Modal(props) {
-  // const [current, setCurrent] = React.useState('one')
+  const dispatch = useDispatch();
   let element = document.getElementById(props.modalProps);
 
   useEffect(() => {
@@ -28,9 +31,11 @@ function Modal(props) {
       <div className={modalStyles.modal_window}>
         <div className={modalStyles.cap + " text text_type_main-large p-10"}>
           <p>{props.caption} </p>
-          <div className={modalStyles.close} 
+          <div
+            className={modalStyles.close}
             onClick={(el) => {
-              props.close();
+              dispatch(actionIngredientDetails.deleteIngredientDetails());
+              dispatch(actionOrderDetails.orderNumber());
             }}
           >
             <CloseIcon type="primary" />
@@ -46,7 +51,6 @@ function Modal(props) {
 export default Modal;
 
 Modal.propTypes = {
-  close: PropTypes.func.isRequired,
   modalProps: PropTypes.string.isRequired,
   children: PropTypes.any.isRequired,
   caption: PropTypes.string,

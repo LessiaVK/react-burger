@@ -14,5 +14,7 @@ export const initialState = {
   orderReducer: {
     currentOrder: {},
     orderNumber: 0,
+    orderRequest: true,
+    orderFailed: false,
   },
 };

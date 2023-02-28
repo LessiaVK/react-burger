@@ -2,7 +2,7 @@ import {
   FETCH_INGREDIENTS,
   FETCH_INGREDIENTS_STATE,
 } from "../actions/actionTypes";
-import { initialState } from "../../initialState";
+import { initialState } from "../initialState";
 
 export const fetchDataReducer = (state = initialState, action) => {
   switch (action.type) {
