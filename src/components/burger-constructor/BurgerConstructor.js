@@ -248,7 +248,8 @@ function BurgerConstructor(props) {
           type="primary"
           size="medium"
           onClick={(e) => {
-            dispatch(getOrderNumber(orderDetailsID));
+            totalPriceState.totalPrice > 0 &&
+              dispatch(getOrderNumber(orderDetailsID));
           }}
         >
           Оформить заказ

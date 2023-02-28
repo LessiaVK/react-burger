@@ -2,6 +2,8 @@ export const initialState = {
   fetchDataReducer: {
     ingredients: [],
     fetchIngredients: "none",
+    fetchIngredientsRequest: false,
+    fetchIngredientsError: false,
   },
   burgerReducer: {
     constructor: [],

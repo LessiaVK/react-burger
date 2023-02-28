@@ -4,28 +4,30 @@ import { actionGetData } from "./actions/getIngredients";
 
 export function getIngredients() {
   return function (dispatch) {
-    dispatch(actionGetData.fetchIngredientsState("process"));
+    dispatch(actionGetData.fetchIngredientsRequest());
 
     fetch(BASE_URL + "/ingredients")
       .then((res) => {
         if (res && res.ok) {
           return res.json();
         } else {
-          dispatch(actionGetData.fetchIngredientsState("error"));
+          dispatch(actionGetData.fetchIngredientsError());
         }
       })
       .then((json) => {
         dispatch(actionGetData.fetchIngredients(json.data));
-        dispatch(actionGetData.fetchIngredientsState("success"));
+        dispatch(actionGetData.fetchIngredientsState(json.data));
       })
       .catch((err) => {
-        dispatch(actionGetData.fetchIngredientsState("error"));
+        dispatch(actionGetData.fetchIngredientsError());
       });
   };
 }
 
 export function getOrderNumber(orderDetailsID) {
   return function (dispatch) {
+    dispatch(actionOrderDetails.orderNumber());
+
     fetch(BASE_URL + "/orders", {
       method: "POST",
       headers: {
