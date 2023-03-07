@@ -4,21 +4,29 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useSelector, useDispatch } from "react-redux";
 import Modal from "../modal/Modal";
 import PropTypes from "prop-types";
 
 import bIStyles from "./BurgerIngredients.module.css";
+import {
+  ingredientsSelector,
+  constructorSelector,
+  currentIngredientSelector,
+} from "../../services/selectors";
+import { useDrag } from "react-dnd";
+import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 
-const IngredientDetails = (props) => {
-  let elements = props.data.filter((item) => item._id === props.keyForShow);
-  let element = {};
-  if (elements.length === 1) {
-    element = elements[0];
-  }
+const IngredientDetails = () => {
+  const element = useSelector(currentIngredientSelector);
 
   return (
     <div className={bIStyles.sizeMain + " mb-10"}>
-      <img className={bIStyles.sizeImg} src={element.image} alt="" />
+      <img
+        className={bIStyles.sizeImg}
+        src={element.image}
+        alt={"Изображение ингредиента"}
+      />
       <p className="text text_type_main-medium m-8">{element.name}</p>
       <div className={bIStyles.bIDescriptionMain}>
         <div className={bIStyles.bIDescription + " mb-15"}>
@@ -58,26 +66,39 @@ const IngredientDetails = (props) => {
   );
 };
 
-IngredientDetails.propTypes = {
-  data: PropTypes.array.isRequired,
-  keyForShow: PropTypes.string.isRequired,
-};
-
 const ElementMenu = (props) => {
+  const orderList = useSelector(constructorSelector);
+  const dispatch = useDispatch();
+  const count = orderList.filter(
+    (item) => item._id == props.element._id
+  ).length;
+  const [{ opacity }, dragRef] = useDrag({
+    type: "ingredient",
+    item: { ...props },
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.3 : 1,
+    }),
+  });
+
   return (
     <div
       key={props.tempId}
       className={bIStyles.elementMenu}
       onClick={(el) => {
-        props.onSetShowProps(true);
-        props.onSetCurrentKey(props.element._id);
+        dispatch(actionIngredientDetails.addIngredientDetails(props.element));
       }}
+      ref={dragRef}
+      style={{ opacity }}
     >
-      <img src={props.element.image} alt="" />
-      {/* {props.count > 0 && <Counter count={props.count} className='m-1' size='default'/>} */}
+      <img src={props.element.image} alt="Изображение ингредиента" />
+      <div className={bIStyles.count}>
+        {count > 0 && <Counter count={count} className="m-1" size="default" />}
+      </div>
       <div className={bIStyles.bIDescription}>
-        <p className={`text text_type_digits-default`}>
-          {props.element.price} &nbsp;
+        <p
+          className={`constructor-element__price text text_type_digits-default`}
+        >
+          {props.element.price}
           <CurrencyIcon className={bIStyles.sizeIcon} type="primary" />
         </p>
         <p>{props.element.name}</p>
@@ -92,101 +113,119 @@ ElementMenu.propTypes = {
 };
 
 const ShowIngredients = (props) => {
-  // console.log(props.data);
-  const dataForShow = props.data.filter((elem) => elem.type === props.type);
+  const data = useSelector(ingredientsSelector);
+  const dataForShow = data.filter((elem) => elem.type === props.type);
   let t = new Date();
   let time = t.getTime().toString();
   return (
     <>
-      <div className={bIStyles.main}>
-        <p className="text text_type_main-medium pb-10 pt-10">{props.name}</p>
+      <div data-group="group" className={bIStyles.main}>
+        <p ref={props.ref1} className="text text_type_main-medium pb-10 pt-10">
+          {props.name}
+        </p>
       </div>
       <div className={bIStyles.bIDescription2}>
         {dataForShow.map((element, key) => {
           let keyId = props.type + key + time;
 
           return (
-            <ElementMenu
-              key={element._id}
-              tempId={keyId}
-              element={element}
-              onSetShowProps={props.onSetShowProps}
-              onSetCurrentKey={props.onSetCurrentKey}
-            />
+            <ElementMenu key={element._id} tempId={keyId} element={element} />
           );
         })}
       </div>
     </>
   );
 };
-ShowIngredients.propTypes = {
-  data: PropTypes.array.isRequired,
-  type: PropTypes.string.isRequired,
-  onSetShowProps: PropTypes.func.isRequired,
-  onSetCurrentKey: PropTypes.func.isRequired,
-};
 
 function BurgerIngredients(props) {
+  const bunRef = React.useRef(null); //represents main section
+  const sauceRef = React.useRef(null); //represents about section
+  const mainRef = React.useRef(null); //represents how to use section
+
+  const data = useSelector(ingredientsSelector);
+  const currentIngredient = useSelector(currentIngredientSelector);
   const [current, setCurrent] = React.useState("one");
-  const [showProps, setShowProps] = React.useState(false);
-  const [currentKey, setCurrentKey] = React.useState("");
-  const close = () => {
-    setShowProps(false);
+
+  const groupList = document.querySelectorAll("[data-group]");
+  const arrTab = ["one", "two", "three"];
+  const scroll = () => {
+    const scrolltop = document.getElementById("ShowIngredients").scrollTop;
+    let groupListArr = [...groupList];
+    let selectElement = -1;
+    groupListArr.map((item, id) => {
+      if (item.offsetTop > scrolltop && selectElement == -1) {
+        selectElement = id;
+      }
+    });
+    if (selectElement >= 0) {
+      setCurrent(arrTab[selectElement]);
+    }
   };
+
+  const handleScroll = (ref) => {
+    let elem = document.getElementById("ShowIngredients");
+    elem.scrollTo({
+      top: ref.offsetTop - elem.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const onClickTab = (e) => {
+    setCurrent(e);
+    switch (e) {
+      case "one":
+        handleScroll(bunRef.current);
+        break;
+      case "two":
+        handleScroll(sauceRef.current);
+        break;
+      case "three":
+        handleScroll(mainRef.current);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div>
       <p className={bIStyles.main + " text text_type_main-large pb-10 pt-10"}>
         Соберите бургер
       </p>
       <div className={bIStyles.biFlex}>
-        <Tab value="one" active={current === "one"} onClick={setCurrent}>
+        <Tab value="one" active={current === "one"} onClick={onClickTab}>
           Булки
         </Tab>
-        <Tab value="two" active={current === "two"} onClick={setCurrent}>
+        <Tab value="two" active={current === "two"} onClick={onClickTab}>
           Соусы
         </Tab>
-        <Tab value="three" active={current === "three"} onClick={setCurrent}>
+        <Tab value="three" active={current === "three"} onClick={onClickTab}>
           Начинки
         </Tab>
       </div>
-      <div className={bIStyles.biScroll}>
-        <ShowIngredients
-          name="Булки"
-          type="bun"
-          data={props.data}
-          onSetShowProps={setShowProps}
-          onSetCurrentKey={setCurrentKey}
-        />
+      <div id="ShowIngredients" className={bIStyles.biScroll} onScroll={scroll}>
+        <ShowIngredients name="Булки" type="bun" data={data} ref1={bunRef} />
         <ShowIngredients
           name="Соусы"
           type="sauce"
-          data={props.data}
-          onSetShowProps={setShowProps}
-          onSetCurrentKey={setCurrentKey}
+          data={data}
+          ref1={sauceRef}
         />
         <ShowIngredients
           name="Начинки"
           type="main"
-          data={props.data}
-          onSetShowProps={setShowProps}
-          onSetCurrentKey={setCurrentKey}
+          data={data}
+          ref1={mainRef}
         />
       </div>
-      {showProps && (
-        <Modal
-          modalProps="modals"
-          caption="Детали ингредиента"
-          key={currentKey}
-          close={close}
-        >
-          <IngredientDetails keyForShow={currentKey} data={props.data} />
+      {currentIngredient && (
+        <Modal modalProps="modals" caption="Детали ингредиента">
+          <IngredientDetails />
         </Modal>
       )}
     </div>
   );
 }
-BurgerIngredients.propTypes = {
-  data: PropTypes.array.isRequired,
-};
 
 export default BurgerIngredients;

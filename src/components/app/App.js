@@ -1,43 +1,39 @@
 import React from "react";
 import appStyles from "./App.module.css";
-import Data from "../../utils/data.js";
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
 import BurgerConstructor from "../burger-constructor/BurgerConstructor";
 
-async function getDataJson(url, callback) {
-  const response = await fetch(url);
-  if (response.ok) {
-    const json = await response.json();
-    // console.log("json=", json);
-    callback(json);
-  } else {
-    console.log(`Ошибка HTTP: ${response.status}`);
-    return Promise.reject(`Ошибка HTTP: ${response.status}`);
-  }
-}
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchIngredientsRequest,
+  fetchIngredientsError,
+} from "../../services/selectors";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { getIngredients } from "../../services/thunks";
 
 function App() {
-  const [getsData, setFetchedData] = React.useState({
-    success: false,
-    data: [],
-  });
-  const url = "https://norma.nomoreparties.space/api/ingredients";
+  const dispatch = useDispatch();
+  const fetchDataRequest = useSelector(fetchIngredientsRequest);
+  const fetchDataError = useSelector(fetchIngredientsError);
 
   React.useEffect(() => {
-    try {
-      getDataJson(url, setFetchedData);
-    } catch (error) {
-      console.log("getDataJson", error);
-    }
+    dispatch(getIngredients());
   }, []);
 
   return (
     <div className="App">
       <AppHeader />
       <main className={appStyles.appMain}>
-        <BurgerIngredients data={getsData.data} />
-        <BurgerConstructor data={getsData.data} />
+        {!fetchDataRequest && !fetchDataError ? (
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
+        ) : (
+          <></>
+        )}
       </main>
     </div>
   );
