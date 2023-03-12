@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import {
   EmailInput,
@@ -10,31 +11,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import loginStyles from "./LoginPage.module.css";
 
-const registerRequest = async (form, navigate) => {
-  return await fetch(
-    "https://norma.nomoreparties.space/api/auth/register",
-    {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-      body: JSON.stringify(form),
-    }
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("codeRequest data", data);
-      data.success && navigate("/login", { replace: true });
-    });
-};
+import { getRegisterRequest } from "../services/thunks";
+
 
 export function RegisterPage() {
-  const [form, setValue] = useState({ password: "", email: "", name: "" });
+  const [form, setValue] = useState({ name:"", password: "", email: "" });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onChangePass = (e) => {
     setValue({ ...form, password: e.target.value });
@@ -48,7 +30,7 @@ export function RegisterPage() {
 
   let register = useCallback(
     (e) => {
-      registerRequest(form, navigate);
+      dispatch(getRegisterRequest(form, navigate));
     },
     [form]
   );

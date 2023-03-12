@@ -19,4 +19,25 @@ export const initialState = {
     orderRequest: true,
     orderFailed: false,
   },
+  loginReducer: {
+    loginRequest: {},
+    loginSuccess: false,
+    loginError: false,
+  },
+  logoutReducer: {
+    logout: {},
+    logoutSuccess: false,
+    loginError: false,
+  },
+  registerReducer: {
+    registerRequest: { password: "", email: "", name: "" },
+    registerSuccess: false,
+    registerError: false,
+  },
+  passwordResetReducer: {
+    codeRequest: {},
+    passwordReset: {},
+    passwordSuccess: false,
+    passwordError: false,
+  },
 };

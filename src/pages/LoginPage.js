@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getLoginRequest } from "../services/thunks";
 
 import {
   EmailInput,
@@ -11,6 +13,7 @@ import loginStyles from "./LoginPage.module.css";
 
 export function LoginPage() {
   const [form, setValue] = useState({ password: "", email: "" });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onChangePass = (e) => {
     setValue({ ...form, password: e.target.value });
@@ -18,6 +21,13 @@ export function LoginPage() {
   const onChangeEmail = (e) => {
     setValue({ ...form, email: e.target.value });
   };
+   let login = useCallback(
+    (e) => {
+      dispatch(getLoginRequest(form, navigate));
+    },
+    [form]
+  );
+
   return (
     <div className={ loginStyles.inputsCenter + ' ' + loginStyles.inputsFlexColumn }>
       <>
@@ -31,9 +41,9 @@ export function LoginPage() {
           extraClass="ml-1"
         />
         <PasswordInput 
-          placeholder={"E-mail"}
+          placeholder={"Пароль"}
           onChange={onChangePass}
-          value={form.email}
+          value={form.password}
           error={false}
           size={"default"}
           extraClass="ml-1"
@@ -42,7 +52,7 @@ export function LoginPage() {
           htmlType="button"
           type="primary"
           size="medium"
-          onClick={(e) => {}}
+          onClick={login}
         >
           Войти
         </Button>
