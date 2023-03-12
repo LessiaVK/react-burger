@@ -5,14 +5,16 @@ import { useNavigate } from "react-router-dom";
 import {
   EmailInput,
   PasswordInput,
-  Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import loginStyles from "./LoginPage.module.css";
+import profileStyles from "./ProfilePage.module.css";
 
 export function ProfilePage() {
-  const [form, setValue] = useState({ password: "", email: "" });
+  const [form, setValue] = useState({ password: "", email: "", name:"" });
   const navigate = useNavigate();
+  const onChangeName = (e) => {
+    setValue({ ...form, name: e.target.value });
+  };
   const onChangePass = (e) => {
     setValue({ ...form, password: e.target.value });
   };
@@ -20,57 +22,67 @@ export function ProfilePage() {
     setValue({ ...form, email: e.target.value });
   };
   return (
-    <div className={ loginStyles.inputsCenter + ' ' + loginStyles.inputsFlexColumn }>
-      <div>
-      
-      <p className="text text_type_main-default text_color_inactive mt-4">
-        Забыли пароль? <Link to='/forgot-password' className={loginStyles.link}>Восстановить пароль</Link>
-      </p>
-      <p className="text text_type_main-default text_color_inactive mt-4">
-        Забыли пароль? <Link to='/forgot-password' className={loginStyles.link}>Восстановить пароль</Link>
-      </p>
-      
+    <div className={profileStyles.inputsFlexRow}>
+      <div className={profileStyles.inputsFlexColumn + " mr-15 pt-20"}>
+        <p className="pb-4">
+          <Link
+            to="/profile"
+            className={profileStyles.textWhite + " text text_type_main-medium"}
+          >
+            Профиль
+          </Link>
+        </p>
+        <p className="pb-4">
+          <Link
+            to="/profile/orders"
+            className="text text_type_main-medium text_color_inactive"
+          >
+            История заказов
+          </Link>
+        </p>
+        <p className="pb-4">
+          <Link
+            to="/login"
+            className="text text_type_main-medium text_color_inactive"
+          >
+            Выход
+          </Link>
+        </p>
+        <p
+          className={
+            profileStyles.wCol +
+            " text text_type_main-default text_color_inactive mt-10"
+          }
+        >
+          В этом разделе вы можете изменить свои персональные данные
+        </p>
       </div>
-      <>
-        <p className="text text_type_main-medium pt-20">Вход</p>
+      <div className={profileStyles.inputsFlexColumn + " pt-20"}>
         <Input
           type={"text"}
           placeholder={"Имя"}
-          // onChange={onChangeName}
-          // value={form.name}
+          onChange={onChangeName}
+          value={form.name}
           error={false}
           size={"default"}
-          extraClass="ml-1"
+          extraClass="ml-1 pb-6"
         />
-        <EmailInput 
-          placeholder={"E-mail"}
+        <EmailInput
+          placeholder={"Логин"}
           onChange={onChangeEmail}
           value={form.email}
           error={false}
           size={"default"}
-          extraClass="ml-1"
+          extraClass="ml-1 pb-6"
         />
-        <PasswordInput 
-          placeholder={"E-mail"}
+        <PasswordInput
+          placeholder={"Пароль"}
           onChange={onChangePass}
-          value={form.email}
+          value={form.password}
           error={false}
           size={"default"}
-          extraClass="ml-1"
+          extraClass="ml-1 pb-6"
         />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          onClick={(e) => {}}
-        >
-          Войти
-        </Button>
-      </>
-        <div className={loginStyles.inputsFlexColumn}>
-      <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
-        В этом разделе вы можете изменить свои персональные данные <Link to='/register' className={loginStyles.link}>Зарегистрироваться</Link>
-      </p>
       </div>
     </div>
   );

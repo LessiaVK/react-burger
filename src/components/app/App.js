@@ -9,6 +9,8 @@ import { RegisterPage } from "../../pages/RegisterPage";
 import { ResetPassword } from "../../pages/ResetPasswordPage";
 import { ForgotPassword } from "../../pages/ForgotPasswordPage";
 import { ProfilePage } from "../../pages/ProfilePage";
+import { ListPage } from "../../pages/ListPage";
+import { NotFound404 } from "../../pages/NotFound";
 
 function App() {
   return (
@@ -23,6 +25,10 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/:orders" element={<ProfilePage />} />
+            <Route path="/profile/:orders/:id" element={<ProfilePage />} />
+            <Route path="/list" element={<ListPage />} />
+            <Route path="*" element={<NotFound404/>}/>
           </Routes>
         </Router>
       </main>
