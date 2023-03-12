@@ -138,9 +138,9 @@ const ShowIngredients = (props) => {
 };
 
 function BurgerIngredients(props) {
-  const bunRef = React.useRef(null); //represents main section
-  const sauceRef = React.useRef(null); //represents about section
-  const mainRef = React.useRef(null); //represents how to use section
+  const bunRef = React.useRef(null);
+  const sauceRef = React.useRef(null);
+  const mainRef = React.useRef(null); //represents main section
 
   const data = useSelector(ingredientsSelector);
   const currentIngredient = useSelector(currentIngredientSelector);

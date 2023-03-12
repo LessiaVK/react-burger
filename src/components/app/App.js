@@ -8,6 +8,7 @@ import { LoginPage } from "../../pages/LoginPage";
 import { RegisterPage } from "../../pages/RegisterPage";
 import { ResetPassword } from "../../pages/ResetPasswordPage";
 import { ForgotPassword } from "../../pages/ForgotPasswordPage";
+import { ProfilePage } from "../../pages/ProfilePage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </Router>
       </main>
