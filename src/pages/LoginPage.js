@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getLoginRequest } from "../services/thunks";
+import { loginSuccess } from "../services/selectors";
+import { NavigateComponent } from "../components/protected-route-element/NavigateComponent";
 
 import {
   EmailInput,
@@ -11,8 +13,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import loginStyles from "./LoginPage.module.css";
 
+
 export function LoginPage() {
   const [form, setValue] = useState({ password: "", email: "" });
+  const isUserLogin = useSelector(loginSuccess);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onChangePass = (e) => {
@@ -27,7 +31,7 @@ export function LoginPage() {
     },
     [form]
   );
-
+    if (isUserLogin) return <NavigateComponent page="/" />
   return (
     <div className={ loginStyles.inputsCenter + ' ' + loginStyles.inputsFlexColumn }>
       <>
