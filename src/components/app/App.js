@@ -11,27 +11,28 @@ import { ForgotPassword } from "../../pages/ForgotPasswordPage";
 import { ProfilePage } from "../../pages/ProfilePage";
 import { ListPage } from "../../pages/ListPage";
 import { NotFound404 } from "../../pages/NotFound";
+import { ProtectedRouteElement } from "../protected-route-element/ProtectedRouteElement";
 
 function App() {
   return (
     <div className="App">
-      <AppHeader />
-      <main className={appStyles.appMain}>
-        <Router>
+      <Router>
+        <AppHeader />
+        <main className={appStyles.appMain}>
           <Routes>
             <Route path="/" element={<ConstructorPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/profile/:orders" element={<ProfilePage />} />
-            <Route path="/profile/:orders/:id" element={<ProfilePage />} />
+            <Route path="/profile" element={<ProtectedRouteElement element={<ProfilePage />} />} />
+            <Route path="/profile/:orders" element={<ProtectedRouteElement element={<ProfilePage />} />} />
+            <Route path="/profile/:orders/:id" element={<ProtectedRouteElement element={<ProfilePage />} />} />
             <Route path="/list" element={<ListPage />} />
-            <Route path="*" element={<NotFound404/>}/>
+            <Route path="*" element={<NotFound404 />} />
           </Routes>
-        </Router>
-      </main>
+        </main>
+      </Router>
     </div>
   );
 }

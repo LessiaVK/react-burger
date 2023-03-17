@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -9,28 +9,22 @@ import {
 import appHeaderStyles from "./AppHeader.module.css";
 
 function AppHeader() {
+  const navigate = useNavigate();
+  let currentSelectMenu = "";
   const currentClass =
     appHeaderStyles.buttonMenuContent + " text text_type_main-small";
   const baseClass = currentClass + " text_color_inactive";
+
   const location = window.location;
-  let constructorSelectClass = baseClass;
-  let constructorSelectIconClass = "secondary";
-  let listSelectClass = baseClass;
-  let listSelectIconClass = "secondary";
-  let profileSelectClass = baseClass;
-  let profileSelectIconClass = "secondary";
   switch (location.pathname) {
     case "/":
-      constructorSelectClass = currentClass;
-      constructorSelectIconClass = "primary";
+      currentSelectMenu = "constructor";
       break;
     case "/list":
-      listSelectClass = currentClass;
-      listSelectIconClass = "primary";
+      currentSelectMenu = "list";
       break;
     case "/profile":
-      profileSelectClass = currentClass;
-      profileSelectIconClass = "primary";
+      currentSelectMenu = "profile";
       break;
 
     default:
@@ -41,36 +35,74 @@ function AppHeader() {
     <header className={appHeaderStyles.appHeaderMain + " pt-10"}>
       <div className={appHeaderStyles.appHeaderNet + " ml-10"}>
         <div className={appHeaderStyles.appHeaderNet + " ml-5 mb-4 mr-2"}>
-          <a
-            href="/"
+          <div
             className={appHeaderStyles.buttonMenu + " ml-10 mt-4 mr-2"}
+            onClick={(e) => {
+              navigate("/");
+            }}
           >
             <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
-              <BurgerIcon type={constructorSelectIconClass} />
+              <BurgerIcon
+                type={
+                  currentSelectMenu === "constructor" ? "primary" : "secondary"
+                }
+              />
             </div>
-            <p className={constructorSelectClass}>Конструктор</p>
-          </a>
-          <a href="/list" className={appHeaderStyles.buttonMenu + " mt-4"}>
+            <p
+              className={
+                currentSelectMenu === "constructor" ? currentClass : baseClass
+              }
+            >
+              Конструктор
+            </p>
+          </div>
+          {/* <a href="/list" className={appHeaderStyles.buttonMenu + " mt-4"}> */}
+          <div
+            className={appHeaderStyles.buttonMenu + " mt-4"}
+            onClick={(e) => {
+              navigate("/list");
+            }}
+          >
             <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
-              <ListIcon type={listSelectIconClass} />
+              <ListIcon
+                type={currentSelectMenu === "list" ? "primary" : "secondary"}
+              />
             </div>
-            <p className={listSelectClass}>Лента заказов</p>
-          </a>
+            <p
+              className={
+                currentSelectMenu === "list" ? currentClass : baseClass
+              }
+            >
+              Лента заказов
+            </p>
+          </div>
 
           <div className={appHeaderStyles.logo + " ml-15 mr-15"}>
             <Logo />
           </div>
 
           <div className={appHeaderStyles.appHeaderNet}>
-            <a
-              href="/profile"
+            <div
               className={appHeaderStyles.buttonMenu + " mt-4 ml-30"}
+              onClick={(e) => {
+                navigate("/profile");
+              }}
             >
               <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
-                <ProfileIcon type={profileSelectIconClass} />
+                <ProfileIcon
+                  type={
+                    currentSelectMenu === "profile" ? "primary" : "secondary"
+                  }
+                />
               </div>
-              <p className={profileSelectClass}>Личный кабинет</p>
-            </a>
+              <p
+                className={
+                  currentSelectMenu === "profile" ? currentClass : baseClass
+                }
+              >
+                Личный кабинет
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -34,10 +34,14 @@ export const initialState = {
     registerSuccess: false,
     registerError: false,
   },
-  passwordResetReducer: {
-    codeRequest: {},
-    passwordReset: {},
-    passwordSuccess: false,
-    passwordError: false,
+  userReducer: {
+    userRequest: {},
+    userSuccess: false,
+    userError: false,
+  },
+  updateTokenReducer: {
+    updateToken: {},
+    updateTokenSuccess: false,
+    updateTokenError: false,
   },
 };

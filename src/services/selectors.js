@@ -23,16 +23,19 @@ export const loginRequest = (state) => state.loginReducer.loginRequest;
 export const loginSuccess = (state) => state.loginReducer.loginSuccess;
 export const loginError = (state) => state.loginReducer.loginError;
 
-// export const logout = (state) => state.logoutReducer.logout;
-// export const logoutSuccess = (state) => state.logoutReducer.logoutSuccess;
-// export const logoutError = (state) => state.logoutReducer.logoutError;
+export const logout = (state) => state.logoutReducer.logout;
+export const logoutSuccess = (state) => state.logoutReducer.logoutSuccess;
+export const logoutError = (state) => state.logoutReducer.logoutError;
 
 export const registerRequest = (state) => state.registerReducer.registerRequest;
 export const registerSuccess = (state) => state.registerReducer.registerSuccess;
 export const registerError = (state) => state.registerReducer.registerError;
 export const user = (state) => state.registerReducer.user;
 
-// export const passwordReset = (state) => state.passwordResetReducer.passwordReset;
-// export const codeRequest = (state) => state.passwordResetReducer.codeRequest;
-// export const passwordSuccess = (state) => state.passwordResetReducer.passwordSuccess;
-// export const passwordError = (state) => state.passwordResetReducer.passwordError;
+export const userRequest = (state) => state.userReducer.userRequest;
+export const userSuccess = (state) => state.userReducer.userSuccess;
+export const userError = (state) => state.userReducer.userError;
+
+export const updateToken = (state) => state.updateTokenReducer.updateToken;
+export const updateTokenSuccess = (state) => state.updateTokenReducer.updateTokenSuccess;
+export const updateTokenError = (state) => state.updateTokenReducer.updateTokenError;

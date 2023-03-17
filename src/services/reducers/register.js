@@ -22,8 +22,8 @@ export const registerReducer = (state = initialState, action) => {
         ...state,
         registerSuccess: true,
         registerError: false,
-        accessToken: action.payload.accessToken,
-        refreshToken: action.payload.refreshToken,
+        // token: action.payload.accessToken,
+        // refreshToken: action.payload.refreshToken,
         user: action.payload.user,
     };
 
