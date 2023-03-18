@@ -6,5 +6,5 @@ export const NavigateComponent = ({page}) => {
   useEffect(() => {
     navigate(page, {replace:true});
   },[]);
-  return (<></>)
+  return (<></>);
 }

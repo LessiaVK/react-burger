@@ -4,6 +4,7 @@ import {
   USER_ERROR,
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
+import { setCookie } from "../../utils/cookie";
 
 
 export const userReducer = (state = initialState, action) => {
@@ -24,6 +25,7 @@ export const userReducer = (state = initialState, action) => {
     };
 
     case USER_ERROR:
+      setCookie("forgot", "0");
       return {
         ...state,
         userSuccess: false,

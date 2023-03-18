@@ -1,10 +1,8 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getLoginRequest } from "../services/thunks";
-import { loginSuccess } from "../services/selectors";
-import { NavigateComponent } from "../components/protected-route-element/NavigateComponent";
 
 import {
   EmailInput,
@@ -13,10 +11,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import loginStyles from "./LoginPage.module.css";
 
-
 export function LoginPage() {
   const [form, setValue] = useState({ password: "", email: "" });
-  const isUserLogin = useSelector(loginSuccess);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onChangePass = (e) => {
@@ -25,18 +21,20 @@ export function LoginPage() {
   const onChangeEmail = (e) => {
     setValue({ ...form, email: e.target.value });
   };
-   let login = useCallback(
+  let login = useCallback(
     (e) => {
       dispatch(getLoginRequest(form, navigate));
     },
     [form]
   );
-    if (isUserLogin) return <NavigateComponent page="/" />
+
   return (
-    <div className={ loginStyles.inputsCenter + ' ' + loginStyles.inputsFlexColumn }>
+    <div
+      className={loginStyles.inputsCenter + " " + loginStyles.inputsFlexColumn}
+    >
       <>
         <p className="text text_type_main-medium pt-20">Вход</p>
-        <EmailInput 
+        <EmailInput
           placeholder={"E-mail"}
           onChange={onChangeEmail}
           value={form.email}
@@ -44,7 +42,7 @@ export function LoginPage() {
           size={"default"}
           extraClass="ml-1"
         />
-        <PasswordInput 
+        <PasswordInput
           placeholder={"Пароль"}
           onChange={onChangePass}
           value={form.password}
@@ -52,22 +50,23 @@ export function LoginPage() {
           size={"default"}
           extraClass="ml-1"
         />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          onClick={login}
-        >
+        <Button htmlType="button" type="primary" size="medium" onClick={login}>
           Войти
         </Button>
       </>
-        <div className={loginStyles.inputsFlexColumn}>
-      <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
-        Вы — новый пользователь? <Link to='/register' className={loginStyles.link}>Зарегистрироваться</Link>
-      </p>
-      <p className="text text_type_main-default text_color_inactive mt-4">
-        Забыли пароль? <Link to='/forgot-password' className={loginStyles.link}>Восстановить пароль</Link>
-      </p>
+      <div className={loginStyles.inputsFlexColumn}>
+        <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
+          Вы — новый пользователь?{" "}
+          <Link to="/register" className={loginStyles.link}>
+            Зарегистрироваться
+          </Link>
+        </p>
+        <p className="text text_type_main-default text_color_inactive mt-4">
+          Забыли пароль?{" "}
+          <Link to="/forgot-password" className={loginStyles.link}>
+            Восстановить пароль
+          </Link>
+        </p>
       </div>
     </div>
   );

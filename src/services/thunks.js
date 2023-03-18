@@ -31,6 +31,7 @@ export function getDataUser(navigate) {
       })
       .then((data) => {
         dispatch(actionUserRequest.userSuccess(data));
+        dispatch(actionLoginRequest.loginSuccess(data));
       })
       .catch((err) => {
         dispatch(actionUserRequest.userError());
@@ -125,6 +126,7 @@ export function getLogout(navigate) {
         deleteCookie('token');
         deleteCookie('refreshToken');
         dispatch(actionLoginRequest.loginRequest());
+        setCookie("forgot", "0");
         data.success && dispatch(actionUserRequest.userSuccess({user:{}}));
         data.success && navigate("/login", { replace: true });
       })

@@ -1,14 +1,15 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import loginStyles from "./LoginPage.module.css";
+import { setCookie } from "../utils/cookie";
 
-const codeRequest = async (form,navigate) => {
+const codeRequest = async (form, navigate) => {
   return await fetch("https://norma.nomoreparties.space/api/password-reset", {
     method: "POST",
     mode: "cors",
@@ -20,12 +21,12 @@ const codeRequest = async (form,navigate) => {
     redirect: "follow",
     referrerPolicy: "no-referrer",
     body: JSON.stringify(form),
-  }).then(res=>res.json()).then(
-    data => {
-      console.log("codeRequest data",data);
-      data.success && navigate('/reset-password', {replace: true});
-    }
-  );
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("codeRequest data", data);
+      data.success && navigate("/reset-password", { replace: true });
+    });
 };
 
 export function ForgotPassword() {
@@ -35,9 +36,13 @@ export function ForgotPassword() {
     setValue({ ...form, email: e.target.value });
   };
 
+  useEffect(() => {
+    setCookie("forgot", "1");
+  }, []);
+
   let getCode = useCallback(
     (e) => {
-      codeRequest(form,navigate);
+      codeRequest(form, navigate);
     },
     [form]
   );

@@ -13,9 +13,8 @@ import loginStyles from "./LoginPage.module.css";
 
 import { getRegisterRequest } from "../services/thunks";
 
-
 export function RegisterPage() {
-  const [form, setValue] = useState({ name:"", password: "", email: "" });
+  const [form, setValue] = useState({ name: "", password: "", email: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onChangePass = (e) => {
@@ -36,7 +35,9 @@ export function RegisterPage() {
   );
 
   return (
-    <div className={ loginStyles.inputsCenter + ' ' + loginStyles.inputsFlexColumn }>
+    <div
+      className={loginStyles.inputsCenter + " " + loginStyles.inputsFlexColumn}
+    >
       <>
         <p className="text text_type_main-medium pt-20">Регистрация</p>
         <Input
@@ -48,7 +49,7 @@ export function RegisterPage() {
           size={"default"}
           extraClass="ml-1"
         />
-        <EmailInput 
+        <EmailInput
           placeholder={"E-mail"}
           onChange={onChangeEmail}
           value={form.email}
@@ -56,7 +57,7 @@ export function RegisterPage() {
           size={"default"}
           extraClass="ml-1"
         />
-        <PasswordInput 
+        <PasswordInput
           placeholder={"Пароль"}
           onChange={onChangePass}
           value={form.password}
@@ -74,7 +75,10 @@ export function RegisterPage() {
         </Button>
       </>
       <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
-        Уже зарегистрированы? <Link to='/login' className={loginStyles.link}>Войти</Link>
+        Уже зарегистрированы?{" "}
+        <Link to="/login" className={loginStyles.link}>
+          Войти
+        </Link>
       </p>
     </div>
   );

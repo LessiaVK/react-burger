@@ -1,22 +1,12 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { loginSuccess } from "../../services/selectors";
-
-const RedirectPage = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    // console.log("RedirectPage");
-    navigate("/login", { replace: true });
-  }, []);
-  return <></>;
-};
+import { NavigateComponent } from "./NavigateComponent";
 
 export const ProtectedRouteElement = ({ element }) => {
   const isUserLogin = useSelector(loginSuccess);
 
   if (!isUserLogin) {
-    return <RedirectPage />;
+    return <NavigateComponent page="/login" />;
   }
   return element;
 };

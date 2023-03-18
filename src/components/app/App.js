@@ -12,8 +12,12 @@ import { ProfilePage } from "../../pages/ProfilePage";
 import { ListPage } from "../../pages/ListPage";
 import { NotFound404 } from "../../pages/NotFound";
 import { ProtectedRouteElement } from "../protected-route-element/ProtectedRouteElement";
+import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteLogins";
+import { getCookie } from "../../utils/cookie";
 
 function App() {
+  const flag = getCookie("forgot");
+
   return (
     <div className="App">
       <Router>
@@ -21,13 +25,33 @@ function App() {
         <main className={appStyles.appMain}>
           <Routes>
             <Route path="/" element={<ConstructorPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/profile" element={<ProtectedRouteElement element={<ProfilePage />} />} />
-            <Route path="/profile/:orders" element={<ProtectedRouteElement element={<ProfilePage />} />} />
-            <Route path="/profile/:orders/:id" element={<ProtectedRouteElement element={<ProfilePage />} />} />
+            <Route
+              path="/login"
+              element={<ProtectedRouteLogins element={<LoginPage />} />}
+            />
+            <Route
+              path="/register"
+              element={<ProtectedRouteLogins element={<RegisterPage />} />}
+            />
+            <Route
+              path="/forgot-password"
+              element={<ProtectedRouteLogins element={<ForgotPassword />} />}
+            />
+            {flag == "1" && (
+              <Route path="/reset-password" element={<ResetPassword />} />
+            )}
+            <Route
+              path="/profile"
+              element={<ProtectedRouteElement element={<ProfilePage />} />}
+            />
+            <Route
+              path="/profile/:orders"
+              element={<ProtectedRouteElement element={<ProfilePage />} />}
+            />
+            <Route
+              path="/profile/:orders/:id"
+              element={<ProtectedRouteElement element={<ProfilePage />} />}
+            />
             <Route path="/list" element={<ListPage />} />
             <Route path="*" element={<NotFound404 />} />
           </Routes>
