@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import {
   Tab,
   CurrencyIcon,
@@ -17,9 +18,20 @@ import {
 import { useDrag } from "react-dnd";
 import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 
-const IngredientDetails = () => {
-  const element = useSelector(currentIngredientSelector);
-
+export const IngredientDetails = () => {
+  let element = useSelector(currentIngredientSelector);
+  const dataIngradients = useSelector(ingredientsSelector);
+  let { id } = useParams();
+  if (id) {
+    let data = dataIngradients.filter(
+      (item) => item._id == id
+    )
+    if (data.length == 1) {
+      console.log("data",data[0]);
+      element = data[0];
+    }
+  }
+  
   return (
     <div className={bIStyles.sizeMain + " mb-10"}>
       <img

@@ -8,9 +8,9 @@ export const ProtectedRouteLogins = ({ element }) => {
   const isUserLogin = useSelector(loginSuccess);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getDataUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getDataUser());
+  // }, []);
 
   if (isUserLogin) return <NavigateComponent page="/" />;
 
