@@ -5,7 +5,6 @@ import {
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
 
-
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
@@ -16,13 +15,11 @@ export const loginReducer = (state = initialState, action) => {
       };
 
     case LOGIN_SUCCESS:
-        console.log("LOGIN_SUCCESS",action.payload);
-      
       return {
         ...state,
         loginSuccess: true,
         loginError: false,
-    };
+      };
 
     case LOGIN_ERROR:
       return {

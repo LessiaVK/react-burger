@@ -23,15 +23,13 @@ export const IngredientDetails = () => {
   const dataIngradients = useSelector(ingredientsSelector);
   let { id } = useParams();
   if (id) {
-    let data = dataIngradients.filter(
-      (item) => item._id == id
-    )
+    let data = dataIngradients.filter((item) => item._id == id);
     if (data.length == 1) {
-      console.log("data",data[0]);
+      console.log("data", data[0]);
       element = data[0];
     }
   }
-  
+
   return (
     <div className={bIStyles.sizeMain + " mb-10"}>
       <img

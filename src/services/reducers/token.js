@@ -5,7 +5,6 @@ import {
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
 
-
 export const updateTokenReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_TOKEN:
@@ -16,14 +15,12 @@ export const updateTokenReducer = (state = initialState, action) => {
       };
 
     case UPDATE_TOKEN_SUCCESS:
-        console.log("USER_SUCCESS",action.payload);
-      
       return {
         ...state,
         updateToken: action.payload,
         updateTokenSuccess: true,
         updateTokenError: false,
-    };
+      };
 
     case UPDATE_TOKEN_ERROR:
       return {

@@ -10,32 +10,74 @@ import { actionUpdateToken } from "./actions/token";
 
 const timeExpires = 20 * 60;
 
-//  для получения данных о пользователе
-export function getDataUser(navigate) {
+//  для обновления токена
+export function getUpdateToken() {
   return function (dispatch) {
-    dispatch(actionUserRequest.userRequest());
-    fetch(BASE_URL + "/auth/user", {
-      method: "GET",
+    let refreshToken = getCookie("refreshToken");
+    dispatch(actionUpdateToken.updateToken());
+    fetch(BASE_URL + "/auth/token", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer "+getCookie("token"),
-      }
+      },
+      body: JSON.stringify({ token: refreshToken }),
     })
       .then((res) => {
-        console.log("res",res);
         if (res && res.ok) {
           return res.json();
         } else {
-          dispatch(actionUserRequest.userError());
+          dispatch(actionUpdateToken.updateTokenError());
         }
       })
       .then((data) => {
-        dispatch(actionUserRequest.userSuccess(data));
-        dispatch(actionLoginRequest.loginSuccess(data));
+        dispatch(actionUpdateToken.updateTokenSuccess(data));
+        let authToken = data.accessToken.split("Bearer ")[1];
+        if (authToken) {
+          console.log("authToken=", authToken);
+          setCookie("token", authToken, { expires: timeExpires });
+        }
+        setCookie("refreshToken", data.refreshToken, {});
       })
       .catch((err) => {
-        dispatch(actionUserRequest.userError());
+        dispatch(actionUpdateToken.updateTokenError());
       });
+  };
+}
+
+//  для получения данных о пользователе
+export function getDataUser(navigate) {
+  return function (dispatch) {
+    let token = getCookie("token");
+    dispatch(actionUserRequest.userRequest());
+    if (!token) {
+      dispatch(getUpdateToken());
+    } else {
+      fetch(BASE_URL + "/auth/user", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getCookie("token"),
+        },
+      })
+        .then((res) => {
+          if (res) {
+            if (res.status === 403) {
+              dispatch(getUpdateToken());
+            } else if (res && res.ok) {
+              return res.json();
+            } else {
+              dispatch(actionUserRequest.userError());
+            }
+          }
+        })
+        .then((data) => {
+          dispatch(actionUserRequest.userSuccess(data));
+          dispatch(actionLoginRequest.loginSuccess(data));
+        })
+        .catch((err) => {
+          dispatch(actionUserRequest.userError());
+        });
+    }
   };
 }
 
@@ -47,15 +89,19 @@ export function getUpdateUser(form) {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer "+getCookie("token"),  // ?????????
+        Authorization: "Bearer " + getCookie("token"),
       },
       body: JSON.stringify(form),
     })
       .then((res) => {
-        if (res && res.ok) {
-          return res.json();
-        } else {
-          dispatch(actionUserRequest.userError());
+        if (res) {
+          if (res.status === 403) {
+            dispatch(getUpdateToken());
+          } else if (res && res.ok) {
+            return res.json();
+          } else {
+            dispatch(actionUserRequest.userError());
+          }
         }
       })
       .then((data) => {
@@ -63,40 +109,6 @@ export function getUpdateUser(form) {
       })
       .catch((err) => {
         dispatch(actionUserRequest.userError());
-      });
-  };
-}
-
-//  для обновления токена
-export function getUpdateToken(navigate) {
-  return function (dispatch) {
-    dispatch(actionUpdateToken.updateToken());
-    fetch(BASE_URL + "/auth/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({"token": getCookie("refreshToken")}),
-    })
-      .then((res) => {
-        if (res && res.ok) {
-          return res.json();
-        } else {
-          dispatch(actionUpdateToken.updateTokenError());
-        }
-      })
-      .then((data) => {
-        dispatch(actionUpdateToken.updateTokenSuccess(data));
-        // console.log("codeRequest data", data);
-        let authToken = data.accessToken.split("Bearer ")[1];
-        if (authToken) {
-          setCookie("token", authToken, { expires: timeExpires });
-        }
-        setCookie("refreshToken", data.refreshToken, {});
-        // data.success && navigate("/login", { replace: true });
-      })
-      .catch((err) => {
-        dispatch(actionUpdateToken.updateTokenError());
       });
   };
 }
@@ -109,9 +121,8 @@ export function getLogout(navigate) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: getCookie("token"),  // ?????????
       },
-      body: JSON.stringify({"token": getCookie("refreshToken")}),
+      body: JSON.stringify({ token: getCookie("refreshToken") }),
     })
       .then((res) => {
         if (res && res.ok) {
@@ -122,12 +133,11 @@ export function getLogout(navigate) {
       })
       .then((data) => {
         dispatch(actionLogoutRequest.logoutSuccess(data));
-        // console.log("codeRequest data", data);
-        deleteCookie('token');
-        deleteCookie('refreshToken');
+        deleteCookie("token");
+        deleteCookie("refreshToken");
         dispatch(actionLoginRequest.loginRequest());
         setCookie("forgot", "0");
-        data.success && dispatch(actionUserRequest.userSuccess({user:{}}));
+        data.success && dispatch(actionUserRequest.userSuccess({ user: {} }));
         data.success && navigate("/login", { replace: true });
       })
       .catch((err) => {
@@ -157,7 +167,6 @@ export function getLoginRequest(form, navigate) {
       })
       .then((data) => {
         dispatch(actionLoginRequest.loginSuccess(data));
-        // console.log("codeRequest data", data);
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
           setCookie("token", authToken, { expires: timeExpires });
@@ -192,7 +201,6 @@ export function getRegisterRequest(form, navigate) {
       })
       .then((data) => {
         dispatch(actionRegisterRequest.registerSuccess(data));
-        // console.log("codeRequest data", data);
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
           setCookie("token", authToken, { expires: timeExpires });
@@ -221,7 +229,6 @@ export function getIngredients() {
       })
       .then((json) => {
         dispatch(actionGetData.fetchIngredients(json.data));
-        dispatch(actionGetData.fetchIngredientsState(json.data));
       })
       .catch((err) => {
         dispatch(actionGetData.fetchIngredientsError());
@@ -243,10 +250,14 @@ export function getOrderNumber(orderDetailsID) {
       }),
     })
       .then((res) => {
-        if (res && res.ok) {
-          return res.json();
-        } else {
-          dispatch(actionOrderDetails.orderNumberError());
+        if (res) {
+          if (res.status === 403) {
+            dispatch(getUpdateToken());
+          } else if (res && res.ok) {
+            return res.json();
+          } else {
+            dispatch(actionOrderDetails.orderNumberError());
+          }
         }
       })
       .then((json) => {

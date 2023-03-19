@@ -14,7 +14,7 @@ function IngredientPage() {
   }, []);
 
   const dataIngradients = useSelector(ingredientsSelector);
-  console.log("dataIngradients",dataIngradients);
+
   return (
     <>
       <IngredientDetails />
