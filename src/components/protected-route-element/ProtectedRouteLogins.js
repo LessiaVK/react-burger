@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getDataUser } from "../../services/thunks";
 import { loginSuccess } from "../../services/selectors";
@@ -15,6 +15,7 @@ export const ProtectedRouteLogins = ({ element }) => {
   }, []);
 
   if (isUserLogin) return <NavigateComponent page="/" />;
+  // if (isUserLogin) return <Redirect to={location?.state?.from || '/'} />;
 
   return element;
 };

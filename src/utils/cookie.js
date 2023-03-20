@@ -32,6 +32,7 @@ export function setCookie(name, value, props) {
   document.cookie = updatedCookie;
 }
 
-export function deleteCookie(name) {
-  setCookie(name, null, { expires: -1 });
+export function deleteCookie(name, props) {
+  if (props.path) setCookie(name, null, { path: props.path, expires: -1 });
+  else setCookie(name, null, { expires: -1 });
 }

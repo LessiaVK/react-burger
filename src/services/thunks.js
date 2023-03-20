@@ -8,7 +8,7 @@ import { actionLogoutRequest } from "./actions/logout";
 import { actionUserRequest } from "./actions/user";
 import { actionUpdateToken } from "./actions/token";
 
-const timeExpires = 20 * 60;
+const timeExpires = 1 * 60;
 
 //  для обновления токена
 export function getUpdateToken() {
@@ -33,10 +33,9 @@ export function getUpdateToken() {
         dispatch(actionUpdateToken.updateTokenSuccess(data));
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
-          console.log("authToken=", authToken);
-          setCookie("token", authToken, { expires: timeExpires });
+          setCookie("token", authToken, { path: '/', expires: timeExpires });
         }
-        setCookie("refreshToken", data.refreshToken, {});
+        setCookie("refreshToken", data.refreshToken, { path: '/' });
       })
       .catch((err) => {
         dispatch(actionUpdateToken.updateTokenError());
@@ -49,14 +48,14 @@ export function getDataUser(navigate) {
   return function (dispatch) {
     let token = getCookie("token");
     dispatch(actionUserRequest.userRequest());
-    if (!token) {
+    if (!token && getCookie("refreshToken")) {
       dispatch(getUpdateToken());
-    } else {
+    } else if (token) {
       fetch(BASE_URL + "/auth/user", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + getCookie("token"),
+          Authorization: "Bearer " + token,
         },
       })
         .then((res) => {
@@ -133,8 +132,8 @@ export function getLogout(navigate) {
       })
       .then((data) => {
         dispatch(actionLogoutRequest.logoutSuccess(data));
-        deleteCookie("token");
-        deleteCookie("refreshToken");
+        deleteCookie("token", { path: '/' });
+        deleteCookie("refreshToken", { path: '/' });
         dispatch(actionLoginRequest.loginRequest());
         setCookie("forgot", "0");
         data.success && dispatch(actionUserRequest.userSuccess({ user: {} }));
@@ -169,9 +168,9 @@ export function getLoginRequest(form, navigate) {
         dispatch(actionLoginRequest.loginSuccess(data));
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
-          setCookie("token", authToken, { expires: timeExpires });
+          setCookie("token", authToken, { path: '/', expires: timeExpires });
         }
-        setCookie("refreshToken", data.refreshToken, {});
+        setCookie("refreshToken", data.refreshToken, { path: '/' });
         data.success && dispatch(actionUserRequest.userSuccess(data));
         data.success && navigate("/", { replace: true });
       })
@@ -203,9 +202,9 @@ export function getRegisterRequest(form, navigate) {
         dispatch(actionRegisterRequest.registerSuccess(data));
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
-          setCookie("token", authToken, { expires: timeExpires });
+          setCookie("token", authToken, { path: '/', expires: timeExpires });
         }
-        setCookie("refreshToken", data.refreshToken, {});
+        setCookie("refreshToken", data.refreshToken, { path: '/' });
         data.success && dispatch(actionUserRequest.userSuccess(data));
         data.success && navigate("/login", { replace: true });
       })

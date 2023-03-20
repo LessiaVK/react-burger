@@ -23,15 +23,9 @@ function AppHeader() {
     case "/list":
       currentSelectMenu = "list";
       break;
-    case "/profile":
+    case "/profile": case "/profile/orders": case "/profile/orders/id":
       currentSelectMenu = "profile";
       break;
-    case "/profile/orders":
-        currentSelectMenu = "profile";
-        break;
-    case "/profile/orders/id":
-        currentSelectMenu = "profile";
-        break;
 
     default:
       break;
