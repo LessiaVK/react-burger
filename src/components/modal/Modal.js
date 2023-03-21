@@ -27,15 +27,19 @@ function Modal(props) {
 
   return createPortal(
     <>
-      <ModalOverlay close={props.close} />
+      <ModalOverlay close={props.close} onClick={props.onClick} />
       <div className={modalStyles.modal_window}>
         <div className={modalStyles.cap + " text text_type_main-large p-10"}>
           <p>{props.caption} </p>
           <div
             className={modalStyles.close}
-            onClick={(el) => {
-              dispatch(actionIngredientDetails.deleteIngredientDetails());
-              dispatch(actionOrderDetails.orderNumber());
+            onClick={(e) => {
+              if (props.onClick) {
+                props.onClick(e);
+              } else {
+                // dispatch(actionIngredientDetails.deleteIngredientDetails());
+                dispatch(actionOrderDetails.orderNumber());
+              }
             }}
           >
             <CloseIcon type="primary" />

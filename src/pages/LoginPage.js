@@ -23,16 +23,19 @@ export function LoginPage() {
   };
   let login = useCallback(
     (e) => {
+      e.preventDefault();
       dispatch(getLoginRequest(form, navigate));
     },
     [form]
   );
 
   return (
-    <div
-      className={loginStyles.inputsCenter + " " + loginStyles.inputsFlexColumn}
-    >
-      <>
+    <form onSubmit={login}>
+      <div
+        className={
+          loginStyles.inputsCenter + " " + loginStyles.inputsFlexColumn
+        }
+      >
         <p className="text text_type_main-medium pt-20">Вход</p>
         <EmailInput
           placeholder={"E-mail"}
@@ -50,24 +53,25 @@ export function LoginPage() {
           size={"default"}
           extraClass="ml-1"
         />
-        <Button htmlType="button" type="primary" size="medium" onClick={login}>
+        <Button htmlType="submit" type="primary" size="medium">
           Войти
         </Button>
-      </>
-      <div className={loginStyles.inputsFlexColumn}>
-        <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
-          Вы — новый пользователь?{" "}
-          <Link to="/register" className={loginStyles.link}>
-            Зарегистрироваться
-          </Link>
-        </p>
-        <p className="text text_type_main-default text_color_inactive mt-4">
-          Забыли пароль?{" "}
-          <Link to="/forgot-password" className={loginStyles.link}>
-            Восстановить пароль
-          </Link>
-        </p>
+
+        <div className={loginStyles.inputsFlexColumn}>
+          <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
+            Вы — новый пользователь?{" "}
+            <Link to="/register" className={loginStyles.link}>
+              Зарегистрироваться
+            </Link>
+          </p>
+          <p className="text text_type_main-default text_color_inactive mt-4">
+            Забыли пароль?{" "}
+            <Link to="/forgot-password" className={loginStyles.link}>
+              Восстановить пароль
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }

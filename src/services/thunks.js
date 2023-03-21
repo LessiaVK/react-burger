@@ -33,9 +33,9 @@ export function getUpdateToken() {
         dispatch(actionUpdateToken.updateTokenSuccess(data));
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
-          setCookie("token", authToken, { path: '/', expires: timeExpires });
+          setCookie("token", authToken, { path: "/", expires: timeExpires });
         }
-        setCookie("refreshToken", data.refreshToken, { path: '/' });
+        setCookie("refreshToken", data.refreshToken, { path: "/" });
       })
       .catch((err) => {
         dispatch(actionUpdateToken.updateTokenError());
@@ -132,8 +132,8 @@ export function getLogout(navigate) {
       })
       .then((data) => {
         dispatch(actionLogoutRequest.logoutSuccess(data));
-        deleteCookie("token", { path: '/' });
-        deleteCookie("refreshToken", { path: '/' });
+        deleteCookie("token", { path: "/" });
+        deleteCookie("refreshToken", { path: "/" });
         dispatch(actionLoginRequest.loginRequest());
         setCookie("forgot", "0");
         data.success && dispatch(actionUserRequest.userSuccess({ user: {} }));
@@ -168,11 +168,11 @@ export function getLoginRequest(form, navigate) {
         dispatch(actionLoginRequest.loginSuccess(data));
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
-          setCookie("token", authToken, { path: '/', expires: timeExpires });
+          setCookie("token", authToken, { path: "/", expires: timeExpires });
         }
-        setCookie("refreshToken", data.refreshToken, { path: '/' });
+        setCookie("refreshToken", data.refreshToken, { path: "/" });
         data.success && dispatch(actionUserRequest.userSuccess(data));
-        data.success && navigate("/", { replace: true });
+        // data.success && navigate("/", { replace: true });
       })
       .catch((err) => {
         dispatch(actionLoginRequest.loginError());
@@ -202,9 +202,9 @@ export function getRegisterRequest(form, navigate) {
         dispatch(actionRegisterRequest.registerSuccess(data));
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
-          setCookie("token", authToken, { path: '/', expires: timeExpires });
+          setCookie("token", authToken, { path: "/", expires: timeExpires });
         }
-        setCookie("refreshToken", data.refreshToken, { path: '/' });
+        setCookie("refreshToken", data.refreshToken, { path: "/" });
         data.success && dispatch(actionUserRequest.userSuccess(data));
         data.success && navigate("/login", { replace: true });
       })

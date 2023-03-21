@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   Tab,
   CurrencyIcon,
@@ -79,6 +79,7 @@ export const IngredientDetails = () => {
 const ElementMenu = (props) => {
   const orderList = useSelector(constructorSelector);
   const dispatch = useDispatch();
+  const location = useLocation();
   const count = orderList.filter(
     (item) => item._id == props.element._id
   ).length;
@@ -91,29 +92,34 @@ const ElementMenu = (props) => {
   });
 
   return (
-    <div
+    <Link
+      to={{
+        pathname: `/ingredients/${props.element._id}`,
+      }}
+      state={{ background: location }}
       key={props.tempId}
       className={bIStyles.elementMenu}
-      onClick={(el) => {
-        dispatch(actionIngredientDetails.addIngredientDetails(props.element));
-      }}
       ref={dragRef}
       style={{ opacity }}
     >
-      <img src={props.element.image} alt="Изображение ингредиента" />
-      <div className={bIStyles.count}>
-        {count > 0 && <Counter count={count} className="m-1" size="default" />}
+      <div className={bIStyles.elementMenu}>
+        <img src={props.element.image} alt="Изображение ингредиента" />
+        <div className={bIStyles.count}>
+          {count > 0 && (
+            <Counter count={count} className="m-1" size="default" />
+          )}
+        </div>
+        <div className={bIStyles.bIDescription}>
+          <p
+            className={`constructor-element__price text text_type_digits-default`}
+          >
+            {props.element.price}
+            <CurrencyIcon className={bIStyles.sizeIcon} type="primary" />
+          </p>
+          <p>{props.element.name}</p>
+        </div>
       </div>
-      <div className={bIStyles.bIDescription}>
-        <p
-          className={`constructor-element__price text text_type_digits-default`}
-        >
-          {props.element.price}
-          <CurrencyIcon className={bIStyles.sizeIcon} type="primary" />
-        </p>
-        <p>{props.element.name}</p>
-      </div>
-    </div>
+    </Link>
   );
 };
 
@@ -151,7 +157,8 @@ function BurgerIngredients(props) {
   const bunRef = React.useRef(null);
   const sauceRef = React.useRef(null);
   const mainRef = React.useRef(null); //represents main section
-
+  const location = useLocation();
+  const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
   const currentIngredient = useSelector(currentIngredientSelector);
   const [current, setCurrent] = React.useState("one");
@@ -229,8 +236,14 @@ function BurgerIngredients(props) {
           ref1={mainRef}
         />
       </div>
-      {currentIngredient && (
-        <Modal modalProps="modals" caption="Детали ингредиента">
+      {location.state && (
+        <Modal
+          onClick={(e) => {
+            navigate(-1);
+          }}
+          modalProps="modals"
+          caption="Детали ингредиента"
+        >
           <IngredientDetails />
         </Modal>
       )}

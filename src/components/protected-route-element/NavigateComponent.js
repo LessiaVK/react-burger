@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const NavigateComponent = ({page}) => {
+export const NavigateComponent = ({ page, location }) => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate(page, {replace:true});
-  },[]);
-  return (<></>);
-}
+    navigate(page, { state: location?.pathname });
+  }, []);
+  return <></>;
+};

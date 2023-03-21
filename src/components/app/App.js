@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  useLocation,
 } from "react-router-dom";
 
 import ConstructorPage from "../../pages/ConstructorPage";
@@ -21,6 +22,13 @@ import { getCookie } from "../../utils/cookie";
 import IngredientPage from "../../pages/IngredientPage";
 
 function App() {
+  const ModalSwitch = () => {
+    const location = useLocation();
+    let background = location.state && location.state.background;
+
+    return <>{background ? <ConstructorPage /> : <IngredientPage />}</>;
+  };
+
   const flag = getCookie("forgot");
 
   return (
@@ -58,7 +66,7 @@ function App() {
               element={<ProtectedRouteElement element={<ProfilePage />} />}
             />
             <Route path="/list" element={<ListPage />} />
-            <Route path="/ingredients/:id" element={<IngredientPage />}></Route>
+            <Route path="/ingredients/:id" element={<ModalSwitch />}></Route>
             <Route path="*" element={<NotFound404 />} />
           </Routes>
         </main>
