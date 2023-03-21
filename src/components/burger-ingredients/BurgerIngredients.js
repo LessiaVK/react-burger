@@ -17,6 +17,7 @@ import {
 } from "../../services/selectors";
 import { useDrag } from "react-dnd";
 import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
+import { PATH_INGREDIENTS } from "../../utils/constants";
 
 export const IngredientDetails = () => {
   let element = useSelector(currentIngredientSelector);
@@ -94,7 +95,7 @@ const ElementMenu = (props) => {
   return (
     <Link
       to={{
-        pathname: `/ingredients/${props.element._id}`,
+        pathname: PATH_INGREDIENTS + `/${props.element._id}`,
       }}
       state={{ background: location }}
       key={props.tempId}

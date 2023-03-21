@@ -20,6 +20,15 @@ import { ProtectedRouteElement } from "../protected-route-element/ProtectedRoute
 import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteLogins";
 import { getCookie } from "../../utils/cookie";
 import IngredientPage from "../../pages/IngredientPage";
+import {
+  PATH_LOGIN,
+  PATH_REGISTER,
+  PATH_FORGOT,
+  PATH_RESET,
+  PATH_PROFILE,
+  PATH_LIST,
+  PATH_INGREDIENTS,
+} from "../../utils/constants";
 
 function App() {
   const ModalSwitch = () => {
@@ -39,34 +48,42 @@ function App() {
           <Routes>
             <Route path="/" element={<ConstructorPage />} />
             <Route
-              path="/login"
+              path={PATH_LOGIN}
               element={<ProtectedRouteLogins element={<LoginPage />} />}
             />
             <Route
-              path="/register"
+              path={PATH_REGISTER}
               element={<ProtectedRouteLogins element={<RegisterPage />} />}
             />
             <Route
-              path="/forgot-password"
+              path={PATH_FORGOT}
               element={<ProtectedRouteLogins element={<ForgotPassword />} />}
             />
             {flag == "1" && (
-              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path={PATH_RESET} element={<ResetPassword />} />
             )}
             <Route
-              path="/profile"
-              element={<ProtectedRouteElement element={<ProfilePage />} onlyUnAuth={false} />}
+              path={PATH_PROFILE}
+              element={
+                <ProtectedRouteElement
+                  element={<ProfilePage />}
+                  onlyUnAuth={false}
+                />
+              }
             />
             <Route
-              path="/profile/:orders"
+              path={PATH_PROFILE + "/:orders"}
               element={<ProtectedRouteElement element={<ProfilePage />} />}
             />
             <Route
-              path="/profile/:orders/:id"
+              path={PATH_PROFILE + "/:orders/:id"}
               element={<ProtectedRouteElement element={<ProfilePage />} />}
             />
-            <Route path="/list" element={<ListPage />} />
-            <Route path="/ingredients/:id" element={<ModalSwitch />}></Route>
+            <Route path={PATH_LIST} element={<ListPage />} />
+            <Route
+              path={PATH_INGREDIENTS + "/:id"}
+              element={<ModalSwitch />}
+            ></Route>
             <Route path="*" element={<NotFound404 />} />
           </Routes>
         </main>

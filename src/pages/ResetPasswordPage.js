@@ -8,6 +8,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import loginStyles from "./LoginPage.module.css";
+import { PATH_LOGIN } from "../utils/constants";
 
 const resetRequest = async (form, navigate) => {
   return await fetch(
@@ -28,7 +29,7 @@ const resetRequest = async (form, navigate) => {
     .then((res) => res.json())
     .then((data) => {
       console.log("codeRequest data", data);
-      data.success && navigate("/login", { replace: true });
+      data.success && navigate(PATH_LOGIN, { replace: true });
     });
 };
 
@@ -85,7 +86,7 @@ export function ResetPassword() {
         </>
         <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
           Вспомнили пароль?{" "}
-          <Link to="/login" className={loginStyles.link}>
+          <Link to={PATH_LOGIN} className={loginStyles.link}>
             Войти
           </Link>
         </p>

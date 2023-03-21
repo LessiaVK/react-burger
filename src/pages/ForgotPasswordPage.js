@@ -8,6 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import loginStyles from "./LoginPage.module.css";
 import { setCookie } from "../utils/cookie";
+import { PATH_LOGIN, PATH_RESET } from "../utils/constants";
 
 const codeRequest = async (form, navigate) => {
   return await fetch("https://norma.nomoreparties.space/api/password-reset", {
@@ -25,7 +26,7 @@ const codeRequest = async (form, navigate) => {
     .then((res) => res.json())
     .then((data) => {
       console.log("codeRequest data", data);
-      data.success && navigate("/reset-password", { replace: true });
+      data.success && navigate(PATH_RESET, { replace: true });
     });
 };
 
@@ -65,17 +66,13 @@ export function ForgotPassword() {
             name="email"
             isIcon={false}
           />
-          <Button
-            htmlType="submit"
-            type="primary"
-            size="medium"
-          >
+          <Button htmlType="submit" type="primary" size="medium">
             Восстановить
           </Button>
         </>
         <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
           Вспомнили пароль?{" "}
-          <Link to="/login" className={loginStyles.link}>
+          <Link to={PATH_LOGIN} className={loginStyles.link}>
             Войти
           </Link>
         </p>

@@ -22,6 +22,7 @@ import { ElementIngredient } from "./BurgerConstructorElementIngredient";
 import { actionBurgerCompound } from "../../services/actions/burgerСompound";
 import { getOrderNumber } from "../../services/thunks";
 import { loginSuccess } from "../../services/selectors";
+import { PATH_LOGIN } from "../../utils/constants";
 
 const priceInitState = { totalPrice: 0 };
 
@@ -255,7 +256,7 @@ function BurgerConstructor(props) {
               totalPriceState.totalPrice > 0 &&
               dispatch(getOrderNumber(orderDetailsID));
             } else {
-              navigate('/login');
+              navigate(PATH_LOGIN);
             }
           }}
         >

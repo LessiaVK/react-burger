@@ -10,6 +10,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import loginStyles from "./LoginPage.module.css";
+import { PATH_REGISTER } from "../utils/constants";
 
 export function LoginPage() {
   const [form, setValue] = useState({ password: "", email: "" });
@@ -60,7 +61,7 @@ export function LoginPage() {
         <div className={loginStyles.inputsFlexColumn}>
           <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
             Вы — новый пользователь?{" "}
-            <Link to="/register" className={loginStyles.link}>
+            <Link to={PATH_REGISTER} className={loginStyles.link}>
               Зарегистрироваться
             </Link>
           </p>

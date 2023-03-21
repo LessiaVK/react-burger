@@ -12,6 +12,7 @@ import {
 import loginStyles from "./LoginPage.module.css";
 
 import { getRegisterRequest } from "../services/thunks";
+import { PATH_LOGIN } from "../utils/constants";
 
 export function RegisterPage() {
   const [form, setValue] = useState({ name: "", password: "", email: "" });
@@ -75,7 +76,7 @@ export function RegisterPage() {
         </>
         <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
           Уже зарегистрированы?{" "}
-          <Link to="/login" className={loginStyles.link}>
+          <Link to={PATH_LOGIN} className={loginStyles.link}>
             Войти
           </Link>
         </p>

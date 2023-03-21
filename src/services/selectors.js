@@ -8,7 +8,8 @@ export const fetchIngredientsRequest = (state) =>
   state.fetchDataReducer.fetchIngredientsRequest;
 
 export const constructorSelector = (state) => state.burgerReducer.constructor;
-export const currentItemsIDSelector = (state) => state.burgerReducer.currentItemsID;
+export const currentItemsIDSelector = (state) =>
+  state.burgerReducer.currentItemsID;
 
 export const currentIngredientSelector = (state) =>
   state.ingredientReducer.currentIngredient;
@@ -37,5 +38,7 @@ export const userSuccess = (state) => state.userReducer.userSuccess;
 export const userError = (state) => state.userReducer.userError;
 
 export const updateToken = (state) => state.updateTokenReducer.updateToken;
-export const updateTokenSuccess = (state) => state.updateTokenReducer.updateTokenSuccess;
-export const updateTokenError = (state) => state.updateTokenReducer.updateTokenError;
+export const updateTokenSuccess = (state) =>
+  state.updateTokenReducer.updateTokenSuccess;
+export const updateTokenError = (state) =>
+  state.updateTokenReducer.updateTokenError;

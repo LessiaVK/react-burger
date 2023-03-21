@@ -10,21 +10,30 @@ import {
   EmailInput,
   PasswordInput,
   Input,
-  Button
+  Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import profileStyles from "./ProfilePage.module.css";
+import { getCookie } from "../utils/cookie";
+import { getUpdateToken } from "../services/thunks";
+import { PATH_LOGIN, PATH_PROFILE } from "../utils/constants";
 
 export function ProfilePage() {
-  const [form, setValue] = useState({ password: "", email: "", name:"" });
+  const [form, setValue] = useState({ password: "", email: "", name: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userForm = useSelector(userRequest);
   const cancel = () => {
     setValue({ ...form, email: userForm.email, name: userForm.name });
-  }
-  const update = () => {
-    dispatch(getUpdateUser(form));
-  }
+  };
+
+  const update = (e) => {
+    e.preventDefault();
+    let token = getCookie("token");
+    if (!token && getCookie("refreshToken")) {
+      dispatch(getUpdateToken(getUpdateUser(form)));
+    } else if (token) dispatch(getUpdateUser(form));
+    else navigate(PATH_LOGIN, { replace: true });
+  };
 
   const onChangeName = (e) => {
     setValue({ ...form, name: e.target.value });
@@ -37,11 +46,15 @@ export function ProfilePage() {
   };
 
   useEffect(() => {
-    dispatch(getDataUser(navigate));
+    let token = getCookie("token");
+    if (!token && getCookie("refreshToken")) {
+      dispatch(getUpdateToken(getDataUser(navigate)));
+    } else if (token) getDataUser(navigate);
+    else navigate(PATH_LOGIN, { replace: true });
   }, []);
 
   useEffect(() => {
-   setValue({ ...form, email: userForm.email, name: userForm.name });
+    setValue({ ...form, email: userForm.email, name: userForm.name });
   }, [userForm]);
 
   return (
@@ -49,7 +62,7 @@ export function ProfilePage() {
       <div className={profileStyles.inputsFlexColumn + " mr-15 pt-20"}>
         <p className="pb-4">
           <Link
-            to="/profile"
+            to={PATH_PROFILE}
             className={profileStyles.textWhite + " text text_type_main-medium"}
           >
             Профиль
@@ -57,15 +70,18 @@ export function ProfilePage() {
         </p>
         <p className="pb-4">
           <Link
-            to="/profile/orders"
+            to={PATH_PROFILE + "/orders"}
             className="text text_type_main-medium text_color_inactive"
           >
             История заказов
           </Link>
         </p>
         <div className="pb-4">
-          <div className="text text_type_main-medium text_color_inactive" 
-          onClick={(e) => {dispatch(getLogout(navigate));}}
+          <div
+            className="text text_type_main-medium text_color_inactive"
+            onClick={(e) => {
+              dispatch(getLogout(navigate));
+            }}
           >
             Выход
           </div>
@@ -79,52 +95,48 @@ export function ProfilePage() {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <div className={profileStyles.inputsFlexColumn + " pt-20"}>
-        <Input
-          type={"text"}
-          placeholder={"Имя"}
-          onChange={onChangeName}
-          value={form.name ? form.name : ""}
-          error={false}
-          size={"default"}
-          extraClass="ml-1 pb-6"
-        />
-        <EmailInput
-          placeholder={"Логин"}
-          onChange={onChangeEmail}
-          value={form.email ? form.email : ""}
-          error={false}
-          size={"default"}
-          extraClass="ml-1 pb-6"
-        />
-        <PasswordInput
-          placeholder={"Пароль"}
-          onChange={onChangePass}
-          value={form.password ?  form.password : ""}
-          error={false}
-          size={"default"}
-          extraClass="ml-1 pb-6"
-        />
-        <div className={profileStyles.inputsFlexRowCenter}>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          onClick={cancel}
-          extraClass="ml-10 mr-10"
-        >
-          Отменить
-        </Button>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          onClick={update}
-        >
-          Сохранить
-        </Button>
+      <form onSubmit={update} onReset={cancel}>
+        <div className={profileStyles.inputsFlexColumn + " pt-20"}>
+          <Input
+            type={"text"}
+            placeholder={"Имя"}
+            onChange={onChangeName}
+            value={form.name ? form.name : ""}
+            error={false}
+            size={"default"}
+            extraClass="ml-1 pb-6"
+          />
+          <EmailInput
+            placeholder={"Логин"}
+            onChange={onChangeEmail}
+            value={form.email ? form.email : ""}
+            error={false}
+            size={"default"}
+            extraClass="ml-1 pb-6"
+          />
+          <PasswordInput
+            placeholder={"Пароль"}
+            onChange={onChangePass}
+            value={form.password ? form.password : ""}
+            error={false}
+            size={"default"}
+            extraClass="ml-1 pb-6"
+          />
+          <div className={profileStyles.inputsFlexRowCenter}>
+            <Button
+              htmlType="reset"
+              type="primary"
+              size="medium"
+              extraClass="ml-10 mr-10"
+            >
+              Отменить
+            </Button>
+            <Button htmlType="submit" type="primary" size="medium">
+              Сохранить
+            </Button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

@@ -7,11 +7,12 @@ import { getCookie, setCookie, deleteCookie } from "../utils/cookie";
 import { actionLogoutRequest } from "./actions/logout";
 import { actionUserRequest } from "./actions/user";
 import { actionUpdateToken } from "./actions/token";
+import { PATH_LOGIN } from "../utils/constants";
 
-const timeExpires = 1 * 60;
+const timeExpires = 20 * 60;
 
 //  для обновления токена
-export function getUpdateToken() {
+export function getUpdateToken(callback) {
   return function (dispatch) {
     let refreshToken = getCookie("refreshToken");
     dispatch(actionUpdateToken.updateToken());
@@ -36,6 +37,7 @@ export function getUpdateToken() {
           setCookie("token", authToken, { path: "/", expires: timeExpires });
         }
         setCookie("refreshToken", data.refreshToken, { path: "/" });
+        dispatch(callback);
       })
       .catch((err) => {
         dispatch(actionUpdateToken.updateTokenError());
@@ -47,10 +49,8 @@ export function getUpdateToken() {
 export function getDataUser(navigate) {
   return function (dispatch) {
     let token = getCookie("token");
-    dispatch(actionUserRequest.userRequest());
-    if (!token && getCookie("refreshToken")) {
-      dispatch(getUpdateToken());
-    } else if (token) {
+    if (token) {
+      dispatch(actionUserRequest.userRequest());
       fetch(BASE_URL + "/auth/user", {
         method: "GET",
         headers: {
@@ -59,14 +59,10 @@ export function getDataUser(navigate) {
         },
       })
         .then((res) => {
-          if (res) {
-            if (res.status === 403) {
-              dispatch(getUpdateToken());
-            } else if (res && res.ok) {
-              return res.json();
-            } else {
-              dispatch(actionUserRequest.userError());
-            }
+          if (res && res.ok) {
+            return res.json();
+          } else {
+            dispatch(actionUserRequest.userError());
           }
         })
         .then((data) => {
@@ -83,32 +79,31 @@ export function getDataUser(navigate) {
 //  для обновления данных о пользователе
 export function getUpdateUser(form) {
   return function (dispatch) {
-    dispatch(actionUserRequest.userRequest());
-    fetch(BASE_URL + "/auth/user", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + getCookie("token"),
-      },
-      body: JSON.stringify(form),
-    })
-      .then((res) => {
-        if (res) {
-          if (res.status === 403) {
-            dispatch(getUpdateToken());
-          } else if (res && res.ok) {
+    let token = getCookie("token");
+    if (token) {
+      dispatch(actionUserRequest.userRequest());
+      fetch(BASE_URL + "/auth/user", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getCookie("token"),
+        },
+        body: JSON.stringify(form),
+      })
+        .then((res) => {
+          if (res && res.ok) {
             return res.json();
           } else {
             dispatch(actionUserRequest.userError());
           }
-        }
-      })
-      .then((data) => {
-        dispatch(actionUserRequest.userSuccess(data));
-      })
-      .catch((err) => {
-        dispatch(actionUserRequest.userError());
-      });
+        })
+        .then((data) => {
+          dispatch(actionUserRequest.userSuccess(data));
+        })
+        .catch((err) => {
+          dispatch(actionUserRequest.userError());
+        });
+    }
   };
 }
 
@@ -137,7 +132,7 @@ export function getLogout(navigate) {
         dispatch(actionLoginRequest.loginRequest());
         setCookie("forgot", "0");
         data.success && dispatch(actionUserRequest.userSuccess({ user: {} }));
-        data.success && navigate("/login", { replace: true });
+        data.success && navigate(PATH_LOGIN, { replace: true });
       })
       .catch((err) => {
         dispatch(actionLogoutRequest.logoutError());
@@ -206,7 +201,7 @@ export function getRegisterRequest(form, navigate) {
         }
         setCookie("refreshToken", data.refreshToken, { path: "/" });
         data.success && dispatch(actionUserRequest.userSuccess(data));
-        data.success && navigate("/login", { replace: true });
+        data.success && navigate(PATH_LOGIN, { replace: true });
       })
       .catch((err) => {
         dispatch(actionRegisterRequest.registerError());
@@ -249,14 +244,10 @@ export function getOrderNumber(orderDetailsID) {
       }),
     })
       .then((res) => {
-        if (res) {
-          if (res.status === 403) {
-            dispatch(getUpdateToken());
-          } else if (res && res.ok) {
-            return res.json();
-          } else {
-            dispatch(actionOrderDetails.orderNumberError());
-          }
+        if (res && res.ok) {
+          return res.json();
+        } else {
+          dispatch(actionOrderDetails.orderNumberError());
         }
       })
       .then((json) => {
