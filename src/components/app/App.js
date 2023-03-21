@@ -55,7 +55,7 @@ function App() {
             )}
             <Route
               path="/profile"
-              element={<ProtectedRouteElement element={<ProfilePage />} />}
+              element={<ProtectedRouteElement element={<ProfilePage />} onlyUnAuth={false} />}
             />
             <Route
               path="/profile/:orders"

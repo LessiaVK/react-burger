@@ -57,3 +57,8 @@
   flex-wrap: wrap;
   align-items: center;
 }
+
+.textWhite {
+  color: white;
+  text-decoration: none;
+}

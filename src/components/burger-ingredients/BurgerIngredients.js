@@ -98,7 +98,7 @@ const ElementMenu = (props) => {
       }}
       state={{ background: location }}
       key={props.tempId}
-      className={bIStyles.elementMenu}
+      className={bIStyles.elementMenu + " " + bIStyles.textWhite}
       ref={dragRef}
       style={{ opacity }}
     >

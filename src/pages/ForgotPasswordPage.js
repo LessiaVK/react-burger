@@ -42,40 +42,44 @@ export function ForgotPassword() {
 
   let getCode = useCallback(
     (e) => {
+      e.preventDefault();
       codeRequest(form, navigate);
     },
     [form]
   );
 
   return (
-    <div
-      className={loginStyles.inputsCenter + " " + loginStyles.inputsFlexColumn}
-    >
-      <>
-        <p className="text text_type_main-medium pt-20">
-          Восстановление пароля
+    <form onSubmit={getCode}>
+      <div
+        className={
+          loginStyles.inputsCenter + " " + loginStyles.inputsFlexColumn
+        }
+      >
+        <>
+          <p className="text text_type_main-medium pt-20">
+            Восстановление пароля
+          </p>
+          <EmailInput
+            onChange={onChange}
+            value={form.email}
+            name="email"
+            isIcon={false}
+          />
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="medium"
+          >
+            Восстановить
+          </Button>
+        </>
+        <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
+          Вспомнили пароль?{" "}
+          <Link to="/login" className={loginStyles.link}>
+            Войти
+          </Link>
         </p>
-        <EmailInput
-          onChange={onChange}
-          value={form.email}
-          name="email"
-          isIcon={false}
-        />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          onClick={getCode}
-        >
-          Восстановить
-        </Button>
-      </>
-      <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
-        Вспомнили пароль?{" "}
-        <Link to="/login" className={loginStyles.link}>
-          Войти
-        </Link>
-      </p>
-    </div>
+      </div>
+    </form>
   );
 }

@@ -44,52 +44,52 @@ export function ResetPassword() {
 
   let changePassword = useCallback(
     (e) => {
+      e.preventDefault();
       resetRequest(form, navigate);
     },
     [form]
   );
 
   return (
-    <div
-      className={loginStyles.inputsCenter + " " + loginStyles.inputsFlexColumn}
-    >
-      <>
-        <p className="text text_type_main-medium pt-20">
-          Восстановление пароля
+    <form onSubmit={changePassword}>
+      <div
+        className={
+          loginStyles.inputsCenter + " " + loginStyles.inputsFlexColumn
+        }
+      >
+        <>
+          <p className="text text_type_main-medium pt-20">
+            Восстановление пароля
+          </p>
+          <PasswordInput
+            placeholder={"Введите новый пароль"}
+            onChange={onChangePass}
+            value={form.password}
+            error={false}
+            size={"default"}
+            extraClass="ml-1"
+          />
+          <Input
+            type={"text"}
+            placeholder={"Введите код из письма"}
+            name={"name"}
+            onChange={onChange}
+            value={form.token}
+            error={false}
+            size={"default"}
+            extraClass="ml-1"
+          />
+          <Button htmlType="submit" type="primary" size="medium">
+            Сохранить
+          </Button>
+        </>
+        <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
+          Вспомнили пароль?{" "}
+          <Link to="/login" className={loginStyles.link}>
+            Войти
+          </Link>
         </p>
-        <PasswordInput
-          placeholder={"Введите новый пароль"}
-          onChange={onChangePass}
-          value={form.password}
-          error={false}
-          size={"default"}
-          extraClass="ml-1"
-        />
-        <Input
-          type={"text"}
-          placeholder={"Введите код из письма"}
-          name={"name"}
-          onChange={onChange}
-          value={form.token}
-          error={false}
-          size={"default"}
-          extraClass="ml-1"
-        />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          onClick={changePassword}
-        >
-          Сохранить
-        </Button>
-      </>
-      <p className="text text_type_main-default text_color_inactive pt-4 mt-10">
-        Вспомнили пароль?{" "}
-        <Link to="/login" className={loginStyles.link}>
-          Войти
-        </Link>
-      </p>
-    </div>
+      </div>
+    </form>
   );
 }
