@@ -1,40 +1,93 @@
 import React from "react";
 import appStyles from "./App.module.css";
 import AppHeader from "../app-header/AppHeader";
-import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
-import BurgerConstructor from "../burger-constructor/BurgerConstructor";
-
-import { useSelector, useDispatch } from "react-redux";
 import {
-  fetchIngredientsRequest,
-  fetchIngredientsError,
-} from "../../services/selectors";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { getIngredients } from "../../services/thunks";
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+
+import ConstructorPage from "../../pages/ConstructorPage";
+import { LoginPage } from "../../pages/LoginPage";
+import { RegisterPage } from "../../pages/RegisterPage";
+import { ResetPassword } from "../../pages/ResetPasswordPage";
+import { ForgotPassword } from "../../pages/ForgotPasswordPage";
+import { ProfilePage } from "../../pages/ProfilePage";
+import { ListPage } from "../../pages/ListPage";
+import { NotFound404 } from "../../pages/NotFound";
+import { ProtectedRouteElement } from "../protected-route-element/ProtectedRouteElement";
+import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteLogins";
+import { getCookie } from "../../utils/cookie";
+import IngredientPage from "../../pages/IngredientPage";
+import {
+  PATH_LOGIN,
+  PATH_REGISTER,
+  PATH_FORGOT,
+  PATH_RESET,
+  PATH_PROFILE,
+  PATH_LIST,
+  PATH_INGREDIENTS,
+} from "../../utils/constants";
 
 function App() {
-  const dispatch = useDispatch();
-  const fetchDataRequest = useSelector(fetchIngredientsRequest);
-  const fetchDataError = useSelector(fetchIngredientsError);
+  const ModalSwitch = () => {
+    const location = useLocation();
+    let background = location.state && location.state.background;
 
-  React.useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
+    return <>{background ? <ConstructorPage /> : <IngredientPage />}</>;
+  };
+
+  const flag = getCookie("forgot");
 
   return (
     <div className="App">
-      <AppHeader />
-      <main className={appStyles.appMain}>
-        {!fetchDataRequest && !fetchDataError ? (
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        ) : (
-          <></>
-        )}
-      </main>
+      <Router>
+        <AppHeader />
+        <main className={appStyles.appMain}>
+          <Routes>
+            <Route path="/" element={<ConstructorPage />} />
+            <Route
+              path={PATH_LOGIN}
+              element={<ProtectedRouteLogins element={<LoginPage />} />}
+            />
+            <Route
+              path={PATH_REGISTER}
+              element={<ProtectedRouteLogins element={<RegisterPage />} />}
+            />
+            <Route
+              path={PATH_FORGOT}
+              element={<ProtectedRouteLogins element={<ForgotPassword />} />}
+            />
+            {flag == "1" && (
+              <Route path={PATH_RESET} element={<ResetPassword />} />
+            )}
+            <Route
+              path={PATH_PROFILE}
+              element={
+                <ProtectedRouteElement
+                  element={<ProfilePage />}
+                  onlyUnAuth={false}
+                />
+              }
+            />
+            <Route
+              path={PATH_PROFILE + "/:orders"}
+              element={<ProtectedRouteElement element={<ProfilePage />} />}
+            />
+            <Route
+              path={PATH_PROFILE + "/:orders/:id"}
+              element={<ProtectedRouteElement element={<ProfilePage />} />}
+            />
+            <Route path={PATH_LIST} element={<ListPage />} />
+            <Route
+              path={PATH_INGREDIENTS + "/:id"}
+              element={<ModalSwitch />}
+            ></Route>
+            <Route path="*" element={<NotFound404 />} />
+          </Routes>
+        </main>
+      </Router>
     </div>
   );
 }

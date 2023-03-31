@@ -1,0 +1,32 @@
+.inputsFlexColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+.inputsFlexRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items:start;
+}
+
+.inputsFlexRowCenter {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items:center;
+}
+
+.link {
+  color: #4C4CFF;
+}
+
+.wCol {
+  width: 320px;
+}
+
+.textWhite {
+  color: white;
+}

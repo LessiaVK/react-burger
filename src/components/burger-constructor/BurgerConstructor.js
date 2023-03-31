@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ConstructorElement,
   Button,
@@ -6,7 +7,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/Modal";
 import bCStyles from "./BurgerConstructor.module.css";
-import { BASE_URL } from "../../utils/constants";
 import { useSelector, useDispatch } from "react-redux";
 import {
   constructorSelector,
@@ -20,8 +20,9 @@ import uuid from "react-uuid";
 import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
 import { ElementIngredient } from "./BurgerConstructorElementIngredient";
 import { actionBurgerCompound } from "../../services/actions/burgerСompound";
-import { actionOrderDetails } from "../../services/actions/orderDetails";
 import { getOrderNumber } from "../../services/thunks";
+import { loginSuccess } from "../../services/selectors";
+import { PATH_LOGIN } from "../../utils/constants";
 
 const priceInitState = { totalPrice: 0 };
 
@@ -91,6 +92,9 @@ function BurgerConstructor(props) {
   const orderDetailsID = useSelector(currentItemsIDSelector);
   const orderIdRequest = useSelector(orderRequest);
   const orderIdFailed = useSelector(orderFailed);
+
+  const isUserLogin = useSelector(loginSuccess);
+  const navigate = useNavigate();
 
   const [{ handlerId }, drop] = useDrop({
     accept: "ingredient",
@@ -248,8 +252,12 @@ function BurgerConstructor(props) {
           type="primary"
           size="medium"
           onClick={(e) => {
-            totalPriceState.totalPrice > 0 &&
+            if (isUserLogin) {
+              totalPriceState.totalPrice > 0 &&
               dispatch(getOrderNumber(orderDetailsID));
+            } else {
+              navigate(PATH_LOGIN);
+            }
           }}
         >
           Оформить заказ

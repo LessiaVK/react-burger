@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -6,60 +7,104 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import appHeaderStyles from "./AppHeader.module.css";
+import { PATH_PROFILE, PATH_LIST } from "../../utils/constants";
 
 function AppHeader() {
-  const [current, setCurrent] = React.useState("one");
+  const navigate = useNavigate();
+  let currentSelectMenu = "";
+  const currentClass =
+    appHeaderStyles.buttonMenuContent + " text text_type_main-small";
+  const baseClass = currentClass + " text_color_inactive";
+
+  const location = window.location;
+  switch (location.pathname) {
+    case "/":
+      currentSelectMenu = "constructor";
+      break;
+    case PATH_LIST:
+      currentSelectMenu = "list";
+      break;
+    case PATH_PROFILE:
+    case PATH_PROFILE + "/orders":
+    case PATH_PROFILE + "/orders/id":
+      currentSelectMenu = "profile";
+      break;
+
+    default:
+      break;
+  }
+
   return (
     <header className={appHeaderStyles.appHeaderMain + " pt-10"}>
       <div className={appHeaderStyles.appHeaderNet + " ml-10"}>
         <div className={appHeaderStyles.appHeaderNet + " ml-5 mb-4 mr-2"}>
-          <a
-            href="#"
+          <div
             className={appHeaderStyles.buttonMenu + " ml-10 mt-4 mr-2"}
+            onClick={(e) => {
+              navigate("/");
+            }}
           >
             <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
-              <BurgerIcon type="primary" />
+              <BurgerIcon
+                type={
+                  currentSelectMenu === "constructor" ? "primary" : "secondary"
+                }
+              />
             </div>
             <p
               className={
-                appHeaderStyles.buttonMenuContent + " text text_type_main-small"
+                currentSelectMenu === "constructor" ? currentClass : baseClass
               }
             >
               Конструктор
             </p>
-          </a>
-          <a href="#" className={appHeaderStyles.buttonMenu + " mt-4"}>
+          </div>
+          <div
+            className={appHeaderStyles.buttonMenu + " mt-4"}
+            onClick={(e) => {
+              navigate(PATH_LIST);
+            }}
+          >
             <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
-              <ListIcon type="secondary" />
+              <ListIcon
+                type={currentSelectMenu === "list" ? "primary" : "secondary"}
+              />
             </div>
             <p
               className={
-                appHeaderStyles.buttonMenuContent +
-                " text text_type_main-small text_color_inactive"
+                currentSelectMenu === "list" ? currentClass : baseClass
               }
             >
               Лента заказов
             </p>
-          </a>
+          </div>
 
           <div className={appHeaderStyles.logo + " ml-15 mr-15"}>
             <Logo />
           </div>
 
           <div className={appHeaderStyles.appHeaderNet}>
-            <a href="#" className={appHeaderStyles.buttonMenu + " mt-4 ml-30"}>
+            <div
+              className={appHeaderStyles.buttonMenu + " mt-4 ml-30"}
+              onClick={(e) => {
+                navigate(PATH_PROFILE);
+              }}
+            >
               <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
-                <ProfileIcon type="secondary" />
+                <ProfileIcon
+                  type={
+                    currentSelectMenu === "profile" ? "primary" : "secondary"
+                  }
+                />
               </div>
               <p
                 className={
-                  appHeaderStyles.buttonMenuContent +
-                  " text text_type_main-small text_color_inactive"
+                  currentSelectMenu === "profile" ? currentClass : baseClass
                 }
               >
                 Личный кабинет
               </p>
-            </a>
+            </div>
           </div>
         </div>
       </div>
