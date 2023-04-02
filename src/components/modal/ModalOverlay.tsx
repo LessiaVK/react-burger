@@ -1,29 +1,29 @@
 import React from "react";
 import modalStyles from "./Modal.module.css";
-import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 import { actionOrderDetails } from "../../services/actions/orderDetails";
 import { useDispatch } from "react-redux";
-import PropTypes from "prop-types";
+import { FC } from "react";
 
-function ModalOverlay(props) {
-  const dispatch = useDispatch();
+type TModalOverlayProps = {
+  onModalClick: () => void;
+};
+
+const ModalOverlay: FC<TModalOverlayProps> = ({ onModalClick }) => {
+  const dispatch = useDispatch() as any;
+
   return (
     <div
       className={modalStyles.overlay}
       onClick={(e) => {
         // dispatch(actionIngredientDetails.deleteIngredientDetails());
-        if (props.onClick) {
-          props.onClick(e);
+        if (typeof onModalClick === "function") {
+          onModalClick();
         } else {
           dispatch(actionOrderDetails.orderNumber());
         }
       }}
     ></div>
   );
-}
-
-ModalOverlay.propTypes = {
-  onClick: PropTypes.func,
 };
 
 export default ModalOverlay;

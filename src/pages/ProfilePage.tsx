@@ -20,13 +20,13 @@ import { PATH_LOGIN, PATH_PROFILE } from "../utils/constants";
 export function ProfilePage() {
   const [form, setValue] = useState({ password: "", email: "", name: "" });
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const userForm = useSelector(userRequest);
+  const dispatch = useDispatch() as any;
+  const userForm = useSelector(userRequest) as any;
   const cancel = () => {
     setValue({ ...form, email: userForm.email, name: userForm.name });
   };
 
-  const update = (e) => {
+  const update = (e:any) => {
     e.preventDefault();
     let token = getCookie("token");
     if (!token && getCookie("refreshToken")) {
@@ -35,13 +35,13 @@ export function ProfilePage() {
     else navigate(PATH_LOGIN, { replace: true });
   };
 
-  const onChangeName = (e) => {
+  const onChangeName = (e :any) => {
     setValue({ ...form, name: e.target.value });
   };
-  const onChangePass = (e) => {
+  const onChangePass = (e:any) => {
     setValue({ ...form, password: e.target.value });
   };
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e:any) => {
     setValue({ ...form, email: e.target.value });
   };
 
@@ -110,7 +110,6 @@ export function ProfilePage() {
             placeholder={"Логин"}
             onChange={onChangeEmail}
             value={form.email ? form.email : ""}
-            error={false}
             size={"default"}
             extraClass="ml-1 pb-6"
           />
@@ -118,7 +117,6 @@ export function ProfilePage() {
             placeholder={"Пароль"}
             onChange={onChangePass}
             value={form.password ? form.password : ""}
-            error={false}
             size={"default"}
             extraClass="ml-1 pb-6"
           />

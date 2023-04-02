@@ -1,11 +1,18 @@
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, RouteProps } from "react-router-dom";
 import { loginSuccess } from "../../services/selectors";
 import { NavigateComponent } from "./NavigateComponent";
 import { PATH_LOGIN } from "../../utils/constants";
+import { PropsWithChildren } from "react";
 
-export const ProtectedRouteElement = ({ element }) => {
-  const isUserLogin = useSelector(loginSuccess);
+export type ProtectedRouteProps = {
+  element: JSX.Element;
+} & RouteProps;
+
+export const ProtectedRouteElement: React.FC<ProtectedRouteProps> = ({
+  element,
+}) => {
+  const isUserLogin = useSelector(loginSuccess) as any;
   const location = useLocation();
 
   if (!isUserLogin) {

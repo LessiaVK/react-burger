@@ -15,7 +15,7 @@ export const ProtectedRouteLogins = ({ element }) => {
     dispatch(getDataUser(navigate));
   }, []);
 
-  if (isUserLogin) return <NavigateComponent page={location?.state || '/'}  />
-  
+  if (isUserLogin) return <NavigateComponent page={location?.state || "/"} />;
+
   return element;
 };

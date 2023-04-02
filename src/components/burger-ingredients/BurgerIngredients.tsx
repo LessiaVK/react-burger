@@ -18,15 +18,27 @@ import {
 import { useDrag } from "react-dnd";
 import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 import { PATH_INGREDIENTS } from "../../utils/constants";
+import { RefObject } from "react";
+import { StringLiteralLike } from "typescript";
+
+type TDataIngr = {
+  _id?: string | any;
+  name?: string;
+  ref1?: HTMLInputElement;
+  type?: string;
+  image?: string;
+  price?: string;
+  data?: any;
+};
 
 export const IngredientDetails = () => {
-  let element = useSelector(currentIngredientSelector);
-  const dataIngradients = useSelector(ingredientsSelector);
+  let element = useSelector(currentIngredientSelector) as any;
+  const dataIngradients = useSelector(ingredientsSelector) as any;
   let { id } = useParams();
   if (id) {
-    let data = dataIngradients.filter((item) => item._id == id);
-    if (data.length == 1) {
-      console.log("data", data[0]);
+    let data = dataIngradients.filter((item: TDataIngr) => item._id == id);
+    if (data.length === 1) {
+      //console.log("data", data[0]);
       element = data[0];
     }
   }
@@ -77,12 +89,17 @@ export const IngredientDetails = () => {
   );
 };
 
-const ElementMenu = (props) => {
+type TElementMenuProps = {
+  element: TDataIngr;
+  tempId: string;
+};
+
+const ElementMenu = (props: TElementMenuProps) => {
   const orderList = useSelector(constructorSelector);
   const dispatch = useDispatch();
   const location = useLocation();
   const count = orderList.filter(
-    (item) => item._id == props.element._id
+    (item: TDataIngr) => item._id == props.element._id
   ).length;
   const [{ opacity }, dragRef] = useDrag({
     type: "ingredient",
@@ -107,7 +124,7 @@ const ElementMenu = (props) => {
         <img src={props.element.image} alt="Изображение ингредиента" />
         <div className={bIStyles.count}>
           {count > 0 && (
-            <Counter count={count} className="m-1" size="default" />
+            <Counter count={count} extraClass="m-1" size="default" />
           )}
         </div>
         <div className={bIStyles.bIDescription}>
@@ -115,7 +132,10 @@ const ElementMenu = (props) => {
             className={`constructor-element__price text text_type_digits-default`}
           >
             {props.element.price}
-            <CurrencyIcon className={bIStyles.sizeIcon} type="primary" />
+            <CurrencyIcon
+              // className={bIStyles.sizeIcon}
+              type="primary"
+            />
           </p>
           <p>{props.element.name}</p>
         </div>
@@ -124,25 +144,24 @@ const ElementMenu = (props) => {
   );
 };
 
-ElementMenu.propTypes = {
-  element: PropTypes.object.isRequired,
-  tempId: PropTypes.string.isRequired,
-};
-
-const ShowIngredients = (props) => {
+const ShowIngredients = (props: TDataIngr) => {
   const data = useSelector(ingredientsSelector);
-  const dataForShow = data.filter((elem) => elem.type === props.type);
+  const dataForShow = data.filter(
+    (elem: TDataIngr) => elem.type === props.type
+  );
   let t = new Date();
   let time = t.getTime().toString();
   return (
     <>
       <div data-group="group" className={bIStyles.main}>
-        <p ref={props.ref1} className="text text_type_main-medium pb-10 pt-10">
+        <p 
+        // ref={props.ref1} 
+        className="text text_type_main-medium pb-10 pt-10">
           {props.name}
         </p>
       </div>
       <div className={bIStyles.bIDescription2}>
-        {dataForShow.map((element, key) => {
+        {dataForShow.map((element: TDataIngr, key: string) => {
           let keyId = props.type + key + time;
 
           return (
@@ -154,21 +173,22 @@ const ShowIngredients = (props) => {
   );
 };
 
-function BurgerIngredients(props) {
-  const bunRef = React.useRef(null);
-  const sauceRef = React.useRef(null);
-  const mainRef = React.useRef(null); //represents main section
+function BurgerIngredients() {
+  const bunRef = React.useRef<HTMLInputElement>(null);
+  const sauceRef = React.useRef<HTMLInputElement>(null);
+  const mainRef = React.useRef<HTMLInputElement>(null); //represents main section
   const location = useLocation();
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
   const currentIngredient = useSelector(currentIngredientSelector);
   const [current, setCurrent] = React.useState("one");
 
-  const groupList = document.querySelectorAll("[data-group]");
+  const groupList = document.querySelectorAll<HTMLElement>("[data-group]");
   const arrTab = ["one", "two", "three"];
   const scroll = () => {
-    const scrolltop = document.getElementById("ShowIngredients").scrollTop;
-    let groupListArr = [...groupList];
+    const st = document.getElementById("ShowIngredients") as HTMLElement;
+    const scrolltop = st.scrollTop;
+    const groupListArr = Array.from(groupList);
     let selectElement = -1;
     groupListArr.map((item, id) => {
       if (item.offsetTop > scrolltop && selectElement == -1) {
@@ -180,8 +200,8 @@ function BurgerIngredients(props) {
     }
   };
 
-  const handleScroll = (ref) => {
-    let elem = document.getElementById("ShowIngredients");
+  const handleScroll = (ref: any) => {
+    let elem = document.getElementById("ShowIngredients") as HTMLElement;
     elem.scrollTo({
       top: ref.offsetTop - elem.offsetTop,
       left: 0,
@@ -189,7 +209,7 @@ function BurgerIngredients(props) {
     });
   };
 
-  const onClickTab = (e) => {
+  const onClickTab = (e: string) => {
     setCurrent(e);
     switch (e) {
       case "one":
@@ -223,23 +243,25 @@ function BurgerIngredients(props) {
         </Tab>
       </div>
       <div id="ShowIngredients" className={bIStyles.biScroll} onScroll={scroll}>
-        <ShowIngredients name="Булки" type="bun" data={data} ref1={bunRef} />
+        <ShowIngredients name="Булки" type="bun" data={data} 
+        // ref1={bunRef} 
+        />
         <ShowIngredients
           name="Соусы"
           type="sauce"
           data={data}
-          ref1={sauceRef}
+          // ref1={sauceRef}
         />
         <ShowIngredients
           name="Начинки"
           type="main"
           data={data}
-          ref1={mainRef}
+          // ref1={mainRef}
         />
       </div>
       {location.state && (
         <Modal
-          onClick={(e) => {
+          close={() => {
             navigate(-1);
           }}
           modalProps="modals"
