@@ -13,7 +13,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { getIngredients } from "../services/thunks";
 
 function ConstructorPage() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch() as any;
   const fetchDataRequest = useSelector(fetchIngredientsRequest);
   const fetchDataError = useSelector(fetchIngredientsError);
 

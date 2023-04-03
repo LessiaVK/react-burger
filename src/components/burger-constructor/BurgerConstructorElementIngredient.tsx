@@ -5,13 +5,16 @@ import { useRef, useCallback } from "react";
 import { actionBurgerCompound } from "../../services/actions/burgerСompound";
 import { useDispatch, useSelector } from "react-redux";
 import { constructorSelector } from "../../services/selectors";
+import { TIngredient } from "../burger-ingredients/BurgerIngredients";
 
-export const ElementIngredient = (props) => {
+type TDnDCallBack = (dragIndex: number , hoverIndex: number)  => any;
+
+export const ElementIngredient = (props:TIngredient) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const data = useSelector(constructorSelector);
 
-  const moveCard = useCallback(
+  const moveCard = useCallback<TDnDCallBack>(
     (dragIndex, hoverIndex) => {
       const dragCard = data[dragIndex];
       const newCards = [...data];
@@ -38,7 +41,7 @@ export const ElementIngredient = (props) => {
       };
     },
 
-    hover(item, monitor) {
+    hover(item :any, monitor) {
       if (!ref.current) {
         return;
       }
@@ -58,8 +61,8 @@ export const ElementIngredient = (props) => {
         key={props.key}
         text={props.text}
         price={props.price}
-        thumbnail={props.thumbnail}
-        handleClose={props.onDell}
+        thumbnail={props.thumbnail ? props.thumbnail: "" }
+        handleClose={props.handleClose}
       />
     </div>
   );

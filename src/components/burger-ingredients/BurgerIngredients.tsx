@@ -21,15 +21,35 @@ import { PATH_INGREDIENTS } from "../../utils/constants";
 import { RefObject } from "react";
 import { StringLiteralLike } from "typescript";
 
-type TDataIngr = {
+export type TIngredient = {
+  _id?: string | any;
+  keyId?: string;
+  dragId?: string;
+  name?: string;
+  type?: string;
+  image?: string;
+  price: number;
+  index:number;
+  text:string;
+  thumbnail:string | undefined;
+  key?:string;
+  handleClose?: () => void;
+};
+
+export type TDataIngr = {
   _id?: string | any;
   name?: string;
-  ref1?: HTMLInputElement;
+  ref1?: RefObject<HTMLParagraphElement>;
   type?: string;
   image?: string;
   price?: string;
   data?: any;
+  index?:string;
+  text?:string;
+  key?:string;
 };
+
+
 
 export const IngredientDetails = () => {
   let element = useSelector(currentIngredientSelector) as any;
@@ -155,7 +175,7 @@ const ShowIngredients = (props: TDataIngr) => {
     <>
       <div data-group="group" className={bIStyles.main}>
         <p 
-        // ref={props.ref1} 
+        ref={props.ref1} 
         className="text text_type_main-medium pb-10 pt-10">
           {props.name}
         </p>
@@ -174,9 +194,9 @@ const ShowIngredients = (props: TDataIngr) => {
 };
 
 function BurgerIngredients() {
-  const bunRef = React.useRef<HTMLInputElement>(null);
-  const sauceRef = React.useRef<HTMLInputElement>(null);
-  const mainRef = React.useRef<HTMLInputElement>(null); //represents main section
+  const bunRef = React.useRef<HTMLParagraphElement>(null);
+  const sauceRef = React.useRef<HTMLParagraphElement>(null);
+  const mainRef = React.useRef<HTMLParagraphElement>(null); //represents main section
   const location = useLocation();
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
@@ -211,6 +231,8 @@ function BurgerIngredients() {
 
   const onClickTab = (e: string) => {
     setCurrent(e);
+    console.log("onClickTab",e,bunRef);
+    
     switch (e) {
       case "one":
         handleScroll(bunRef.current);
@@ -244,19 +266,19 @@ function BurgerIngredients() {
       </div>
       <div id="ShowIngredients" className={bIStyles.biScroll} onScroll={scroll}>
         <ShowIngredients name="Булки" type="bun" data={data} 
-        // ref1={bunRef} 
+        ref1={bunRef} 
         />
         <ShowIngredients
           name="Соусы"
           type="sauce"
           data={data}
-          // ref1={sauceRef}
+          ref1={sauceRef}
         />
         <ShowIngredients
           name="Начинки"
           type="main"
           data={data}
-          // ref1={mainRef}
+          ref1={mainRef}
         />
       </div>
       {location.state && (

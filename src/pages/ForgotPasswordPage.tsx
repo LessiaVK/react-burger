@@ -9,8 +9,13 @@ import {
 import loginStyles from "./LoginPage.module.css";
 import { setCookie } from "../utils/cookie";
 import { PATH_LOGIN, PATH_RESET } from "../utils/constants";
+import { NavigateFunction } from "react-router-dom";
 
-const codeRequest = async (form, navigate) => {
+type TFormEmail = {
+  email :string
+}
+
+const codeRequest = async (form : TFormEmail, navigate : NavigateFunction ) => {
   return await fetch("https://norma.nomoreparties.space/api/password-reset", {
     method: "POST",
     mode: "cors",
@@ -31,9 +36,9 @@ const codeRequest = async (form, navigate) => {
 };
 
 export function ForgotPassword() {
-  const [form, setValue] = useState({ email: "" });
-  const navigate = useNavigate();
-  const onChange = (e) => {
+  const [form, setValue] = useState<TFormEmail>({ email: "" });
+  const navigate = useNavigate() as any;
+  const onChange = (e :any) => {
     setValue({ ...form, email: e.target.value });
   };
 
@@ -42,7 +47,7 @@ export function ForgotPassword() {
   }, []);
 
   let getCode = useCallback(
-    (e) => {
+    (e: any) => {
       e.preventDefault();
       codeRequest(form, navigate);
     },

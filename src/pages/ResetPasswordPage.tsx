@@ -9,8 +9,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import loginStyles from "./LoginPage.module.css";
 import { PATH_LOGIN } from "../utils/constants";
+import { NavigateFunction } from "react-router-dom";
 
-const resetRequest = async (form, navigate) => {
+type TFormEmail = {
+  token :string;
+  password :string;
+}
+
+const resetRequest = async (form : TFormEmail, navigate: NavigateFunction) => {
   return await fetch(
     "https://norma.nomoreparties.space/api/password-reset/reset",
     {
@@ -36,15 +42,15 @@ const resetRequest = async (form, navigate) => {
 export function ResetPassword() {
   const [form, setValue] = useState({ password: "", token: "" });
   const navigate = useNavigate();
-  const onChangePass = (e) => {
+  const onChangePass = (e: any) => {
     setValue({ ...form, password: e.target.value });
   };
-  const onChange = (e) => {
+  const onChange = (e: any) => {
     setValue({ ...form, token: e.target.value });
   };
 
   let changePassword = useCallback(
-    (e) => {
+    (e: any) => {
       e.preventDefault();
       resetRequest(form, navigate);
     },
@@ -66,7 +72,6 @@ export function ResetPassword() {
             placeholder={"Введите новый пароль"}
             onChange={onChangePass}
             value={form.password}
-            error={false}
             size={"default"}
             extraClass="ml-1"
           />

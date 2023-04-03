@@ -5,10 +5,10 @@ import { useDispatch } from "react-redux";
 import { FC } from "react";
 
 type TModalOverlayProps = {
-  onModalClick: () => void;
+  handleClose?: () => void | undefined;
 };
 
-const ModalOverlay: FC<TModalOverlayProps> = ({ onModalClick }) => {
+const ModalOverlay: FC<TModalOverlayProps> = ({ handleClose }) => {
   const dispatch = useDispatch() as any;
 
   return (
@@ -16,8 +16,8 @@ const ModalOverlay: FC<TModalOverlayProps> = ({ onModalClick }) => {
       className={modalStyles.overlay}
       onClick={(e) => {
         // dispatch(actionIngredientDetails.deleteIngredientDetails());
-        if (typeof onModalClick === "function") {
-          onModalClick();
+        if (typeof handleClose === "function") {
+          handleClose();
         } else {
           dispatch(actionOrderDetails.orderNumber());
         }

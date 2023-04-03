@@ -12,18 +12,23 @@ import {
 import loginStyles from "./LoginPage.module.css";
 import { PATH_REGISTER } from "../utils/constants";
 
+type TFormEmail = {
+  email :string;
+  password :string;
+}
+
 export function LoginPage() {
-  const [form, setValue] = useState({ password: "", email: "" });
-  const dispatch = useDispatch();
+  const [form, setValue] = useState<TFormEmail>({ password: "", email: "" });
+  const dispatch = useDispatch() as any;
   const navigate = useNavigate();
-  const onChangePass = (e) => {
+  const onChangePass = (e: any) => {
     setValue({ ...form, password: e.target.value });
   };
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: any) => {
     setValue({ ...form, email: e.target.value });
   };
   let login = useCallback(
-    (e) => {
+    (e: any) => {
       e.preventDefault();
       dispatch(getLoginRequest(form, navigate));
     },
@@ -42,7 +47,6 @@ export function LoginPage() {
           placeholder={"E-mail"}
           onChange={onChangeEmail}
           value={form.email}
-          error={false}
           size={"default"}
           extraClass="ml-1"
         />
@@ -50,7 +54,6 @@ export function LoginPage() {
           placeholder={"Пароль"}
           onChange={onChangePass}
           value={form.password}
-          error={false}
           size={"default"}
           extraClass="ml-1"
         />

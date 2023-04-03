@@ -7,7 +7,7 @@ import { getIngredients } from "../services/thunks";
 import { IngredientDetails } from "../components/burger-ingredients/BurgerIngredients";
 
 function IngredientPage() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch() as any;
 
   React.useEffect(() => {
     dispatch(getIngredients());

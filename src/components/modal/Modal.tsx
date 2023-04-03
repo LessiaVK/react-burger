@@ -9,9 +9,10 @@ import { ReactNode } from "react";
 
 type TModalProps = {
   modalProps: string;
-  close: () => void;
+  close?: () => void;
   caption?: string;
   onClick?: () => void;
+  handleClose?: () => void;
   children?: ReactNode;
 };
 
@@ -24,7 +25,9 @@ function Modal(props: TModalProps) {
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        props.close();
+        if (props.close) {
+          props.close();
+        }
       }
     };
     window.addEventListener("keydown", handleEsc);
@@ -36,15 +39,17 @@ function Modal(props: TModalProps) {
 
   return createPortal(
     <>
-      <ModalOverlay onModalClick={props.close} />
+      <ModalOverlay handleClose={props.close} />
       <div className={modalStyles.modal_window}>
         <div className={modalStyles.cap + " text text_type_main-large p-10"}>
           <p>{props.caption} </p>
           <div
             className={modalStyles.close}
             onClick={(e) => {
-              if (props.onClick) {
-                props.onClick();
+              if (props.handleClose) {
+                props.handleClose();
+              } else if (props.close) {
+                props.close();
               } else {
                 // dispatch(actionIngredientDetails.deleteIngredientDetails());
                 dispatch(actionOrderDetails.orderNumber());
