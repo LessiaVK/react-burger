@@ -38,16 +38,16 @@ const codeRequest = async (form : TFormEmail, navigate : NavigateFunction ) => {
 export function ForgotPassword() {
   const [form, setValue] = useState<TFormEmail>({ email: "" });
   const navigate = useNavigate() as any;
-  const onChange = (e :any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, email: e.target.value });
   };
 
   useEffect(() => {
-    setCookie("forgot", "1");
+    setCookie("forgot", "1",{});
   }, []);
 
   let getCode = useCallback(
-    (e: any) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       codeRequest(form, navigate);
     },

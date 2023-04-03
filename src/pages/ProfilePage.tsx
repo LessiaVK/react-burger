@@ -26,7 +26,7 @@ export function ProfilePage() {
     setValue({ ...form, email: userForm.email, name: userForm.name });
   };
 
-  const update = (e:any) => {
+  const update = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let token = getCookie("token");
     if (!token && getCookie("refreshToken")) {
@@ -35,13 +35,13 @@ export function ProfilePage() {
     else navigate(PATH_LOGIN, { replace: true });
   };
 
-  const onChangeName = (e :any) => {
+  const onChangeName = (e: any) => {
     setValue({ ...form, name: e.target.value });
   };
-  const onChangePass = (e:any) => {
+  const onChangePass = (e: any) => {
     setValue({ ...form, password: e.target.value });
   };
-  const onChangeEmail = (e:any) => {
+  const onChangeEmail = (e: any) => {
     setValue({ ...form, email: e.target.value });
   };
 

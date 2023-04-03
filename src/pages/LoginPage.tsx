@@ -21,14 +21,14 @@ export function LoginPage() {
   const [form, setValue] = useState<TFormEmail>({ password: "", email: "" });
   const dispatch = useDispatch() as any;
   const navigate = useNavigate();
-  const onChangePass = (e: any) => {
+  const onChangePass = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, password: e.target.value });
   };
-  const onChangeEmail = (e: any) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, email: e.target.value });
   };
   let login = useCallback(
-    (e: any) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       dispatch(getLoginRequest(form, navigate));
     },

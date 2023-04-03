@@ -16,7 +16,7 @@ type TFormEmail = {
   password :string;
 }
 
-const resetRequest = async (form : TFormEmail, navigate: NavigateFunction) => {
+const resetRequest = async (form: TFormEmail, navigate: NavigateFunction) => {
   return await fetch(
     "https://norma.nomoreparties.space/api/password-reset/reset",
     {
@@ -34,7 +34,7 @@ const resetRequest = async (form : TFormEmail, navigate: NavigateFunction) => {
   )
     .then((res) => res.json())
     .then((data) => {
-      console.log("codeRequest data", data);
+      // console.log("codeRequest data", data);
       data.success && navigate(PATH_LOGIN, { replace: true });
     });
 };

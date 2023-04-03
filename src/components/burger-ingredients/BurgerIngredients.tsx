@@ -231,7 +231,7 @@ function BurgerIngredients() {
 
   const onClickTab = (e: string) => {
     setCurrent(e);
-    console.log("onClickTab",e,bunRef);
+    // console.log("onClickTab",e,bunRef);
     
     switch (e) {
       case "one":
