@@ -14,22 +14,28 @@ import loginStyles from "./LoginPage.module.css";
 import { getRegisterRequest } from "../services/thunks";
 import { PATH_LOGIN } from "../utils/constants";
 
+type TFormEmail = {
+  email :string;
+  password :string;
+  name :string;
+}
+
 export function RegisterPage() {
-  const [form, setValue] = useState({ name: "", password: "", email: "" });
-  const dispatch = useDispatch();
+  const [form, setValue] = useState<TFormEmail>({ name: "", password: "", email: "" });
+  const dispatch = useDispatch() as any;
   const navigate = useNavigate();
-  const onChangePass = (e) => {
+  const onChangePass = (e: any) => {
     setValue({ ...form, password: e.target.value });
   };
-  const onChangeName = (e) => {
+  const onChangeName = (e: any) => {
     setValue({ ...form, name: e.target.value });
   };
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: any) => {
     setValue({ ...form, email: e.target.value });
   };
 
   let register = useCallback(
-    (e) => {
+    (e: any) => {
       e.preventDefault();
       dispatch(getRegisterRequest(form, navigate));
     },
@@ -58,7 +64,6 @@ export function RegisterPage() {
             placeholder={"E-mail"}
             onChange={onChangeEmail}
             value={form.email}
-            error={false}
             size={"default"}
             extraClass="ml-1"
           />
@@ -66,7 +71,6 @@ export function RegisterPage() {
             placeholder={"Пароль"}
             onChange={onChangePass}
             value={form.password}
-            error={false}
             size={"default"}
             extraClass="ml-1"
           />

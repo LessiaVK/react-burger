@@ -3,19 +3,31 @@ import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import modalStyles from "./Modal.module.css";
 import ModalOverlay from "./ModalOverlay";
-import PropTypes from "prop-types";
-import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 import { actionOrderDetails } from "../../services/actions/orderDetails";
 import { useDispatch } from "react-redux";
+import { ReactNode } from "react";
 
-function Modal(props) {
-  const dispatch = useDispatch();
-  let element = document.getElementById(props.modalProps);
+type TModalProps = {
+  modalProps: string;
+  close?: () => void;
+  caption?: string;
+  onClick?: () => void;
+  handleClose?: () => void;
+  children?: ReactNode;
+};
+
+function Modal(props: TModalProps) {
+  const dispatch = useDispatch() as any;
+  const element = document.getElementById(props.modalProps) as
+    | Element
+    | DocumentFragment;
 
   useEffect(() => {
-    const handleEsc = (event) => {
+    const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        props.close();
+        if (props.close) {
+          props.close();
+        }
       }
     };
     window.addEventListener("keydown", handleEsc);
@@ -27,15 +39,17 @@ function Modal(props) {
 
   return createPortal(
     <>
-      <ModalOverlay close={props.close} onClick={props.onClick} />
+      <ModalOverlay handleClose={props.close} />
       <div className={modalStyles.modal_window}>
         <div className={modalStyles.cap + " text text_type_main-large p-10"}>
           <p>{props.caption} </p>
           <div
             className={modalStyles.close}
             onClick={(e) => {
-              if (props.onClick) {
-                props.onClick(e);
+              if (props.handleClose) {
+                props.handleClose();
+              } else if (props.close) {
+                props.close();
               } else {
                 // dispatch(actionIngredientDetails.deleteIngredientDetails());
                 dispatch(actionOrderDetails.orderNumber());
@@ -53,9 +67,3 @@ function Modal(props) {
 }
 
 export default Modal;
-
-Modal.propTypes = {
-  modalProps: PropTypes.string.isRequired,
-  children: PropTypes.any.isRequired,
-  caption: PropTypes.string,
-};
