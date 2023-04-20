@@ -20,8 +20,8 @@ const ModalOverlay: FC<TModalOverlayProps> = ({ handleClose }) => {
         if (typeof handleClose === "function") {
           handleClose();
         } else {
-          // dispatch(actionOrderDetails.orderNumber());
-          dispatch(getOrderNumber());
+          dispatch(actionOrderDetails.orderNumber(0));
+          // dispatch(getOrderNumber());
         }
       }}
     ></div>
