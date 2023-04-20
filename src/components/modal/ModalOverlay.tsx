@@ -3,6 +3,7 @@ import modalStyles from "./Modal.module.css";
 import { actionOrderDetails } from "../../services/actions/orderDetails";
 import { useDispatch } from "react-redux";
 import { FC } from "react";
+import { getOrderNumber } from "../../services/thunks";
 
 type TModalOverlayProps = {
   handleClose?: () => void | undefined;
@@ -19,7 +20,8 @@ const ModalOverlay: FC<TModalOverlayProps> = ({ handleClose }) => {
         if (typeof handleClose === "function") {
           handleClose();
         } else {
-          dispatch(actionOrderDetails.orderNumber());
+          // dispatch(actionOrderDetails.orderNumber());
+          dispatch(getOrderNumber());
         }
       }}
     ></div>

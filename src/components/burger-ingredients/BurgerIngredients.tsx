@@ -27,14 +27,44 @@ export type TIngredient = {
   dragId?: string;
   name?: string;
   type?: string;
-  image?: string;
+  image: string;
+  image_large: string;
+  image_mobile: string;
   price: number;
   index:number;
   text:string;
-  thumbnail:string | undefined;
+  thumbnail:string;
   key?:string;
   handleClose?: () => void;
 };
+
+// export type TIngredient = {
+//   _id: string;
+//   keyId?: string;
+//   dragId?: string;
+//   name: string;
+//   type: string;
+//   image: string;
+//   image_large?: string;
+//   image_mobile?: string;
+//   price: number;
+//   index: number;
+//   text:string;
+//   thumbnail:string | undefined;
+//   key?:string;
+//   handleClose?: () => void;
+//   proteins?: number;
+//   calories?: number;
+//   carbohydrates?: number;
+//   count?: number;
+//   fat?: number;
+//   // bunLock: boolean;
+//   // bunLock_top: boolean;
+//   // bunLock_bottom: boolean;
+//   isLocked?: boolean;
+//   ingredientId: string;
+//   extraClass?: string;
+// };
 
 export type TDataIngr = {
   _id?: string | any;

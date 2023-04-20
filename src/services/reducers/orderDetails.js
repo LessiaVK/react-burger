@@ -17,7 +17,7 @@ export const orderReducer = (state = initialState, action) => {
     case ORDER_NUMBER_SUCCESS:
       return {
         ...state,
-        orderNumber: action.payload,
+        orderNum: action.payload,
         orderRequest: false,
         orderFailed: false,
       };

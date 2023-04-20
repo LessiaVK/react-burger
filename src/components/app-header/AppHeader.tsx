@@ -7,7 +7,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import appHeaderStyles from "./AppHeader.module.css";
-import { PATH_PROFILE, PATH_LIST } from "../../utils/constants";
+import { PATH_PROFILE, PATH_FEED } from "../../utils/constants";
 
 function AppHeader() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function AppHeader() {
     case "/":
       currentSelectMenu = "constructor";
       break;
-    case PATH_LIST:
+    case PATH_FEED:
       currentSelectMenu = "list";
       break;
     case PATH_PROFILE:
@@ -62,7 +62,7 @@ function AppHeader() {
           <div
             className={appHeaderStyles.buttonMenu + " mt-4"}
             onClick={(e) => {
-              navigate(PATH_LIST);
+              navigate(PATH_FEED);
             }}
           >
             <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>

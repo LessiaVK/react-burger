@@ -6,6 +6,7 @@ import ModalOverlay from "./ModalOverlay";
 import { actionOrderDetails } from "../../services/actions/orderDetails";
 import { useDispatch } from "react-redux";
 import { ReactNode } from "react";
+import { getOrderNumber } from "../../services/thunks";
 
 type TModalProps = {
   modalProps: string;
@@ -52,7 +53,8 @@ function Modal(props: TModalProps) {
                 props.close();
               } else {
                 // dispatch(actionIngredientDetails.deleteIngredientDetails());
-                dispatch(actionOrderDetails.orderNumber());
+                // dispatch(actionOrderDetails.orderNumber());
+                dispatch(getOrderNumber());
               }
             }}
           >

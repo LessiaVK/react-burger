@@ -36,6 +36,19 @@ interface IAction {
   type: "init" | "increment" | "decrement";
 }
 
+export type TIngredientBurger = {
+  index: number;
+  keyId: string | undefined;
+  text: string;
+  thumbnail: string | undefined;
+  price: number;
+  type?: 'top' | 'bottom';
+  isLocked?: boolean;
+  extraClass?: string;
+  image_mobile?: any;
+  handleClose?: () => void;
+};
+
 function reducer(state: IState, action: IAction) {
   switch (action.type) {
     case "init":
@@ -70,17 +83,6 @@ function OrderDetails() {
   );
 }
 
-
-export type TIngredientBurger = {
-  index: string;
-  text: string;
-  thumbnail: string;
-  price: number;
-  type?: 'top' | 'bottom';
-  isLocked?: boolean;
-  extraClass?: string;
-  handleClose?: () => void;
-};
 
 const BurgerElement = (props : TIngredientBurger) => {
   const [{ isHover }, dropTargerElementRef] = useDrop({
@@ -138,10 +140,10 @@ function BurgerConstructor() {
 
     drop(item: any) {
       // console.log("drop", item, data);
-      let buter = [{}];
+      let buter: TIngredient[] = [];
       let flagNotBun = true;
       if (item.element.type == "bun") {
-        let ingred = data.filter((item: TIngredient) => item.type !== "bun");
+        let ingred = data.filter((item: TIngredient) => item.type !== 'bun');
         buter = [
           { ...item.element, dragId: uuid() } ,
           ...ingred,
@@ -150,7 +152,7 @@ function BurgerConstructor() {
         flagNotBun = false;
       }
       data.forEach((element:TIngredient, i: number) => {
-        if (element.type == "bun" && item.element.type == "bun") {
+        if (element.type === "bun" && item.element.type == "bun") {
           data[i] = item.element;
           flagNotBun = false;
         }
@@ -170,7 +172,7 @@ function BurgerConstructor() {
 
   let t = new Date();
   let time = t.getTime().toString();
-  let elementBorder: any;
+  let elementBorder: TIngredient | undefined;
   data.map((element : TIngredient, key : string) => {
     if (element.type === "bun" && !elementBorder) {
       elementBorder = element;
@@ -223,6 +225,7 @@ function BurgerConstructor() {
             price={elementBorder.price}
             thumbnail={elementBorder.image_mobile}
             // extraClass="ml-6"
+            keyId={'0'}
           />
         )}
       </div>

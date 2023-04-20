@@ -7,7 +7,7 @@ export const fetchIngredientsError = (state) =>
 export const fetchIngredientsRequest = (state) =>
   state.fetchDataReducer.fetchIngredientsRequest;
 
-export const constructorSelector = (state) => state.burgerReducer.constructor;
+export const constructorSelector = (state) => state.burgerReducer.constructorB;
 export const currentItemsIDSelector = (state) =>
   state.burgerReducer.currentItemsID;
 
@@ -16,7 +16,7 @@ export const currentIngredientSelector = (state) =>
 export const fetchcurrentItemsID = (state) =>
   state.burgerReducer.currentItemsID;
 
-export const orderNumber = (state) => state.orderReducer.orderNumber;
+export const orderNumber = (state) => state.orderReducer.orderNum;
 export const orderRequest = (state) => state.orderReducer.orderRequest;
 export const orderFailed = (state) => state.orderReducer.orderFailed;
 

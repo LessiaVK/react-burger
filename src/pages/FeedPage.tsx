@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-export function ListPage() {
+export function FeedPage() {
   
   return (
     <div className="text text_type_main-large pt-10">

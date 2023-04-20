@@ -14,7 +14,7 @@ import { RegisterPage } from "../../pages/RegisterPage";
 import { ResetPassword } from "../../pages/ResetPasswordPage";
 import { ForgotPassword } from "../../pages/ForgotPasswordPage";
 import { ProfilePage } from "../../pages/ProfilePage";
-import { ListPage } from "../../pages/ListPage";
+import { FeedPage } from "../../pages/FeedPage";
 import { NotFound404 } from "../../pages/NotFound";
 import { ProtectedRouteElement } from "../protected-route-element/ProtectedRouteElement";
 import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteLogins";
@@ -26,7 +26,7 @@ import {
   PATH_FORGOT,
   PATH_RESET,
   PATH_PROFILE,
-  PATH_LIST,
+  PATH_FEED,
   PATH_INGREDIENTS,
 } from "../../utils/constants";
 
@@ -74,7 +74,7 @@ function App() {
               path={PATH_PROFILE + "/:orders/:id"}
               element={<ProtectedRouteElement element={<ProfilePage />} />}
             />
-            <Route path={PATH_LIST} element={<ListPage />} />
+            <Route path={PATH_FEED} element={<FeedPage />} />
             <Route
               path={PATH_INGREDIENTS + "/:id"}
               element={<ModalSwitch />}

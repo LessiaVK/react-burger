@@ -1,12 +1,14 @@
-export const initialState = {
+import { TInitialState } from "./reducers/todo";
+
+export const initialState: TInitialState = {
   fetchDataReducer: {
     ingredients: [],
-    fetchIngredients: "none",
+    fetchIngredients: [],
     fetchIngredientsRequest: false,
     fetchIngredientsError: false,
   },
   burgerReducer: {
-    constructor: [],
+    constructorB: [],
     currentItemsID: [],
   },
   ingredientReducer: {
@@ -15,19 +17,19 @@ export const initialState = {
   },
   orderReducer: {
     currentOrder: {},
-    orderNumber: 0,
+    orderNum: 0,
     orderRequest: true,
     orderFailed: false,
   },
   loginReducer: {
-    loginRequest: {},
+    loginRequest: { "success": false, user: { email: "", name: "" } },
     loginSuccess: false,
     loginError: false,
   },
   logoutReducer: {
-    logout: {},
+    logout: {"success": false, "message": ''},
     logoutSuccess: false,
-    loginError: false,
+    logoutError: false,
   },
   registerReducer: {
     registerRequest: { password: "", email: "", name: "" },
@@ -35,12 +37,12 @@ export const initialState = {
     registerError: false,
   },
   userReducer: {
-    userRequest: {},
+    userRequest: { "success": false, user: { email: "", name: "" } },
     userSuccess: false,
     userError: false,
   },
   updateTokenReducer: {
-    updateToken: {},
+    updateToken: {"success": false, "accessToken": '', "refreshToken": ''},
     updateTokenSuccess: false,
     updateTokenError: false,
   },
