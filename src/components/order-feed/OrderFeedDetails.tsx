@@ -40,20 +40,20 @@ const exampleOrder = {
 }
 
 export const OrderFeedDetails = () => {
-  let element = useSelector(currentOrderSelector) as any;
+  // let element = useSelector(currentOrderSelector) as any;
   const dataIngradients = useSelector(ingredientsSelector) as any;
   let { id } = useParams();
   if (id) {
     let data = dataIngradients.filter((item: TOrderFeed) => item._id == id);
     if (data.length === 1) {
       //console.log("data", data[0]);
-      element = data[0];
+      // element = data[0];
     }
   }
 
   return (
     <div className={oFStyles.sizeMain + " mb-10"}>
-      <img
+      {/* <img
         className={oFStyles.sizeImg}
         src={element.image}
         alt={"Изображение ингредиента"}
@@ -92,7 +92,7 @@ export const OrderFeedDetails = () => {
             {element.carbohydrates}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

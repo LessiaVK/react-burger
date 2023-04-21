@@ -40,7 +40,7 @@ const exampleOrder = {
     "totalToday": 1
 }
 
-export type TOrderFeed {
+export type TOrderFeed = {
   ingredients: string[],
   _id: string,
   status: string,
@@ -69,14 +69,14 @@ type TOrdersProps = {
 };
 
 const Orders = (props: TOrdersProps) => {
-  props.data.
+  props.data
 }
 
 function OrderFeed() {
   const location = useLocation();
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
-  const currentOrder = useSelector(currentOrderSelector);
+  // const currentOrder = useSelector(currentOrderSelector);
   
   const onClickOrder = () => {
 
@@ -88,7 +88,7 @@ function OrderFeed() {
         Лента заказов
       </p>
       <div className={oFStyles.ofFlex}>
-        <Orders data={data} onClick={onClickOrder} className={oFStyles.ofScroll} />
+        {/* <Orders data={data} onClick={onClickOrder} className={oFStyles.ofScroll} /> */}
       </div>
       {location.state && (
         <Modal

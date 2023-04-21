@@ -57,4 +57,10 @@ export type TInitialState = {
     updateTokenSuccess: boolean,
     updateTokenError: boolean,
   },
+  wsReducer: {
+    error: boolean,
+    orders: any,
+    wsConnected: boolean,
+    dataIsReady: boolean,
+  }
 };

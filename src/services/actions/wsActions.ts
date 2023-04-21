@@ -1,4 +1,4 @@
-import { WS_SEND_MESSAGE, WS_CONNECTION_CLOSED, WS_CONNECTION_END, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_ORDERS, WS_SEND_PONG } from "./actionTypes";
+import { WS_SEND_MESSAGE, WS_CONNECTION_CLOSED, WS_GET_MESSAGE, WS_CONNECTION_END, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS,  WS_SEND_PONG } from "./actionTypes";
 
 export function wsConnectionSuccess() {
   return {
@@ -13,12 +13,6 @@ export function wsConnectionStart(url: string) {
   };
 }
 
-export function wsGetOrders(orders: any) {
-  return {
-    type: WS_GET_ORDERS,
-    payload: orders,
-  };
-}
 
 export const wsSendMessage = (message: any) => {
   return {
@@ -36,5 +30,12 @@ export const wsConnectionError = () => {
 export const wsConnectionClosed = () => {
   return {
     type: WS_CONNECTION_CLOSED,
+  };
+};
+
+export const wsGetMessage = (data: any) => {
+  return {
+    type: WS_GET_MESSAGE,
+    payload: data,
   };
 };

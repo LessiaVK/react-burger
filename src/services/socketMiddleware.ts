@@ -19,7 +19,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: WsActions): Middlewar
         onOpen,
         onClose,
         onError,
-        onGetOrders,
+        onGetMessage,
         wsClose,
         wsPingPong,
       } = wsActions;
@@ -28,6 +28,8 @@ export const socketMiddleware = (wsUrl: string, wsActions: WsActions): Middlewar
         socket = new WebSocket(action.payload);
 
         socket.onopen = (event) => {
+          
+          
           dispatch({ type: onOpen, payload: event });
         };
 
@@ -37,13 +39,12 @@ export const socketMiddleware = (wsUrl: string, wsActions: WsActions): Middlewar
 
         socket.onmessage = (event) => {
           const { data } = event;
+         
           const parseData = JSON.parse(data);
+          console.log("onmessage",parseData);
           dispatch({
-            type: onGetOrders,
-            payload: {
-              data: parseData,
-              timestamp: new Date().getTime() / 100,
-            },
+            type: onGetMessage,
+            payload: parseData
           });
         };
 

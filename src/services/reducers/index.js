@@ -8,6 +8,7 @@ import { loginReducer } from "./login";
 import { logoutReducer } from "./logout";
 import { userReducer } from "./user";
 import { updateTokenReducer } from "./token";
+import { wsReducer } from "./wsReducer";
 
 export const rootReducer = combineReducers({
   fetchDataReducer,
@@ -19,4 +20,5 @@ export const rootReducer = combineReducers({
   logoutReducer,
   userReducer,
   updateTokenReducer,
+  wsReducer
 });

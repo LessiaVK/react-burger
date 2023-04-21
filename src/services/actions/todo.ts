@@ -22,7 +22,7 @@ import {
     UPDATE_TOKEN_ERROR,
     USER_REQUEST, USER_SUCCESS, USER_ERROR,
     WS_SEND_MESSAGE, WS_CONNECTION_CLOSED, WS_CONNECTION_END, WS_CONNECTION_ERROR,
-    WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_ORDERS, WS_SEND_PONG
+    WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_SEND_PONG
 
 } from "./actionTypes";
 
@@ -208,8 +208,8 @@ export interface IWsConnectionStart{
   export interface IWsConnectionSuccess {
     readonly type: typeof WS_CONNECTION_SUCCESS;
   }
-  export interface IWsGetOrders {
-    readonly type: typeof WS_GET_ORDERS;
+  export interface IWsGetMessage {
+    readonly type: typeof WS_GET_MESSAGE;
     payload: WSData;
   }
   export interface IWsSendMessage {
@@ -257,7 +257,7 @@ export interface IWsConnectionStart{
     | IUserError 
     | IWsConnectionStart
     | IWsConnectionSuccess 
-    | IWsGetOrders 
+    | IWsGetMessage 
     | IWsSendMessage 
     | IWsConnectionError 
     | IWsConnectionClosed 

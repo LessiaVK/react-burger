@@ -42,3 +42,10 @@ export const updateTokenSuccess = (state) =>
   state.updateTokenReducer.updateTokenSuccess;
 export const updateTokenError = (state) =>
   state.updateTokenReducer.updateTokenError;
+
+  export const wsError = (state) => state.wsReducer.error;
+  export const wsOrders = (state) => state.wsReducer.orders;
+  export const wsConnected = (state) => state.wsReducer.wsConnected;
+  export const wsDataIsReady = (state) => state.wsReducer.dataIsReady;
+
+

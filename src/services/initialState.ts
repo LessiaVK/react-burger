@@ -46,4 +46,12 @@ export const initialState: TInitialState = {
     updateTokenSuccess: false,
     updateTokenError: false,
   },
+  wsReducer: {
+    error: false,
+    orders: [],
+    wsConnected: false,
+    dataIsReady: false,
+  }
+
+
 };

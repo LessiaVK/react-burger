@@ -11,12 +11,12 @@ import { socketMiddleware } from "./socketMiddleware";
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
-  WS_GET_ORDERS,
   WS_SEND_MESSAGE,
   WS_SEND_PONG,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_END,
+  WS_GET_MESSAGE,
 } from "./actions/actionTypes";
 
 
@@ -29,7 +29,7 @@ export const wsActions = {
   wsClose: WS_CONNECTION_END,
   onClose: WS_CONNECTION_CLOSED,
   onError: WS_CONNECTION_ERROR,
-  onGetOrders: WS_GET_ORDERS,
+  onGetMessage: WS_GET_MESSAGE,
   wsPingPong: WS_SEND_PONG,
 };
 
