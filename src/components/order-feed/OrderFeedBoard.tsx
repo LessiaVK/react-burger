@@ -78,14 +78,17 @@ function OrderFeedBoard(props: any) {
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
   // const currentOrder = useSelector(currentOrderSelector);
-
-  const ReadyOrders =
-    props.orders &&
-    props.orders.filter((item: TOrderFeed) => item.status === "done");
-  const WorkOrders =
-    props.orders &&
-    props.orders.filter((item: TOrderFeed) => item.status === "pending");
-
+  // console.log(" props.dataOrders", props.dataOrders);
+  let ReadyOrders = [];
+  let WorkOrders = [];
+  if (props.dataOrders) {
+    ReadyOrders =
+    props.dataOrders["orders"] ?
+    props.dataOrders.orders.filter((item: TOrderFeed) => item.status === "done") : [];
+   WorkOrders =
+    props.dataOrders["orders"] ?
+    props.dataOrders.orders.filter((item: TOrderFeed) => item.status === "pending") : [];
+  } 
   const onClickOrder = () => {};
 
   return (

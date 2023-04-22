@@ -6,7 +6,7 @@ const initialState = {
 };
 
 export const wsReducer = (state = initialState, action) => {
-  console.log("wsReducer",action.type,action.payload);
+  // console.log("wsReducer",action.type,action.payload);
   switch (action.type) {
     case "WS_CONNECTION_SUCCES":
       return {

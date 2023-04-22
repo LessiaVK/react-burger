@@ -54,21 +54,21 @@ export function FeedPage() {
   //   dataOrders.filter((item: TOrder) => item.status === "pending");
 
   const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
-  console.log("dataOrders", wsDataOrders, orders);
+  // console.log("dataOrders", wsDataOrders, orders);
   return (
-    <div className={fStyles.fMainRow + " " + fStyles.fWBig}>
+    <div className={fStyles.fMainCol + " " + fStyles.fWBig}>
       <div
-        className={fStyles.fWBig + " text text_type_main-large pb-10 pt-10"}
+        className={fStyles.fWBig + " text text_type_main-large pb-10 pt-10 mb-5"}
       >
         Лента заказов
       </div>
       <div className={fStyles.fMainRow}>
         <div
-        className={fStyles.fWHalf + " text text_type_main-large pb-10 pt-10"}>
+        className={fStyles.f_order_scroll + " text text_type_main-large "}>
         <OrderFeed orders={orders} />
         </div>
         <div className={fStyles.fWHalf}>
-        <OrderFeedBoard orders={orders} />
+        <OrderFeedBoard dataOrders={dataOrders} />
         </div>
       </div>
       {/* {orders.map((val : any,index: any) => (
