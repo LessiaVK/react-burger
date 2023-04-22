@@ -69,10 +69,12 @@ type TOrdersProps = {
 };
 
 const Orders = (props: TOrdersProps) => {
-  props.data
+  return (
+    props.data
+  )
 }
 
-function OrderFeed() {
+function OrderFeed(props: any) {
   const location = useLocation();
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
@@ -84,11 +86,20 @@ function OrderFeed() {
   
   return (
     <div>
-      <p className={oFStyles.main + " text text_type_main-large pb-10 pt-10"}>
+      {/* <p className={oFStyles.main + " text text_type_main-large pb-10 pt-10"}>
         Лента заказов
-      </p>
-      <div className={oFStyles.ofFlex}>
+      </p> */}
+      <div className={oFStyles.mainRow}>
         {/* <Orders data={data} onClick={onClickOrder} className={oFStyles.ofScroll} /> */}
+        {props.orders.map((val : any,index: any) => (
+          // _id: string,
+          // status: string
+            <div className={"text text_type_main-medium pb-10 pt-10"}
+            key={val._id}
+            >
+              {val.name}
+            </div>
+          ))}
       </div>
       {location.state && (
         <Modal

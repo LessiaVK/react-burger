@@ -8,6 +8,9 @@ import { wsConnectionStart } from "../services/actions/wsActions";
 import { wsUrl, wsActions } from "../services/store";
 import { log } from "console";
 import { wsOrders, wsConnected } from "../services/selectors";
+import fStyles from "./FeedPage.module.css";
+import OrderFeed from "../components/order-feed/OrderFeed";
+import OrderFeedBoard from "../components/order-feed/OrderFeedBoard";
 
 export function FeedPage() {
   const dispatch = useAppDispatch();
@@ -18,7 +21,7 @@ export function FeedPage() {
     wsDataOrders: store.wsReducer.orders,
     wsConnected: store.wsReducer.wsConnected,
   }));
-  
+
   // const { wsDataOrders1, wsConnectedSuccess2 } = useAppSelector((wsOrders, wsConnected) => ({
   //   //ttt
   //   // wsDataOrders: store.ws.data,
@@ -29,12 +32,12 @@ export function FeedPage() {
   const location = useLocation();
 
   React.useEffect(() => {
-    console.log("wsUrl",wsUrl);
-    
+    console.log("wsUrl", wsUrl);
+
     dispatch(wsConnectionStart(wsUrl));
     return () => {
       console.log("wsClose----");
-      
+
       // dispatch({ type: wsActions.wsClose });
     };
   }, [dispatch]);
@@ -43,26 +46,53 @@ export function FeedPage() {
   //   console.log("wsDataOrders1",wsDataOrders1);
   // }, [wsDataOrders1]);
 
-  const dataOrders = wsDataOrders1 && wsDataOrders1 ;
+  const dataOrders = wsDataOrders1 && wsDataOrders1;
   // const ReadyOrders =
   //   dataOrders && dataOrders.filter((item: TOrder) => item.status === "done");
   // const WorkOrders =
   //   dataOrders &&
   //   dataOrders.filter((item: TOrder) => item.status === "pending");
-  
-  const orders = wsDataOrders["orders"]   ? wsDataOrders.orders : [];
-  console.log("dataOrders",wsDataOrders,orders);
+
+  const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
+  console.log("dataOrders", wsDataOrders, orders);
   return (
-    <div className="text text_type_main-large pt-10">
-      Список заказов
-      {orders.map((val : any,index: any) => (
+    <div className={fStyles.fMainRow + " " + fStyles.fWBig}>
+      <div
+        className={fStyles.fWBig + " text text_type_main-large pb-10 pt-10"}
+      >
+        Лента заказов
+      </div>
+      <div className={fStyles.fMainRow}>
+        <div
+        className={fStyles.fWHalf + " text text_type_main-large pb-10 pt-10"}>
+        <OrderFeed orders={orders} />
+        </div>
+        <div className={fStyles.fWHalf}>
+        <OrderFeedBoard orders={orders} />
+        </div>
+      </div>
+      {/* {orders.map((val : any,index: any) => (
             <div
             key={val._id}
             >
               {val.name}
             </div>
-          ))}
+          ))} */}
       {/* arr.map() */}
     </div>
   );
 }
+
+// <div className={commonStyles.content_panel}>
+//   {feed.orders ? (
+//     <div className={styles.Feed}>
+//       <section className={styles.OrderList}>
+//         <p className="text text_type_main-large mb-4">Лента заказов</p>
+//         <OrderList />
+//       </section>
+//       <OrderListInfo />
+//     </div>
+//   ) : (
+//     <p> Идет загрузка... </p>
+//   )}
+// </div>;
