@@ -79,7 +79,7 @@ function OrderFeedBoard(props: any) {
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
   // const currentOrder = useSelector(currentOrderSelector);
-  // console.log(" props.dataOrders", props.dataOrders);
+  console.log("OrderFeedBoard", props);
   let ReadyOrders = [];
   let WorkOrders = [];
   if (props.dataOrders) {
@@ -91,6 +91,8 @@ function OrderFeedBoard(props: any) {
     props.dataOrders["orders"] ?
     props.dataOrders.orders.filter((item: TOrderFeed) => item.status === "pending") : [];
   } 
+  console.log("ReadyOrders",ReadyOrders);
+  
   const onClickOrder = () => {};
 
   return (
@@ -100,17 +102,18 @@ function OrderFeedBoard(props: any) {
             <div className={oFStyles.mainColumn}>
               <p className={"text text_type_main-medium pb-10 pt-10"}>Готовы:</p>
               <ul className={"text text_type_digit-medium pb-10 pt-10"}>
+                
                 {ReadyOrders.map((item: TOrderFeed, index: number) => {
-                  // if (index < 10) {
-                  //   return (
+                  if (index < 10) {
+                     return (
                       <li
                         className={oFStyles.colorOrders}
                         key={item._id}
                       >
-                        {item.number}
+                       {item.number}
                       </li>
-                //     );
-                //   }
+                     );
+                  }
                 //   return null;
                 })}
               </ul>
@@ -155,12 +158,12 @@ function OrderFeedBoard(props: any) {
             </div>
           </div>
 
-          <div className={oFStyles.mainRow}>
-            <p className={"text text_type_main-medium"}>
+          <div >
+            <p className={"text text_type_main-medium pt-10"}>
               Выполнено за все время:
             </p>
             <p className={"text text_type_digits-large"}>
-              {/* {(props.dataOrders) ? props.dataOrders.total : ""} */}
+              {(props.dataOrders) ? props.dataOrders.total : ""}
               {/* ttt */}
               {/* {wsDataOrders.data ? wsDataOrders.data.total - 1 : "none"} */}
             </p>
@@ -170,7 +173,7 @@ function OrderFeedBoard(props: any) {
             <p className={"text text_type_digits-large"}>
               {/* ttt */}
               {/* {wsDataOrders.data ? wsDataOrders.data.totalToday - 1 : "none"} */}
-              {/* {(props.dataOrders.totalToday) && props.dataOrders.totalToday} */}
+              {(props.dataOrders.totalToday) && props.dataOrders.totalToday}
             </p>
           </div>
        

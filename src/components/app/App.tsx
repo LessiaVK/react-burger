@@ -37,6 +37,12 @@ function App() {
 
     return <>{background ? <ConstructorPage /> : <IngredientPage />}</>;
   };
+  const ModalSwitch2 = () => {
+    const location = useLocation();
+    let background = location.state && location.state.background;
+
+    return <>{background ? <FeedPage /> : <IngredientPage />}</>;
+  };
 
   const flag = getCookie("forgot");
 
@@ -75,6 +81,12 @@ function App() {
               element={<ProtectedRouteElement element={<ProfilePage />} />}
             />
             <Route path={PATH_FEED} element={<FeedPage />} />
+            
+            <Route
+              path={PATH_FEED + "/:id"}
+              element={<ModalSwitch2 />}
+            ></Route>
+
             <Route
               path={PATH_INGREDIENTS + "/:id"}
               element={<ModalSwitch />}

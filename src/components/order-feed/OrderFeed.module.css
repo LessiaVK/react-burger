@@ -24,11 +24,23 @@
 }
 
 .sizeImg {
-  width: 480px;
+  border-radius: 50%;
+  border: 1px #4C4CFF solid;
+  height: 50px;
+  width: 50px;
+  /* object-fit: cover; */
+  margin-right: -12px;
+  background-color: black;
+}
+.sizePicure {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+
 }
 
 .elementMenu {
-  width: 280px;
+  /* width: 280px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,8 +51,8 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  /* align-items: center;
-  justify-content: center; */
+  align-items: center;
+  /* justify-content: center; */
 }
 
 .mainColumn {
@@ -129,4 +141,11 @@
   justify-content: space-between;
 }
 
+.imageList{
+  display: flex;
+}
 
+.numberInfo {
+  padding-top: 11px;
+  padding-left: 18px;
+}

@@ -15,12 +15,12 @@ import {
   constructorSelector,
   currentIngredientSelector,
 } from "../../services/selectors";
-import { PATH_INGREDIENTS } from "../../utils/constants";
+import { PATH_FEED, PATH_INGREDIENTS } from "../../utils/constants";
 import { RefObject } from "react";
 import { StringLiteralLike } from "typescript";
 import { OrderFeedDetails } from "./OrderFeedDetails";
 import { getIngredients } from "../../services/thunks";
-import { log } from "console";
+
 
 
 const exampleOrder = {
@@ -59,6 +59,7 @@ export type TDataIngr = {
   ref1?: RefObject<HTMLParagraphElement>;
   type?: string;
   image?: string;
+  image_mobile?: string;
   price?: string;
   data?: any;
   index?:string;
@@ -74,10 +75,10 @@ type TOrdersProps = {
 };
 
 const ImageListIngredients = (props: any) => {
-  console.log("ImageListIngredients",props.dataIngradients, props.ingredients);
+  // console.log("ImageListIngredients",props.dataIngradients, props.ingredients);
   // image
   let price = 0;
-  const imageList = props.ingredients.map( (ingredient: string) => {
+  let imageList = props.ingredients.map( (ingredient: string) => {
     
     const  v = props.dataIngradients.filter( (item: TDataIngr) => {
       return item._id ==  ingredient;
@@ -88,14 +89,62 @@ const ImageListIngredients = (props: any) => {
       price = price + v[0].price;
     }
     
-    return {burger: v[0], price: price};
+    return v[0];
   } )
-  console.log("imageList",imageList);
+  let countBun = 0;
+  let maxCount = 0;
+  let additionalNumber = 0;
+  imageList = imageList.filter( (item: TDataIngr) => {
+    if (item.type == "bun") {
+      countBun++;
+    }
+    maxCount++;
+    if (maxCount > 5 && item.type != "bun") {
+      additionalNumber++;
+    }
+    
+    return (item.type != "bun" || countBun == 1) && maxCount<= 5;
+    
+  })
+
+ 
+  // console.log("imageList",imageList);
   
 return(
-  <div >
-    {/* imageList.map */}
-  </div>
+ 
+<>
+      <div className={"text text_type_digits-default  " + oFStyles.imageList } >
+        {/* <div > */}
+          {imageList.map((item: any,index: Number) => {
+            // console.log("imageList",item);
+            const n : Number = 150 - Number(index);
+            const zIndex :React.CSSProperties = {zIndex:n.toString()}
+
+            return <div className={oFStyles.sizeImg}  style={zIndex} > 
+                        <img src={item.image}  className={oFStyles.sizePicure}  alt= "Ингредиент" />
+                    </div>
+          })}
+          { additionalNumber > 0 &&
+             <div className={oFStyles.sizeImg}   > 
+                <div  className={oFStyles.numberInfo}>{additionalNumber}</div>
+            </div>
+          
+          }
+          {/* </div> */}
+        </div>
+        <div className={"text text_type_main-small  "} >
+        <p
+            className={`constructor-element__price text text_type_digits-default`}
+          >
+            {price}
+            <CurrencyIcon
+              // className={bIStyles.sizeIcon}
+              type="primary"
+            />
+          </p>
+
+    </div>
+</>
 )
 }
 
@@ -131,21 +180,9 @@ const Orders = (props: TOrdersProps) => {
         {props.data.name}
       </div>
       <div className={oFStyles.mainRow + " " + oFStyles.row_between}>
-        <div className={"text text_type_digits-default  "} >
+        
         <ImageListIngredients dataIngradients={dataIngradients} ingredients={props.data.ingredients}/>  
-        </div>
-        <div className={"text text_type_main-small  "} >
-        <p
-            className={`constructor-element__price text text_type_digits-default`}
-          >
-            123
-            <CurrencyIcon
-              // className={bIStyles.sizeIcon}
-              type="primary"
-            />
-          </p>
-
-        </div>
+       
       </div>
       </div>
   )
@@ -172,8 +209,15 @@ function OrderFeed(props: any) {
             // console.log("123",index)
         })}
         {props.orders.map((ordersElement : any,index: any) => (
-       
+       <Link 
+       to={{
+        pathname: PATH_FEED + `/${ordersElement.number}`,
+      }}
+      state={{ background: location }}
+       className={oFStyles.elementMenu + " " + oFStyles.textWhite}
+       >
           <Orders data={ordersElement} keyIndex={index} onClick={() =>{}}/>
+        </Link>
           // // _id: string,
           // // status: string
           //   <div className={"text text_type_main-medium pb-10 pt-10"}
@@ -189,9 +233,9 @@ function OrderFeed(props: any) {
             navigate(-1);
           }}
           modalProps="modals"
-          caption="Детали ингредиента"
+          caption="Детали ингредиента1"
         >
-          <OrderFeedDetails />
+          {/* <OrderFeedDetails /> */}
         </Modal>
       )}
     </div>

@@ -21,7 +21,8 @@ export function FeedPage() {
     wsDataOrders: store.wsReducer.orders,
     wsConnected: store.wsReducer.wsConnected,
   }));
-
+  console.log("wsfullData",wsDataOrders);
+  
   // const { wsDataOrders1, wsConnectedSuccess2 } = useAppSelector((wsOrders, wsConnected) => ({
   //   //ttt
   //   // wsDataOrders: store.ws.data,
@@ -68,7 +69,7 @@ export function FeedPage() {
         <OrderFeed orders={orders} />
         </div>
         <div className={fStyles.fWHalf}>
-        <OrderFeedBoard dataOrders={dataOrders} />
+        <OrderFeedBoard dataOrders={wsDataOrders} />
         </div>
       </div>
       {/* {orders.map((val : any,index: any) => (
