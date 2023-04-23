@@ -19,6 +19,7 @@ import { PATH_INGREDIENTS } from "../../utils/constants";
 import { RefObject } from "react";
 import { StringLiteralLike } from "typescript";
 import { OrderFeedDetails } from "./OrderFeedDetails";
+import { log } from "console";
 
 const exampleOrder = {
   success: true,
@@ -82,6 +83,7 @@ function OrderFeedBoard(props: any) {
   let ReadyOrders = [];
   let WorkOrders = [];
   if (props.dataOrders) {
+    console.log("dataOrders", props.dataOrders);
     ReadyOrders =
     props.dataOrders["orders"] ?
     props.dataOrders.orders.filter((item: TOrderFeed) => item.status === "done") : [];
@@ -93,41 +95,28 @@ function OrderFeedBoard(props: any) {
 
   return (
     <div>
-      {/* <p className={oFStyles.main + " text text_type_main-large pb-10 pt-10"}>
-        Лента заказов
-      </p> */}
-      <div className={oFStyles.ofFlex}>
-        {/* <Orders data={data} onClick={onClickOrder} className={oFStyles.ofScroll} /> */}
-        {/* {props.orders.map((val : any,index: any) => ( */}
-
-        {/* // <div
-            // key={val._id}
-            // >
-            //   {val.name}
-            // </div> */}
-
-        <div className={oFStyles.mainRow}>
-          <div className={oFStyles.mainColumn}>
-            <div className={oFStyles.mainRow}>
+      <div className={oFStyles.mainColumn + " " + oFStyles.wOrders}>
+          <div className={oFStyles.mainRow + " " + oFStyles.hOrders}>
+            <div className={oFStyles.mainColumn}>
               <p className={"text text_type_main-medium pb-10 pt-10"}>Готовы:</p>
-              <ul className={oFStyles.feed_list}>
+              <ul className={"text text_type_digit-medium pb-10 pt-10"}>
                 {ReadyOrders.map((item: TOrderFeed, index: number) => {
-                  if (index < 10) {
-                    return (
+                  // if (index < 10) {
+                  //   return (
                       <li
-                        className={oFStyles.feed_orders_ready_item}
+                        className={oFStyles.colorOrders}
                         key={item._id}
                       >
                         {item.number}
                       </li>
-                    );
-                  }
-                  return null;
+                //     );
+                //   }
+                //   return null;
                 })}
               </ul>
             </div>
 
-            <div className={oFStyles.mainRow}>
+            {/* <div className={oFStyles.mainRow}>
               <p className={"text text_type_main-medium pb-10 pt-10"}>Готовы:</p>
               <ul className={oFStyles.feed_list}>
                 {ReadyOrders.map((item: TOrderFeed, index: number) => {
@@ -144,7 +133,7 @@ function OrderFeedBoard(props: any) {
                   return null;
                 })}
               </ul>
-            </div>
+            </div> */}
 
             <div className={oFStyles.mainRow}>
               <p className={"text text_type_main-medium pb-10 pt-10"}>В работе:</p>
@@ -166,26 +155,25 @@ function OrderFeedBoard(props: any) {
             </div>
           </div>
 
-          <div>
-            <p className={oFStyles.feed_orders_title}>
+          <div className={oFStyles.mainRow}>
+            <p className={"text text_type_main-medium"}>
               Выполнено за все время:
             </p>
-            <p className={oFStyles.feed_orders_count}>
+            <p className={"text text_type_digits-large"}>
+              {/* {(props.dataOrders) ? props.dataOrders.total : ""} */}
               {/* ttt */}
               {/* {wsDataOrders.data ? wsDataOrders.data.total - 1 : "none"} */}
             </p>
           </div>
           <div>
-            <p className={oFStyles.feed_orders_title}>Выполнено за сегодня:</p>
-            <p className={oFStyles.feed_orders_count}>
+            <p className={"text text_type_main-medium"}>Выполнено за сегодня:</p>
+            <p className={"text text_type_digits-large"}>
               {/* ttt */}
               {/* {wsDataOrders.data ? wsDataOrders.data.totalToday - 1 : "none"} */}
+              {/* {(props.dataOrders.totalToday) && props.dataOrders.totalToday} */}
             </p>
           </div>
-        </div>
-
-        {/* ) */}
-        {/* )} */}
+       
       </div>
     </div>
   );
