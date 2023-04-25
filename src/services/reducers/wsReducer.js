@@ -34,7 +34,6 @@ export const wsReducer = (state = initialState, action) => {
       return {
         ...state,
         error: undefined,
-        // wsConnected: true,
         orders: action.payload,
         dataIsReady: true,
       };

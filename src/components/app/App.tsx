@@ -20,6 +20,7 @@ import { ProtectedRouteElement } from "../protected-route-element/ProtectedRoute
 import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteLogins";
 import { getCookie } from "../../utils/cookie";
 import IngredientPage from "../../pages/IngredientPage";
+import OrderPage from "../../pages/orderPage";
 import {
   PATH_LOGIN,
   PATH_REGISTER,
@@ -41,7 +42,7 @@ function App() {
     const location = useLocation();
     let background = location.state && location.state.background;
 
-    return <>{background ? <FeedPage /> : <IngredientPage />}</>;
+    return <>{background ? <FeedPage /> : <OrderPage />}</>;
   };
 
   const flag = getCookie("forgot");

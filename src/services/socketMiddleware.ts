@@ -41,7 +41,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: WsActions): Middlewar
           const { data } = event;
          
           const parseData = JSON.parse(data);
-          console.log("onmessage",parseData);
+          // console.log("onmessage",parseData);
           dispatch({
             type: onGetMessage,
             payload: parseData

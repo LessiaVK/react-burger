@@ -6,7 +6,6 @@ import { useAppSelector, useAppDispatch } from "../utils/hooks";
 import { useLocation } from "react-router-dom";
 import { wsConnectionStart } from "../services/actions/wsActions";
 import { wsUrl, wsActions } from "../services/store";
-import { log } from "console";
 import { wsOrders, wsConnected } from "../services/selectors";
 import fStyles from "./FeedPage.module.css";
 import OrderFeed from "../components/order-feed/OrderFeed";
@@ -21,7 +20,7 @@ export function FeedPage() {
     wsDataOrders: store.wsReducer.orders,
     wsConnected: store.wsReducer.wsConnected,
   }));
-  console.log("wsfullData",wsDataOrders);
+  // console.log("wsfullData",wsDataOrders);
   
   // const { wsDataOrders1, wsConnectedSuccess2 } = useAppSelector((wsOrders, wsConnected) => ({
   //   //ttt
@@ -33,11 +32,11 @@ export function FeedPage() {
   const location = useLocation();
 
   React.useEffect(() => {
-    console.log("wsUrl", wsUrl);
+    // console.log("wsUrl", wsUrl);
 
     dispatch(wsConnectionStart(wsUrl));
     return () => {
-      console.log("wsClose----");
+      // console.log("wsClose----");
 
       // dispatch({ type: wsActions.wsClose });
     };

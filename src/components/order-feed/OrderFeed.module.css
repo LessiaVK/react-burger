@@ -25,7 +25,7 @@
 
 .sizeImg {
   border-radius: 50%;
-  border: 1px #4C4CFF solid;
+  border: 2px #4C4CFF solid;
   height: 50px;
   width: 50px;
   /* object-fit: cover; */
@@ -63,6 +63,19 @@
   justify-content: center; */
 }
 
+.alignCenter {
+  align-items: center;
+  text-align: center;
+}
+
+.alignLeft {
+  align-items: flex-start;
+}
+
+.toSub {
+  margin-top: -90px;
+}
+
 .hOrders {
   max-height: 200px;
 }
@@ -73,6 +86,14 @@
 
 .wOrders {
   width: 100%;
+}
+
+.wOrders80 {
+  width: 80%;
+}
+
+.wOrdersAuto {
+  width: auto;
 }
 
 .sizeIcon {
@@ -111,7 +132,7 @@
 
 .oFListStart {
   gap: 10px;
-  margin-top: 140px;
+  margin-top: 40px;
 }
 .oFList {
   display: flex;
@@ -119,6 +140,14 @@
   gap: 10px;
   overflow-y: scroll;
   max-height: 440px;
+}
+
+.oFeedDetal {
+  /* display: flex;
+  flex-direction: column; */
+  /* gap: 10px; */
+  overflow-y: scroll;
+  max-height: 280px;
 }
 
 .itemOrderBackground {
@@ -139,6 +168,15 @@
 
 .row_between {
   justify-content: space-between;
+  align-items: center;
+}
+
+.row_around {
+  justify-content: space-around;
+}
+
+.row_evenly {
+  justify-content: space-evenly;
 }
 
 .imageList{

@@ -17,9 +17,6 @@ import {
 } from "../../services/selectors";
 import { PATH_INGREDIENTS } from "../../utils/constants";
 import { RefObject } from "react";
-import { StringLiteralLike } from "typescript";
-import { OrderFeedDetails } from "./OrderFeedDetails";
-import { log } from "console";
 
 const exampleOrder = {
   success: true,
@@ -79,11 +76,11 @@ function OrderFeedBoard(props: any) {
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
   // const currentOrder = useSelector(currentOrderSelector);
-  console.log("OrderFeedBoard", props);
+  // console.log("OrderFeedBoard", props);
   let ReadyOrders = [];
   let WorkOrders = [];
   if (props.dataOrders) {
-    console.log("dataOrders", props.dataOrders);
+    // console.log("dataOrders", props.dataOrders);
     ReadyOrders =
     props.dataOrders["orders"] ?
     props.dataOrders.orders.filter((item: TOrderFeed) => item.status === "done") : [];
@@ -91,7 +88,7 @@ function OrderFeedBoard(props: any) {
     props.dataOrders["orders"] ?
     props.dataOrders.orders.filter((item: TOrderFeed) => item.status === "pending") : [];
   } 
-  console.log("ReadyOrders",ReadyOrders);
+  // console.log("ReadyOrders",ReadyOrders);
   
   const onClickOrder = () => {};
 

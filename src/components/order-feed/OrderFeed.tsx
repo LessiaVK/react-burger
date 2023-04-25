@@ -1,9 +1,7 @@
 import React from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import {
-  Tab,
   CurrencyIcon,
-  Counter,
   FormattedDate
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,16 +10,12 @@ import Modal from "../modal/Modal";
 import oFStyles from "./OrderFeed.module.css";
 import {
   ingredientsSelector,
-  constructorSelector,
   currentIngredientSelector,
 } from "../../services/selectors";
 import { PATH_FEED, PATH_INGREDIENTS } from "../../utils/constants";
-import { RefObject } from "react";
-import { StringLiteralLike } from "typescript";
 import { OrderFeedDetails } from "./OrderFeedDetails";
 import { getIngredients } from "../../services/thunks";
-
-
+import { TDataIngr } from "../burger-ingredients/BurgerIngredients";
 
 const exampleOrder = {
   "success": true,
@@ -51,49 +45,35 @@ export type TOrderFeed = {
   createdAt: string,
   updatedAt: string,
   name: string,
-};
-
-export type TDataIngr = {
-  _id?: string | any;
-  name?: string;
-  ref1?: RefObject<HTMLParagraphElement>;
-  type?: string;
-  image?: string;
-  image_mobile?: string;
-  price?: string;
-  data?: any;
-  index?:string;
-  text?:string;
-  key?:string;
+  count?: number,
 };
 
 type TOrdersProps = {
   data: any;
   onClick: () => void;
   keyIndex: any;
-  // className: string;
 };
 
 const ImageListIngredients = (props: any) => {
   // console.log("ImageListIngredients",props.dataIngradients, props.ingredients);
-  // image
   let price = 0;
-  let imageList = props.ingredients.map( (ingredient: string) => {
-    
-    const  v = props.dataIngradients.filter( (item: TDataIngr) => {
-      return item._id ==  ingredient;
-    })
-    // price = price + v[0].price;
-    if (v[0]) {
-      // console.log("v",v[0].price);
-      price = price + v[0].price;
-    }
-    
-    return v[0];
-  } )
+  let imageList = [];
+  if (props.dataIngradients.length > 0 ) {
+      imageList = props.ingredients.map( (ingredient: string) => {
+        const  v = props.dataIngradients.filter( (item: TDataIngr) => {
+          return item._id == ingredient;
+        })
+        if (v[0]) {
+          price = price + v[0].price;
+        }
+        return v[0];
+      } )
+  }
   let countBun = 0;
   let maxCount = 0;
   let additionalNumber = 0;
+  // console.log("props.ingredients",props.ingredients, props.dataIngradients);
+  
   imageList = imageList.filter( (item: TDataIngr) => {
     if (item.type == "bun") {
       countBun++;
@@ -114,23 +94,21 @@ return(
  
 <>
       <div className={"text text_type_digits-default  " + oFStyles.imageList } >
-        {/* <div > */}
-          {imageList.map((item: any,index: Number) => {
+          {imageList.map((item: any, index: Number) => {
             // console.log("imageList",item);
-            const n : Number = 150 - Number(index);
-            const zIndex :React.CSSProperties = {zIndex:n.toString()}
+            const n: Number = 150 - Number(index);
+            const zIndex: React.CSSProperties = {zIndex: n.toString()};
 
-            return <div className={oFStyles.sizeImg}  style={zIndex} > 
-                        <img src={item.image}  className={oFStyles.sizePicure}  alt= "Ингредиент" />
+            return <div className={oFStyles.sizeImg} style={zIndex} > 
+                        <img src={item.image} className={oFStyles.sizePicure} alt= "Ингредиент" />
                     </div>
           })}
           { additionalNumber > 0 &&
-             <div className={oFStyles.sizeImg}   > 
-                <div  className={oFStyles.numberInfo}>{additionalNumber}</div>
+             <div className={oFStyles.sizeImg}> 
+                <div className={oFStyles.numberInfo}>{additionalNumber}</div>
             </div>
-          
           }
-          {/* </div> */}
+    
         </div>
         <div className={"text text_type_main-small  "} >
         <p
@@ -138,7 +116,6 @@ return(
           >
             {price}
             <CurrencyIcon
-              // className={bIStyles.sizeIcon}
               type="primary"
             />
           </p>
@@ -155,16 +132,15 @@ const Orders = (props: TOrdersProps) => {
   }, []);
 
 
-  let element = useSelector(currentIngredientSelector) as any;
-  const dataIngradients = useSelector(ingredientsSelector) as any;
-  let { id } = useParams();
-  if (id) {
-    let data = dataIngradients.filter((item: TDataIngr) => item._id == id);
-    if (data.length === 1) {
-      //console.log("data", data[0]);
-      element = data[0];
-    }
-  }
+ const dataIngradients = useSelector(ingredientsSelector) as any;
+  // let { id } = useParams();
+  // if (id) {
+  //   let data = dataIngradients.filter((item: TDataIngr) => item._id == id);
+  //   if (data.length === 1) {
+  //     //console.log("data", data[0]);
+  //     element = data[0];
+  //   }
+  // }
   // console.log("Orders",props);
   
   return (
@@ -174,7 +150,7 @@ const Orders = (props: TOrdersProps) => {
         <div className={"text text_type_main-small text_color_inactive "} >
           <FormattedDate date={new Date(props.data.createdAt)}  /></div>
       </div>
-    <div className={"text text_type_main-medium pb-10 pt-10 " + oFStyles.caption}
+    <div className={"text text_type_main-medium pb-5 pt-5 " + oFStyles.caption}
       key={props.data._id}
       >
         {props.data.name}
@@ -200,15 +176,7 @@ function OrderFeed(props: any) {
   
   return (
     <div>
-      {/* <p className={oFStyles.main + " text text_type_main-large pb-10 pt-10"}>
-        Лента заказов
-      </p> */}
-     
-        {/* <Orders data={data} onClick={onClickOrder} className={oFStyles.ofScroll} /> */}
-        {props.orders.map((ordersElement : any,index: any) => {
-            // console.log("123",index)
-        })}
-        {props.orders.map((ordersElement : any,index: any) => (
+      {props.orders.map((ordersElement : any,index: number) => (
        <Link 
        to={{
         pathname: PATH_FEED + `/${ordersElement.number}`,
@@ -233,9 +201,9 @@ function OrderFeed(props: any) {
             navigate(-1);
           }}
           modalProps="modals"
-          caption="Детали ингредиента1"
+          caption=""
         >
-          {/* <OrderFeedDetails /> */}
+          <OrderFeedDetails />
         </Modal>
       )}
     </div>

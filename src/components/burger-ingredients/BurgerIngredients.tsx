@@ -72,11 +72,11 @@ export type TDataIngr = {
   ref1?: RefObject<HTMLParagraphElement>;
   type?: string;
   image?: string;
-  price?: string;
+  price: number;
   data?: any;
-  index?:string;
-  text?:string;
-  key?:string;
+  index?: string;
+  text?: string;
+  key?: string;
 };
 
 
@@ -296,19 +296,22 @@ function BurgerIngredients() {
       </div>
       <div id="ShowIngredients" className={bIStyles.biScroll} onScroll={scroll}>
         <ShowIngredients name="Булки" type="bun" data={data} 
-        ref1={bunRef} 
+        ref1={bunRef}
+        price={0} 
         />
         <ShowIngredients
           name="Соусы"
           type="sauce"
           data={data}
           ref1={sauceRef}
+          price={0}
         />
         <ShowIngredients
           name="Начинки"
           type="main"
           data={data}
           ref1={mainRef}
+          price={0}
         />
       </div>
       {location.state && (
