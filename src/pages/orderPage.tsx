@@ -13,7 +13,7 @@ import { wsConnectionStart } from "../services/actions/wsActions";
 import { wsUrl, wsActions } from "../services/store";
 
 
-function OrderPage() {
+export default function OrderPage() {
   const dispatch = useAppDispatch();
   const wsDataReady = useAppSelector(wsDataIsReady);
 
@@ -39,5 +39,3 @@ function OrderPage() {
     </>
   );
 }
-
-export default OrderPage;

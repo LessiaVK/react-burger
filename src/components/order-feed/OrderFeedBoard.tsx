@@ -17,6 +17,8 @@ import {
 } from "../../services/selectors";
 import { PATH_INGREDIENTS } from "../../utils/constants";
 import { RefObject } from "react";
+import { TOrderFeed } from "./OrderFeed";
+import { TDataIngr } from "../burger-ingredients/BurgerIngredients";
 
 const exampleOrder = {
   success: true,
@@ -39,32 +41,8 @@ const exampleOrder = {
   totalToday: 1,
 };
 
-export type TOrderFeed = {
-  ingredients: string[];
-  _id: string;
-  status: string;
-  number: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type TDataIngr = {
-  _id?: string | any;
-  name?: string;
-  ref1?: RefObject<HTMLParagraphElement>;
-  type?: string;
-  image?: string;
-  price?: string;
-  data?: any;
-  index?: string;
-  text?: string;
-  key?: string;
-};
-
 type TOrdersProps = {
   data: any;
-  onClick: () => void;
-  className: string;
 };
 
 const Orders = (props: TOrdersProps) => {

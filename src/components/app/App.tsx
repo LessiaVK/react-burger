@@ -20,7 +20,7 @@ import { ProtectedRouteElement } from "../protected-route-element/ProtectedRoute
 import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteLogins";
 import { getCookie } from "../../utils/cookie";
 import IngredientPage from "../../pages/IngredientPage";
-import OrderPage from "../../pages/orderPage";
+import OrderPage from "../../pages/OrderPage";
 import {
   PATH_LOGIN,
   PATH_REGISTER,

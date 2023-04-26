@@ -31,40 +31,12 @@ export type TIngredient = {
   image_large: string;
   image_mobile: string;
   price: number;
-  index:number;
-  text:string;
-  thumbnail:string;
-  key?:string;
+  index: number;
+  text: string;
+  thumbnail: string;
+  key?: string;
   handleClose?: () => void;
 };
-
-// export type TIngredient = {
-//   _id: string;
-//   keyId?: string;
-//   dragId?: string;
-//   name: string;
-//   type: string;
-//   image: string;
-//   image_large?: string;
-//   image_mobile?: string;
-//   price: number;
-//   index: number;
-//   text:string;
-//   thumbnail:string | undefined;
-//   key?:string;
-//   handleClose?: () => void;
-//   proteins?: number;
-//   calories?: number;
-//   carbohydrates?: number;
-//   count?: number;
-//   fat?: number;
-//   // bunLock: boolean;
-//   // bunLock_top: boolean;
-//   // bunLock_bottom: boolean;
-//   isLocked?: boolean;
-//   ingredientId: string;
-//   extraClass?: string;
-// };
 
 export type TDataIngr = {
   _id?: string | any;
@@ -78,8 +50,6 @@ export type TDataIngr = {
   text?: string;
   key?: string;
 };
-
-
 
 export const IngredientDetails = () => {
   let element = useSelector(currentIngredientSelector) as any;
@@ -204,9 +174,7 @@ const ShowIngredients = (props: TDataIngr) => {
   return (
     <>
       <div data-group="group" className={bIStyles.main}>
-        <p 
-        ref={props.ref1} 
-        className="text text_type_main-medium pb-10 pt-10">
+        <p ref={props.ref1} className="text text_type_main-medium pb-10 pt-10">
           {props.name}
         </p>
       </div>
@@ -262,7 +230,7 @@ function BurgerIngredients() {
   const onClickTab = (e: string) => {
     setCurrent(e);
     // console.log("onClickTab",e,bunRef);
-    
+
     switch (e) {
       case "one":
         handleScroll(bunRef.current);
@@ -295,9 +263,12 @@ function BurgerIngredients() {
         </Tab>
       </div>
       <div id="ShowIngredients" className={bIStyles.biScroll} onScroll={scroll}>
-        <ShowIngredients name="Булки" type="bun" data={data} 
-        ref1={bunRef}
-        price={0} 
+        <ShowIngredients
+          name="Булки"
+          type="bun"
+          data={data}
+          ref1={bunRef}
+          price={0}
         />
         <ShowIngredients
           name="Соусы"

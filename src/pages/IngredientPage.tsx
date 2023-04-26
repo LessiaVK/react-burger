@@ -6,7 +6,7 @@ import { ingredientsSelector } from "../services/selectors";
 import { getIngredients } from "../services/thunks";
 import { IngredientDetails } from "../components/burger-ingredients/BurgerIngredients";
 
-function IngredientPage() {
+export default function IngredientPage() {
   const dispatch = useDispatch() as any;
 
   React.useEffect(() => {
@@ -21,5 +21,3 @@ function IngredientPage() {
     </>
   );
 }
-
-export default IngredientPage;

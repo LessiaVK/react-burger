@@ -12,8 +12,6 @@ import { useAppSelector, useAppDispatch } from "../../utils/hooks";
 import oFStyles from "./OrderFeed.module.css";
 import {
   ingredientsSelector,
-  constructorSelector,
-  currentIngredientSelector,
 } from "../../services/selectors";
 import { TOrderFeed } from "./OrderFeed";
 import { wsOrders, wsConnected } from "../../services/selectors";
@@ -94,19 +92,19 @@ const ListIngredients = (props: TOrderIngr) => {
 
   return (
     <div className={oFStyles.wOrders}>
-      <div className={oFStyles.wOrders + " " + oFStyles.oFeedDetal}>
-        {arr.map((item: any) => {
+      <div className={oFStyles.noXScrol + " " + oFStyles.wOrdersIngr + " " + oFStyles.oFeedDetal + " ml-10 mr-10"}>
+        {arr.map((item: any, id : number) => {
           return (
-            <div
+            <div key={id}
               className={
-                oFStyles.wOrders80 + " " + oFStyles.mainRow + " " + oFStyles.row_between + ` pl-20 pb-3`
+                oFStyles.wOrdersIngr + " " + oFStyles.mainRow + " " + oFStyles.row_between + ` pb-3`
               }
             >
               <div className={
                 oFStyles.wOrdersAuto + " " + oFStyles.mainRow + " " + oFStyles.row_between
               }>
                 <div
-                  className={oFStyles.sizeImg + " constructor-element__price"}
+                  className={oFStyles.sizeImg2 + " constructor-element__price"}
                 >
                   <img
                     src={item.image}
@@ -114,13 +112,13 @@ const ListIngredients = (props: TOrderIngr) => {
                     alt="Ингредиент"
                   />
                 </div>
-                <div className={`text text_type_main-small pl-20`}> {item.name} </div>
+                <div className={"text text_type_main-small pl-7"}> {item.name} </div>
               </div>
               <div className={
-                oFStyles.wOrdersAuto + " " + oFStyles.mainRow + ` pl-10 pr-10 pb-3`
+                oFStyles.wOrdersAuto + " " + oFStyles.mainRow + ` pr-10 pb-3`
               }>
-              <div className={`text text_type_digits-small pr-2`}>
-                {item.count + " X " + listIngrs.price}
+              <div className="text text_type_digits-default pr-4">
+                {item.count + " X " + item.price}
                 </div>
                 <CurrencyIcon type="primary" />
               </div>
@@ -138,9 +136,9 @@ const ListIngredients = (props: TOrderIngr) => {
         </div>
 
         <div
-          className={`constructor-element__price text text_type_digits-small pr-10 pt-7 pb-15`}
+          className={`constructor-element__price text text_type_main-small pr-10 pt-7 pb-15`}
         >
-          <div className={`text text_type_digits-small pr-2`}>{listIngrs.price}</div>
+          <div className={`text text_type_digits-default pr-2`}>{listIngrs.price}</div>
           <CurrencyIcon type="primary" />
         </div>
       </div>
@@ -154,26 +152,23 @@ export const OrderFeedDetails = () => {
   // console.log("dataOrders", dataOrders);
 
   let { id } = useParams();
-  // console.log("useParams", id, dataOrders);
-  const data = dataOrders.orders.filter((item: TOrderFeed, index: number) => {
-    // console.log("OrderFeedDetails item", item);
-    if (String(item.number) == id) return item;
-    return {};
-  });
-  // console.log("OrderFeedDetails data", data);
+   
+ let data : TOrderFeed[] = [];
+ data[0] = {
+  ingredients: [],
+  _id: "",
+  status: "",
+  number: 0,
+  createdAt: "",
+  updatedAt: "",
+  name: "",
+};
 
-  // if (id) {
-  //   let data = dataOrders.filter((item: TOrderFeed) => item._id == id);
-  //   if (data.length === 1) {
-
-  //   }
-  // }
-  // if (id_ingr) {
-  //   let data = dataIngradients.filter((item: TDataIngr) => item._id == id_ingr);
-  //   if (data.length === 1) {
-
-  //   }
-  // }
+ if (dataOrders.orders) {
+   data = dataOrders.orders.filter((item: TOrderFeed, index: number) => {
+    return (String(item.number) == id);
+  });}
+  
 
   return (
     <div
@@ -215,50 +210,7 @@ export const OrderFeedDetails = () => {
         ids={data[0].ingredients}
         createdAt={data[0].createdAt}
       />
-      {/* <div className={"text text_type_main-small text_color_inactive pl-10 pr-10 mb-10"} >
-          <FormattedDate date={new Date(data[0].createdAt)} />
-      </div> */}
-
-      {/* <img
-        className={oFStyles.sizeImg}
-        src={element.image}
-        alt={"Изображение ингредиента"}
-      />
-      <p className="text text_type_main-medium m-8">{element.name}</p>
-      <div className={oFStyles.DescriptionMain}>
-        <div className={oFStyles.Description + " mb-15"}>
-          <p className="text text_type_main-default text_color_inactive p-3">
-            Калории, ккал
-          </p>
-          <p className="text text_type_digits-default text_color_inactive">
-            {element.calories}
-          </p>
-        </div>
-        <div className={oFStyles.Description}>
-          <p className="text text_type_main-default text_color_inactive p-3">
-            Белки, г
-          </p>
-          <p className="text text_type_digits-default text_color_inactive">
-            {element.proteins}
-          </p>
-        </div>
-        <div className={oFStyles.Description}>
-          <p className="text text_type_main-default text_color_inactive p-3">
-            Жиры, г
-          </p>
-          <p className="text text_type_digits-default text_color_inactive">
-            {element.fat}
-          </p>
-        </div>
-        <div className={oFStyles.Description}>
-          <p className="text text_type_main-default text_color_inactive p-3">
-            Углеводы, г
-          </p>
-          <p className="text text_type_digits-default text_color_inactive">
-            {element.carbohydrates}
-          </p>
-        </div>
-      </div> */}
+     
     </div>
   );
 };

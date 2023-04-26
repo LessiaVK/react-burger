@@ -32,11 +32,24 @@
   margin-right: -12px;
   background-color: black;
 }
+
+.sizeImg2 {
+  border-radius: 50%;
+  border: 2px #4C4CFF solid;
+  height: 50px;
+  width: 50px;
+  /* object-fit: cover; */
+  background-color: black;
+}
+
 .sizePicure {
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
 
+.noXScrol {
+  overflow-x: hidden;
 }
 
 .elementMenu {
@@ -92,8 +105,13 @@
   width: 80%;
 }
 
+.wOrdersIngr {
+  width: 640px;
+}
+
 .wOrdersAuto {
   width: auto;
+  max-width: 400px;
 }
 
 .sizeIcon {
@@ -147,7 +165,7 @@
   flex-direction: column; */
   /* gap: 10px; */
   overflow-y: scroll;
-  max-height: 280px;
+  max-height: 255px;
 }
 
 .itemOrderBackground {
