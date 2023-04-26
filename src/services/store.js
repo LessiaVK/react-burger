@@ -6,6 +6,7 @@ import { rootReducer } from "./reducers";
 import thunk from "redux-thunk";
 import { socketMiddleware } from "./socketMiddleware";
 // import { TApplicationActions } from "./actions/types";
+import { TInitialState } from "./reducers/todo";
 
 
 import {

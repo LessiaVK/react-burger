@@ -13,7 +13,7 @@ export const initialState: TInitialState = {
   },
   ingredientReducer: {
     isOpenModal: false,
-    currentIngredient: "",
+    currentIngredient: undefined,
   },
   orderReducer: {
     currentOrder: {},
@@ -27,31 +27,29 @@ export const initialState: TInitialState = {
     loginError: false,
   },
   logoutReducer: {
-    logout: {"success": false, "message": ''},
+    logout: { "success": false, "message": '' },
     logoutSuccess: false,
     logoutError: false,
   },
   registerReducer: {
-    registerRequest: { password: "", email: "", name: "" },
+    user: { email: "", name: "" },
     registerSuccess: false,
     registerError: false,
   },
   userReducer: {
-    userRequest: { "success": false, user: { email: "", name: "" } },
+    userRequest: { email: "", name: "" },
     userSuccess: false,
     userError: false,
   },
   updateTokenReducer: {
-    updateToken: {"success": false, "accessToken": '', "refreshToken": ''},
+    updateToken: { "success": false, "accessToken": '', "refreshToken": '' },
     updateTokenSuccess: false,
     updateTokenError: false,
   },
   wsReducer: {
-    error: false,
-    orders: [],
+    error: undefined,
+    orders: {},
     wsConnected: false,
     dataIsReady: false,
   }
-
-
 };

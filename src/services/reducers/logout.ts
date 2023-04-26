@@ -1,10 +1,9 @@
 import { LOGOUT, LOGOUT_SUCCESS, LOGOUT_ERROR } from "../actions/actionTypes";
 import { initialState } from "../initialState";
 import { TTodoActions } from "../actions/todo";
-import { TInitialState } from "./todo";
+import { TLogoutReducer } from "./todo";
 
-
-export const logoutReducer = (state = initialState, action: TTodoActions) => {
+export const logoutReducer = (state = initialState.logoutReducer, action: TTodoActions): TLogoutReducer => {
   switch (action.type) {
     case LOGOUT:
       return {

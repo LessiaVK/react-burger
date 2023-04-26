@@ -4,8 +4,10 @@ import {
   UPDATE_TOKEN_ERROR,
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
+import { TTodoActions } from "../actions/todo";
+import { TUpdateTokenReducer } from "./todo";
 
-export const updateTokenReducer = (state = initialState, action) => {
+export const updateTokenReducer = (state = initialState.updateTokenReducer, action: TTodoActions): TUpdateTokenReducer => {
   switch (action.type) {
     case UPDATE_TOKEN:
       return {

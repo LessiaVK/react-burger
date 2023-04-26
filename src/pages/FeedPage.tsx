@@ -14,7 +14,7 @@ import OrderFeedBoard from "../components/order-feed/OrderFeedBoard";
 export function FeedPage() {
   const dispatch = useAppDispatch();
   // const { wsDataOrders1 } = useAppSelector(wsOrders);
-  const { wsDataOrders1 } = useSelector(wsOrders) as any;
+  const { wsDataOrders1 } = useAppSelector(wsOrders);
 
   const { wsDataOrders, wsConnected } = useAppSelector((store) => ({
     wsDataOrders: store.wsReducer.orders,

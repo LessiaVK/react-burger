@@ -5,9 +5,11 @@ import {
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
 import { setCookie } from "../../utils/cookie";
+import { TTodoActions } from "../actions/todo";
+import { TUserReducer } from "./todo";
 
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState.userReducer, action: TTodoActions): TUserReducer => {
   switch (action.type) {
     case USER_REQUEST:
       return {
@@ -22,10 +24,10 @@ export const userReducer = (state = initialState, action) => {
         userRequest: action.payload.user,
         userSuccess: true,
         userError: false,
-    };
+      };
 
     case USER_ERROR:
-      setCookie("forgot", "0");
+      setCookie("forgot", "0", {});
       return {
         ...state,
         userSuccess: false,

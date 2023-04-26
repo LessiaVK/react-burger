@@ -6,7 +6,7 @@ import {
 import { IOrderNumber, IOrderError, IOrderSuccess } from "./todo";
 
 export const actionOrderDetails = {
-  orderNumber: (data: number | undefined): IOrderNumber => ({ type: ORDER_NUMBER, payload: data }),
-  orderNumberSuccess: (data:boolean): IOrderSuccess => ({ type: ORDER_NUMBER_SUCCESS, payload: data }),
+  orderNumber: (data: boolean): IOrderNumber => ({ type: ORDER_NUMBER, payload: data }),
+  orderNumberSuccess: (data: number | undefined): IOrderSuccess => ({ type: ORDER_NUMBER_SUCCESS, payload: data }),
   orderNumberError: (data: boolean): IOrderError => ({ type: ORDER_NUMBER_ERROR, payload: data }),
 };

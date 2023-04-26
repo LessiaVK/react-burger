@@ -4,8 +4,10 @@ import {
   REGISTER_ERROR,
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
+import { TTodoActions, TUser } from "../actions/todo";
+import { TRegisterReducer } from "./todo";
 
-export const registerReducer = (state = initialState, action) => {
+export const registerReducer = (state = initialState.registerReducer, action: TTodoActions): TRegisterReducer => {
   switch (action.type) {
     case REGISTER_REQUEST:
       return {

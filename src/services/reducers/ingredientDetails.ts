@@ -4,9 +4,9 @@ import {
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
 import { TTodoActions } from "../actions/todo";
-import { TInitialState } from "./todo";
+import { TIngredientReducer } from "./todo";
 
-export const ingredientReducer = (state = initialState, action) => {
+export const ingredientReducer = (state = initialState.ingredientReducer, action: TTodoActions): TIngredientReducer => {
   switch (action.type) {
     case ADD_INGREDIENT_DETAILS:
       return {

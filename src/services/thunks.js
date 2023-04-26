@@ -8,6 +8,18 @@ import { actionLogoutRequest } from "./actions/logout";
 import { actionUserRequest } from "./actions/user";
 import { actionUpdateToken } from "./actions/token";
 import { PATH_LOGIN } from "../utils/constants";
+import { TTodoActions } from "./actions/todo";
+import { rootReducer } from "./reducers";
+import { ThunkAction } from "redux-thunk";
+import { ThunkDispatch } from "redux-thunk";
+import { NavigateFunction } from "react-router";
+import { TIngredient } from "../components/burger-ingredients/BurgerIngredients";
+
+
+// export type RootState = ReturnType<typeof rootReducer>;
+// type TApplicationActions = TTodoActions;
+// export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
+// export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;
 
 const timeExpires = 20 * 60;
 

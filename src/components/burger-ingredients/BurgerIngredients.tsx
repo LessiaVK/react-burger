@@ -35,6 +35,8 @@ export type TIngredient = {
   text: string;
   thumbnail: string;
   key?: string;
+  ref1?: RefObject<HTMLParagraphElement>;
+  data?: any;
   handleClose?: () => void;
 };
 
@@ -56,7 +58,7 @@ export const IngredientDetails = () => {
   const dataIngradients = useSelector(ingredientsSelector) as any;
   let { id } = useParams();
   if (id) {
-    let data = dataIngradients.filter((item: TDataIngr) => item._id == id);
+    let data = dataIngradients.filter((item: TIngredient) => item._id == id);
     if (data.length === 1) {
       //console.log("data", data[0]);
       element = data[0];
@@ -119,7 +121,7 @@ const ElementMenu = (props: TElementMenuProps) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const count = orderList.filter(
-    (item: TDataIngr) => item._id == props.element._id
+    (item: TIngredient) => item._id == props.element._id
   ).length;
   const [{ opacity }, dragRef] = useDrag({
     type: "ingredient",
@@ -164,10 +166,10 @@ const ElementMenu = (props: TElementMenuProps) => {
   );
 };
 
-const ShowIngredients = (props: TDataIngr) => {
+const ShowIngredients = (props: any) => {
   const data = useSelector(ingredientsSelector);
   const dataForShow = data.filter(
-    (elem: TDataIngr) => elem.type === props.type
+    (elem: TIngredient) => elem.type === props.type
   );
   let t = new Date();
   let time = t.getTime().toString();
@@ -179,7 +181,7 @@ const ShowIngredients = (props: TDataIngr) => {
         </p>
       </div>
       <div className={bIStyles.bIDescription2}>
-        {dataForShow.map((element: TDataIngr, key: string) => {
+        {dataForShow.map((element: any, key: number) => {
           let keyId = props.type + key + time;
 
           return (

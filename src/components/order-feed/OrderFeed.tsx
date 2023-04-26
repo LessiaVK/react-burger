@@ -99,7 +99,7 @@ return(
             const n: Number = 150 - Number(index);
             const zIndex: React.CSSProperties = {zIndex: n.toString()};
 
-            return <div className={oFStyles.sizeImg} style={zIndex} > 
+            return <div key={index.toString()} className={oFStyles.sizeImg} style={zIndex} > 
                         <img src={item.image} className={oFStyles.sizePicure} alt= "Ингредиент" />
                     </div>
           })}
@@ -173,11 +173,13 @@ function OrderFeed(props: any) {
   const onClickOrder = () => {
 
   }
-  
+  // let t = new Date();
+  // let time = t.getTime().toString();
   return (
     <div>
       {props.orders.map((ordersElement : any,index: number) => (
        <Link 
+       key={index} 
        to={{
         pathname: PATH_FEED + `/${ordersElement.number}`,
       }}

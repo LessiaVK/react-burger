@@ -5,8 +5,10 @@ import {
   FETCH_INGREDIENTS_REQUEST,
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
+import { TTodoActions } from "../actions/todo";
+import { TFetchDataReducer } from "./todo";
 
-export const fetchDataReducer = (state = initialState, action) => {
+export const fetchDataReducer = (state = initialState.fetchDataReducer, action: TTodoActions): TFetchDataReducer => {
   switch (action.type) {
     case FETCH_INGREDIENTS_REQUEST:
       return {

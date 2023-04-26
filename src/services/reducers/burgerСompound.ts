@@ -3,7 +3,7 @@ import { initialState } from "../initialState";
 import { TTodoActions } from "../actions/todo";
 import { TInitialState, TBurgerReducer } from "./todo";
 
-export const burgerReducer = (state = initialState, action: TTodoActions) => {
+export const burgerReducer = (state = initialState.burgerReducer, action: TTodoActions): TBurgerReducer => {
   switch (action.type) {
     case GET_CONSTRUCTOR:
       return {

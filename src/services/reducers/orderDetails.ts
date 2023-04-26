@@ -4,8 +4,10 @@ import {
   ORDER_NUMBER_ERROR,
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
+import { TTodoActions } from "../actions/todo";
+import { TOrderReducer } from "./todo";
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState.orderReducer, action: TTodoActions): TOrderReducer => {
   switch (action.type) {
     case ORDER_NUMBER:
       return {

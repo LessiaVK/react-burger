@@ -53,7 +53,7 @@ function Modal(props: TModalProps) {
                 props.close();
               } else {
                 // dispatch(actionIngredientDetails.deleteIngredientDetails());
-                dispatch(actionOrderDetails.orderNumber(0));
+                dispatch(actionOrderDetails.orderNumber(false));
                 // dispatch(getOrderNumber());
               }
             }}

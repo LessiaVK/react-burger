@@ -15,7 +15,7 @@ import {
 } from "../../services/selectors";
 import { TOrderFeed } from "./OrderFeed";
 import { wsOrders, wsConnected } from "../../services/selectors";
-import { TDataIngr } from "../burger-ingredients/BurgerIngredients";
+import { TDataIngr, TIngredient } from "../burger-ingredients/BurgerIngredients";
 
 const exampleOrder = {
   success: true,
@@ -39,23 +39,23 @@ const exampleOrder = {
 };
 
 type TIResolver = {
-  ingredients: TDataIngr[];
+  ingredients: TIngredient[];
   price: number;
 };
 
 type TOrderIngr = {
-  ingredients: TDataIngr[];
+  ingredients: TIngredient[];
   ids: string[];
   createdAt: string;
 };
 
 const ingredientsResolver = (
-  ingredients: TDataIngr[],
+  ingredients: TIngredient[],
   ids: string[]
 ): TIResolver => {
   // console.log("ImageListIngredients",props.dataIngradients, props.ingredients);
   let price: number = 0;
-  let imageList: TDataIngr[] = [];
+  let imageList: TIngredient[] = [];
   if (ingredients.length > 0) {
     // console.log("ingredients",ingredients,ids);
 
@@ -72,7 +72,7 @@ const ingredientsResolver = (
   return { ingredients: imageList, price: price };
 };
 
-const ListIngredients = (props: TOrderIngr) => {
+const ListIngredients = (props: any) => {
   const listIngrs: TIResolver = ingredientsResolver(
     props.ingredients,
     props.ids
