@@ -21,6 +21,7 @@ import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteL
 import { getCookie } from "../../utils/cookie";
 import IngredientPage from "../../pages/IngredientPage";
 import OrderPage from "../../pages/OrderPage";
+import { ProfileOrdersPage } from "../../pages/ProfileOrdersPage";
 import {
   PATH_LOGIN,
   PATH_REGISTER,
@@ -35,13 +36,11 @@ function App() {
   const ModalSwitch = () => {
     const location = useLocation();
     let background = location.state && location.state.background;
-
     return <>{background ? <ConstructorPage /> : <IngredientPage />}</>;
   };
   const ModalSwitch2 = () => {
     const location = useLocation();
     let background = location.state && location.state.background;
-
     return <>{background ? <FeedPage /> : <OrderPage />}</>;
   };
 
@@ -74,11 +73,11 @@ function App() {
               element={<ProtectedRouteElement element={<ProfilePage />} />}
             />
             <Route
-              path={PATH_PROFILE + "/:orders"}
-              element={<ProtectedRouteElement element={<ProfilePage />} />}
+              path={PATH_PROFILE + "/orders"}
+              element={<ProtectedRouteElement element={<ProfileOrdersPage />} />}
             />
             <Route
-              path={PATH_PROFILE + "/:orders/:id"}
+              path={PATH_PROFILE + "/orders/:id"}
               element={<ProtectedRouteElement element={<ProfilePage />} />}
             />
             <Route path={PATH_FEED} element={<FeedPage />} />

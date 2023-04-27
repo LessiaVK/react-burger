@@ -9,23 +9,20 @@ import { actionUserRequest } from "./actions/user";
 import { actionUpdateToken } from "./actions/token";
 import { PATH_LOGIN } from "../utils/constants";
 import { TTodoActions } from "./actions/todo";
-import { rootReducer } from "./reducers";
 import { ThunkAction } from "redux-thunk";
-import { ThunkDispatch } from "redux-thunk";
 import { NavigateFunction } from "react-router";
-import { TIngredient } from "../components/burger-ingredients/BurgerIngredients";
+import { TDataUser } from "./reducers/todo";
+import { RootState, AppDispatch } from "../utils/hooks";
+import { TFormEmail } from "../pages/LoginPage";
 
-
-// export type RootState = ReturnType<typeof rootReducer>;
-// type TApplicationActions = TTodoActions;
-// export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
-// export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;
+type TApplicationActions = TTodoActions;
+export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;
 
 const timeExpires = 20 * 60;
 
 //  для обновления токена
-export function getUpdateToken(callback) {
-  return function (dispatch) {
+export function getUpdateToken(callback: any) {
+  return function (dispatch: AppDispatch) {
     let refreshToken = getCookie("refreshToken");
     dispatch(actionUpdateToken.updateToken());
     fetch(BASE_URL + "/auth/token", {
@@ -58,8 +55,8 @@ export function getUpdateToken(callback) {
 }
 
 //  для получения данных о пользователе
-export function getDataUser(navigate) {
-  return function (dispatch) {
+export function getDataUser(navigate: NavigateFunction) {
+  return function (dispatch: AppDispatch) {
     let token = getCookie("token");
     if (token) {
       dispatch(actionUserRequest.userRequest());
@@ -79,7 +76,7 @@ export function getDataUser(navigate) {
         })
         .then((data) => {
           dispatch(actionUserRequest.userSuccess(data));
-          dispatch(actionLoginRequest.loginSuccess(data));
+          dispatch(actionLoginRequest.loginSuccess());
         })
         .catch((err) => {
           dispatch(actionUserRequest.userError());
@@ -89,8 +86,8 @@ export function getDataUser(navigate) {
 }
 
 //  для обновления данных о пользователе
-export function getUpdateUser(form) {
-  return function (dispatch) {
+export function getUpdateUser(form: TDataUser) {
+  return function (dispatch: AppDispatch) {
     let token = getCookie("token");
     if (token) {
       dispatch(actionUserRequest.userRequest());
@@ -120,8 +117,8 @@ export function getUpdateUser(form) {
 }
 
 //  для выхода из системы
-export function getLogout(navigate) {
-  return function (dispatch) {
+export function getLogout(navigate: NavigateFunction) {
+  return function (dispatch: AppDispatch) {
     dispatch(actionLoginRequest.loginRequest());
     fetch(BASE_URL + "/auth/logout", {
       method: "POST",
@@ -138,12 +135,12 @@ export function getLogout(navigate) {
         }
       })
       .then((data) => {
-        dispatch(actionLogoutRequest.logoutSuccess(data));
+        dispatch(actionLogoutRequest.logoutSuccess());
         deleteCookie("token", { path: "/" });
         deleteCookie("refreshToken", { path: "/" });
         dispatch(actionLoginRequest.loginRequest());
-        setCookie("forgot", "0");
-        data.success && dispatch(actionUserRequest.userSuccess({ user: {} }));
+        setCookie("forgot", "0", {});
+        data.success && dispatch(actionUserRequest.userSuccess(data));
         data.success && navigate(PATH_LOGIN, { replace: true });
       })
       .catch((err) => {
@@ -153,8 +150,8 @@ export function getLogout(navigate) {
 }
 
 //  авторизации
-export function getLoginRequest(form, navigate) {
-  return function (dispatch) {
+export function getLoginRequest(form: TFormEmail, navigate: NavigateFunction) {
+  return function (dispatch: AppDispatch) {
     dispatch(actionLoginRequest.loginRequest());
     fetch(BASE_URL + "/auth/login", {
       method: "POST",
@@ -172,7 +169,7 @@ export function getLoginRequest(form, navigate) {
         }
       })
       .then((data) => {
-        dispatch(actionLoginRequest.loginSuccess(data));
+        dispatch(actionLoginRequest.loginSuccess());
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
           setCookie("token", authToken, { path: "/", expires: timeExpires });
@@ -188,8 +185,8 @@ export function getLoginRequest(form, navigate) {
 }
 
 //  для регистрации пользователя
-export function getRegisterRequest(form, navigate) {
-  return function (dispatch) {
+export function getRegisterRequest(form: TDataUser, navigate: NavigateFunction) {
+  return function (dispatch: AppDispatch) {
     dispatch(actionRegisterRequest.registerRequest());
     fetch(BASE_URL + "/auth/register", {
       method: "POST",
@@ -222,7 +219,7 @@ export function getRegisterRequest(form, navigate) {
 }
 
 export function getIngredients() {
-  return function (dispatch) {
+  return function (dispatch: AppDispatch) {
     dispatch(actionGetData.fetchIngredientsRequest());
 
     fetch(BASE_URL + "/ingredients")
@@ -242,8 +239,8 @@ export function getIngredients() {
   };
 }
 
-export function getOrderNumber(orderDetailsID) {
-  return function (dispatch) {
+export function getOrderNumber(orderDetailsID: ReadonlyArray<number>) {
+  return function (dispatch: AppDispatch) {
     dispatch(actionOrderDetails.orderNumber());
 
     fetch(BASE_URL + "/orders", {

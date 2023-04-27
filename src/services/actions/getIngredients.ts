@@ -16,13 +16,11 @@ export const actionGetData = {
     type: FETCH_INGREDIENTS_STATE,
     payload: data,
   }),
-  fetchIngredientsError: (data: boolean): IFetchIngredientsError => ({
+  fetchIngredientsError: (): IFetchIngredientsError => ({
     type: FETCH_INGREDIENTS_ERROR,
-    payload: data,
   }),
-  fetchIngredientsRequest: (data: boolean): IFetchIngredientsRequest => ({
+  fetchIngredientsRequest: (): IFetchIngredientsRequest => ({
     type: FETCH_INGREDIENTS_REQUEST,
-    payload: data,
   }),
 };
 

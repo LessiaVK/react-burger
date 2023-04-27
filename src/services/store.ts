@@ -5,9 +5,9 @@ import { rootReducer } from "./reducers";
 
 import thunk from "redux-thunk";
 import { socketMiddleware } from "./socketMiddleware";
-// import { TApplicationActions } from "./actions/types";
 import { TInitialState } from "./reducers/todo";
-
+import { TTodoActions } from "./actions/todo";
+import { PATH_WSURL } from "../utils/constants";
 
 import {
   WS_CONNECTION_START,
@@ -20,9 +20,6 @@ import {
   WS_GET_MESSAGE,
 } from "./actions/actionTypes";
 
-
-export const wsUrl = "wss://norma.nomoreparties.space/orders/all";
-
 export const wsActions = {
   wsStart: WS_CONNECTION_START,
   wsSendMessage: WS_SEND_MESSAGE,
@@ -34,12 +31,13 @@ export const wsActions = {
   wsPingPong: WS_SEND_PONG,
 };
 
-
-export const configureStore = (initialState) => {
+export const configureStore = (initialState: any) => {
   const store = createStore(
     rootReducer,
     initialState,
-    composeWithDevTools(applyMiddleware(thunk,socketMiddleware(wsUrl, wsActions)))
+    composeWithDevTools(
+      applyMiddleware(thunk, socketMiddleware(PATH_WSURL, wsActions))
+    )
   );
   return store;
 };

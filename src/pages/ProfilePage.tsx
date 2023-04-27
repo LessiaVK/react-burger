@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../utils/hooks";
 import { getLogout } from "../services/thunks";
 import { getDataUser, getUpdateUser } from "../services/thunks";
 import { userRequest } from "../services/selectors";
@@ -20,8 +20,8 @@ import { PATH_LOGIN, PATH_PROFILE } from "../utils/constants";
 export function ProfilePage() {
   const [form, setValue] = useState({ password: "", email: "", name: "" });
   const navigate = useNavigate();
-  const dispatch = useDispatch() as any;
-  const userForm = useSelector(userRequest) as any;
+  const dispatch = useDispatch();
+  const userForm = useSelector(userRequest);
   const cancel = () => {
     setValue({ ...form, email: userForm.email, name: userForm.name });
   };
@@ -78,7 +78,7 @@ export function ProfilePage() {
         </p>
         <div className="pb-4">
           <div
-            className="text text_type_main-medium text_color_inactive"
+            className="text text_type_main-medium text_color_inactive pt-3"
             onClick={(e) => {
               dispatch(getLogout(navigate));
             }}
@@ -89,7 +89,7 @@ export function ProfilePage() {
         <p
           className={
             profileStyles.wCol +
-            " text text_type_main-default text_color_inactive mt-10"
+            " text text_type_main-default text_color_inactive mt-15"
           }
         >
           В этом разделе вы можете изменить свои персональные данные

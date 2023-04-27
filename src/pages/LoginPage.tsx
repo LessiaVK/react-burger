@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../utils/hooks";
 import { getLoginRequest } from "../services/thunks";
 
 import {
@@ -12,14 +12,14 @@ import {
 import loginStyles from "./LoginPage.module.css";
 import { PATH_REGISTER } from "../utils/constants";
 
-type TFormEmail = {
+export type TFormEmail = {
   email :string;
   password :string;
 }
 
 export function LoginPage() {
   const [form, setValue] = useState<TFormEmail>({ password: "", email: "" });
-  const dispatch = useDispatch() as any;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onChangePass = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, password: e.target.value });

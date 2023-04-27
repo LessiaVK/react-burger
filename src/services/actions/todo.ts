@@ -6,7 +6,6 @@ import {
   FETCH_INGREDIENTS_ERROR,
   FETCH_INGREDIENTS_REQUEST,
   ADD_INGREDIENT_DETAILS,
-  DELETE_INGREDIENT_DETAILS,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
@@ -80,22 +79,20 @@ export interface IFetchIngredientsID {
 
 export interface IFetchIngredients {
   readonly type: typeof FETCH_INGREDIENTS;
-  readonly payload: TIngredient[];
+  payload: TIngredient[];
 }
 
 export interface IFetchIngredientsState {
   readonly type: typeof FETCH_INGREDIENTS_STATE;
-  readonly payload: TIngredient[];
+  payload: TIngredient[];
 }
 
 export interface IFetchIngredientsError {
   readonly type: typeof FETCH_INGREDIENTS_ERROR;
-  readonly payload: boolean;
 }
 
 export interface IFetchIngredientsRequest {
   readonly type: typeof FETCH_INGREDIENTS_REQUEST;
-  readonly payload: boolean;
 }
 
 export interface IAddIngredientDetails {
@@ -103,43 +100,32 @@ export interface IAddIngredientDetails {
   readonly payload: TIngredient | undefined;
 }
 
-export interface IDeleteIngredientDetails {
-  readonly type: typeof DELETE_INGREDIENT_DETAILS;
-}
-
 export interface ILoginRequest {
   readonly type: typeof LOGIN_REQUEST;
-  readonly payload: TUser;
 }
 
 export interface ILoginSuccess {
   readonly type: typeof LOGIN_SUCCESS;
-  readonly payload: boolean;
 }
 
 export interface ILoginError {
   readonly type: typeof LOGIN_ERROR;
-  readonly payload: boolean;
 }
 
 export interface ILogout {
   readonly type: typeof LOGOUT;
-  readonly payload: TLogout;
 }
 
 export interface ILogoutSuccess {
   readonly type: typeof LOGOUT_SUCCESS;
-  readonly payload: boolean;
 }
 
 export interface ILogoutError {
   readonly type: typeof LOGOUT_ERROR;
-  readonly payload: boolean;
 }
 
 export interface IRegisterRequest {
   readonly type: typeof REGISTER_REQUEST;
-  readonly payload: boolean;
 }
 
 export interface IRegisterSuccess {
@@ -149,12 +135,10 @@ export interface IRegisterSuccess {
 
 export interface IRegisterError {
   readonly type: typeof REGISTER_ERROR;
-  readonly payload: boolean;
 }
 
 export interface IOrderNumber {
   readonly type: typeof ORDER_NUMBER;
-  readonly payload: boolean;
 }
 
 export interface IOrderSuccess {
@@ -164,7 +148,6 @@ export interface IOrderSuccess {
 
 export interface IOrderError {
   readonly type: typeof ORDER_NUMBER_ERROR;
-  readonly payload: boolean;
 }
 
 export interface IUpdateToken {
@@ -178,12 +161,10 @@ export interface IUpdateTokenSuccess {
 
 export interface IUpdateTokenError {
   readonly type: typeof UPDATE_TOKEN_ERROR;
-  readonly payload: boolean;
 }
 
 export interface IUserRequest {
   readonly type: typeof USER_REQUEST;
-  readonly payload: boolean;
 }
 
 export interface IUserSuccess {
@@ -193,7 +174,6 @@ export interface IUserSuccess {
 
 export interface IUserError {
   readonly type: typeof USER_ERROR;
-  readonly payload: boolean;
 }
 
 
@@ -235,7 +215,6 @@ export type TTodoActions =
   | IFetchIngredientsError
   | IFetchIngredientsRequest
   | IAddIngredientDetails
-  | IDeleteIngredientDetails
   | ILoginRequest
   | ILoginSuccess
   | ILoginError

@@ -1,52 +1,20 @@
 import React from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import {
-  Tab,
   CurrencyIcon,
-  Counter,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
-import { useAppSelector, useAppDispatch } from "../../utils/hooks";
+import { useSelector } from "../../utils/hooks";
 
 import oFStyles from "./OrderFeed.module.css";
-import {
-  ingredientsSelector,
-} from "../../services/selectors";
+import { ingredientsSelector } from "../../services/selectors";
 import { TOrderFeed } from "./OrderFeed";
 import { wsOrders, wsConnected } from "../../services/selectors";
-import { TDataIngr, TIngredient } from "../burger-ingredients/BurgerIngredients";
-
-const exampleOrder = {
-  success: true,
-  orders: [
-    {
-      ingredients: [
-        "60d3463f7034a000269f45e7",
-        "60d3463f7034a000269f45e9",
-        "60d3463f7034a000269f45e8",
-        "60d3463f7034a000269f45ea",
-      ],
-      _id: "",
-      status: "done",
-      number: 0,
-      createdAt: "2021-06-23T14:43:22.587Z",
-      updatedAt: "2021-06-23T14:43:22.603Z",
-    },
-  ],
-  total: 1,
-  totalToday: 1,
-};
+import { TIngredient } from "../burger-ingredients/BurgerIngredients";
 
 type TIResolver = {
   ingredients: TIngredient[];
   price: number;
-};
-
-type TOrderIngr = {
-  ingredients: TIngredient[];
-  ids: string[];
-  createdAt: string;
 };
 
 const ingredientsResolver = (
@@ -57,8 +25,6 @@ const ingredientsResolver = (
   let price: number = 0;
   let imageList: TIngredient[] = [];
   if (ingredients.length > 0) {
-    // console.log("ingredients",ingredients,ids);
-
     imageList = ids.map((idIngredient) => {
       const v = ingredients.filter((item) => {
         return item._id == idIngredient;
@@ -78,7 +44,6 @@ const ListIngredients = (props: any) => {
     props.ids
   );
   const listIngrsCount: any = [];
-  // console.log("listIngrs.ingredients",listIngrs.ingredients);
 
   listIngrs.ingredients.map((item) => {
     if (listIngrsCount[item._id]) {
@@ -92,17 +57,38 @@ const ListIngredients = (props: any) => {
 
   return (
     <div className={oFStyles.wOrders}>
-      <div className={oFStyles.noXScrol + " " + oFStyles.wOrdersIngr + " " + oFStyles.oFeedDetal + " ml-10 mr-10"}>
-        {arr.map((item: any, id : number) => {
+      <div
+        className={
+          oFStyles.noXScrol +
+          " " +
+          oFStyles.wOrdersIngr +
+          " " +
+          oFStyles.oFeedDetal +
+          " ml-10 mr-10"
+        }
+      >
+        {arr.map((item: any, id: number) => {
           return (
-            <div key={id}
+            <div
+              key={id}
               className={
-                oFStyles.wOrdersIngr + " " + oFStyles.mainRow + " " + oFStyles.row_between + ` pb-3`
+                oFStyles.wOrdersIngr +
+                " " +
+                oFStyles.mainRow +
+                " " +
+                oFStyles.row_between +
+                ` pb-3`
               }
             >
-              <div className={
-                oFStyles.wOrdersAuto + " " + oFStyles.mainRow + " " + oFStyles.row_between
-              }>
+              <div
+                className={
+                  oFStyles.wOrdersAuto +
+                  " " +
+                  oFStyles.mainRow +
+                  " " +
+                  oFStyles.row_between
+                }
+              >
                 <div
                   className={oFStyles.sizeImg2 + " constructor-element__price"}
                 >
@@ -112,13 +98,18 @@ const ListIngredients = (props: any) => {
                     alt="Ингредиент"
                   />
                 </div>
-                <div className={"text text_type_main-small pl-7"}> {item.name} </div>
+                <div className={"text text_type_main-small pl-7"}>
+                  {" "}
+                  {item.name}{" "}
+                </div>
               </div>
-              <div className={
-                oFStyles.wOrdersAuto + " " + oFStyles.mainRow + ` pr-10 pb-3`
-              }>
-              <div className="text text_type_digits-default pr-4">
-                {item.count + " X " + item.price}
+              <div
+                className={
+                  oFStyles.wOrdersAuto + " " + oFStyles.mainRow + ` pr-10 pb-3`
+                }
+              >
+                <div className="text text_type_digits-default pr-4">
+                  {item.count + " X " + item.price}
                 </div>
                 <CurrencyIcon type="primary" />
               </div>
@@ -126,19 +117,21 @@ const ListIngredients = (props: any) => {
           );
         })}
       </div>
-      <div
-        className={
-          oFStyles.mainRow + " " + oFStyles.row_between
-        }
-      >
-        <div className={"text text_type_main-small text_color_inactive pl-10 pt-10 pb-15"}>
+      <div className={oFStyles.mainRow + " " + oFStyles.row_between + " " + oFStyles.w640}>
+        <div
+          className={
+            " text text_type_main-small text_color_inactive pl-10 pt-10 pb-15"
+          }
+        >
           <FormattedDate date={new Date(props.createdAt)} />
         </div>
 
         <div
-          className={`constructor-element__price text text_type_main-small pr-10 pt-7 pb-15`}
+          className={`constructor-element__price text text_type_main-small pt-7 pb-15`}
         >
-          <div className={`text text_type_digits-default pr-2`}>{listIngrs.price}</div>
+          <div className={`text text_type_digits-default`}>
+            {listIngrs.price}
+          </div>
           <CurrencyIcon type="primary" />
         </div>
       </div>
@@ -147,28 +140,27 @@ const ListIngredients = (props: any) => {
 };
 
 export const OrderFeedDetails = () => {
-  const dataIngradients = useAppSelector(ingredientsSelector);
-  const dataOrders = useAppSelector(wsOrders);
-  // console.log("dataOrders", dataOrders);
+  const dataIngradients = useSelector(ingredientsSelector);
+  const dataOrders = useSelector(wsOrders);
 
   let { id } = useParams();
-   
- let data : TOrderFeed[] = [];
- data[0] = {
-  ingredients: [],
-  _id: "",
-  status: "",
-  number: 0,
-  createdAt: "",
-  updatedAt: "",
-  name: "",
-};
 
- if (dataOrders.orders) {
-   data = dataOrders.orders.filter((item: TOrderFeed, index: number) => {
-    return (String(item.number) == id);
-  });}
-  
+  let data: TOrderFeed[] = [];
+  data[0] = {
+    ingredients: [],
+    _id: "",
+    status: "",
+    number: 0,
+    createdAt: "",
+    updatedAt: "",
+    name: "",
+  };
+
+  if (dataOrders.orders) {
+    data = dataOrders.orders.filter((item: TOrderFeed, index: number) => {
+      return String(item.number) == id;
+    });
+  }
 
   return (
     <div
@@ -176,7 +168,7 @@ export const OrderFeedDetails = () => {
         oFStyles.mainColumn + " " + oFStyles.wOrders + " " + oFStyles.toSub
       }
     >
-      <div className={oFStyles.alignCenter + " text text_type_digits-medium"}>
+      <div className={oFStyles.contentLeft + " text text_type_digits-default pl-10"}>
         #{data[0].number}
       </div>
       <div
@@ -210,7 +202,6 @@ export const OrderFeedDetails = () => {
         ids={data[0].ingredients}
         createdAt={data[0].createdAt}
       />
-     
     </div>
   );
 };

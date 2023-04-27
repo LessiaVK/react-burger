@@ -5,9 +5,8 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import Modal from "../modal/Modal";
-import PropTypes from "prop-types";
 
 import bIStyles from "./BurgerIngredients.module.css";
 import {
@@ -19,7 +18,6 @@ import { useDrag } from "react-dnd";
 import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 import { PATH_INGREDIENTS } from "../../utils/constants";
 import { RefObject } from "react";
-import { StringLiteralLike } from "typescript";
 
 export type TIngredient = {
   _id?: string | any;
@@ -38,6 +36,10 @@ export type TIngredient = {
   ref1?: RefObject<HTMLParagraphElement>;
   data?: any;
   handleClose?: () => void;
+  calories: string;
+  proteins: string;
+  fat: string;
+  carbohydrates: string;
 };
 
 export type TDataIngr = {
@@ -53,21 +55,11 @@ export type TDataIngr = {
   key?: string;
 };
 
-export const IngredientDetails = () => {
-  let element = useSelector(currentIngredientSelector) as any;
-  const dataIngradients = useSelector(ingredientsSelector) as any;
-  let { id } = useParams();
-  if (id) {
-    let data = dataIngradients.filter((item: TIngredient) => item._id == id);
-    if (data.length === 1) {
-      //console.log("data", data[0]);
-      element = data[0];
-    }
-  }
-
+const ShowIngredient = (props:{element: TIngredient}) => {
+  const element = props.element;
   return (
-    <div className={bIStyles.sizeMain + " mb-10"}>
-      <img
+    <>
+    <img
         className={bIStyles.sizeImg}
         src={element.image}
         alt={"Изображение ингредиента"}
@@ -107,6 +99,25 @@ export const IngredientDetails = () => {
           </p>
         </div>
       </div>
+    </>
+  )
+}
+
+export const IngredientDetails = () => {
+  let element = useSelector(currentIngredientSelector);
+  const dataIngradients = useSelector(ingredientsSelector);
+  let { id } = useParams();
+  if (id) {
+    let data = dataIngradients.filter((item: TIngredient) => item._id == id);
+    if (data.length === 1) {
+      //console.log("data", data[0]);
+      element = data[0];
+    }
+  }
+
+  return (
+    <div className={bIStyles.sizeMain + " mb-10"}>
+      {element && <ShowIngredient element={element} />};
     </div>
   );
 };
@@ -118,7 +129,6 @@ type TElementMenuProps = {
 
 const ElementMenu = (props: TElementMenuProps) => {
   const orderList = useSelector(constructorSelector);
-  const dispatch = useDispatch();
   const location = useLocation();
   const count = orderList.filter(
     (item: TIngredient) => item._id == props.element._id
@@ -200,7 +210,6 @@ function BurgerIngredients() {
   const location = useLocation();
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
-  const currentIngredient = useSelector(currentIngredientSelector);
   const [current, setCurrent] = React.useState("one");
 
   const groupList = document.querySelectorAll<HTMLElement>("[data-group]");

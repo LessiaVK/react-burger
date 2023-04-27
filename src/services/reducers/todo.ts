@@ -8,18 +8,18 @@ export type TDataUser = {
 }
 
 export type TFetchDataReducer = {
-  ingredients: ReadonlyArray<TIngredient>;
-  fetchIngredients: ReadonlyArray<TIngredient>;
+  ingredients: Array<TIngredient>;
+  fetchIngredients: Array<TIngredient>;
   fetchIngredientsRequest: boolean;
   fetchIngredientsError: boolean;
 }
 export type TBurgerReducer = {
-  constructorB: ReadonlyArray<TIngredient>;
+  constructorB: Array<TIngredient>;
   currentItemsID: ReadonlyArray<number>;
 }
 export type TIngredientReducer = {
-  isOpenModal: boolean,
-  currentIngredient: TIngredient | undefined,
+  isOpenModal: boolean;
+  currentIngredient: TIngredient | undefined;
 }
 export type TOrderReducer = {
   currentOrder: any,
@@ -28,12 +28,12 @@ export type TOrderReducer = {
   orderFailed: boolean,
 }
 export type TLoginReducer = {
-  loginRequest: TUser,
+  loginRequest: boolean,
   loginSuccess: boolean,
   loginError: boolean,
 }
 export type TLogoutReducer = {
-  logout: TLogout,
+  logout: boolean,
   logoutSuccess: boolean,
   logoutError: boolean,
 }

@@ -22,12 +22,12 @@ export const initialState: TInitialState = {
     orderFailed: false,
   },
   loginReducer: {
-    loginRequest: { "success": false, user: { email: "", name: "" } },
+    loginRequest: false,
     loginSuccess: false,
     loginError: false,
   },
   logoutReducer: {
-    logout: { "success": false, "message": '' },
+    logout: false,
     logoutSuccess: false,
     logoutError: false,
   },

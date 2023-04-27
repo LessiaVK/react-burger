@@ -1,158 +1,106 @@
 import React from "react";
-import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-  FormattedDate,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
-import Modal from "../modal/Modal";
-
 import oFStyles from "./OrderFeed.module.css";
-import {
-  ingredientsSelector,
-  constructorSelector,
-  currentIngredientSelector,
-} from "../../services/selectors";
-import { PATH_INGREDIENTS } from "../../utils/constants";
-import { RefObject } from "react";
 import { TOrderFeed } from "./OrderFeed";
-import { TDataIngr } from "../burger-ingredients/BurgerIngredients";
 
-const exampleOrder = {
-  success: true,
-  orders: [
-    {
-      ingredients: [
-        "60d3463f7034a000269f45e7",
-        "60d3463f7034a000269f45e9",
-        "60d3463f7034a000269f45e8",
-        "60d3463f7034a000269f45ea",
-      ],
-      _id: "",
-      status: "done",
-      number: 0,
-      createdAt: "2021-06-23T14:43:22.587Z",
-      updatedAt: "2021-06-23T14:43:22.603Z",
-    },
-  ],
-  total: 1,
-  totalToday: 1,
-};
-
-type TOrdersProps = {
-  data: any;
-};
-
-const Orders = (props: TOrdersProps) => {
-  return props.data;
-};
 
 function OrderFeedBoard(props: any) {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const data = useSelector(ingredientsSelector);
-  // const currentOrder = useSelector(currentOrderSelector);
-  // console.log("OrderFeedBoard", props);
   let ReadyOrders = [];
   let WorkOrders = [];
   if (props.dataOrders) {
-    // console.log("dataOrders", props.dataOrders);
     ReadyOrders =
     props.dataOrders["orders"] ?
     props.dataOrders.orders.filter((item: TOrderFeed) => item.status === "done") : [];
    WorkOrders =
     props.dataOrders["orders"] ?
     props.dataOrders.orders.filter((item: TOrderFeed) => item.status === "pending") : [];
-  } 
-  // console.log("ReadyOrders",ReadyOrders);
-  
-  const onClickOrder = () => {};
+  }
 
   return (
-    <div>
-      <div className={oFStyles.mainColumn + " " + oFStyles.wOrders}>
-          <div className={oFStyles.mainRow + " " + oFStyles.hOrders}>
-            <div className={oFStyles.mainColumn}>
-              <p className={"text text_type_main-medium pb-10 pt-10"}>Готовы:</p>
-              <ul className={"text text_type_digit-medium pb-10 pt-10"}>
-                
+    <div className={oFStyles.mainColumn + " " + oFStyles.wOrders}>
+      <div className={oFStyles.mainRow + " mb-5"}>
+          <div className={oFStyles.mainColumn + " " + oFStyles.hOrders}>
+            <p className={"text text_type_main-medium pl-15 pb-2"}>Готовы:</p>
+            <div className={oFStyles.mainRow + " pl-15"}>
+              <div className={"text text_type_digits-default pb-5 pr-10"}>
                 {ReadyOrders.map((item: TOrderFeed, index: number) => {
                   if (index < 10) {
                      return (
-                      <li
+                      <section
                         className={oFStyles.colorOrders}
                         key={item._id}
                       >
                        {item.number}
-                      </li>
+                      </section>
                      );
                   }
-                //   return null;
                 })}
-              </ul>
-            </div>
-
-            {/* <div className={oFStyles.mainRow}>
-              <p className={"text text_type_main-medium pb-10 pt-10"}>Готовы:</p>
-              <ul className={oFStyles.feed_list}>
+              </div>
+              <div className={"text text_type_digits-default pb-5"}>
                 {ReadyOrders.map((item: TOrderFeed, index: number) => {
-                  if (index > 9 && index < 20) {
-                    return (
-                      <li
-                        className={oFStyles.feed_orders_ready_item}
+                  if ((index >= 10) && (index < 20)) {
+                     return (
+                      <section
+                        className={oFStyles.colorOrders}
                         key={item._id}
                       >
-                        {item.number}
-                      </li>
-                    );
+                       {item.number}
+                      </section>
+                     );
                   }
-                  return null;
                 })}
-              </ul>
-            </div> */}
-
-            <div className={oFStyles.mainRow}>
-              <p className={"text text_type_main-medium pb-10 pt-10"}>В работе:</p>
-              <ul className={""}>
+              </div>
+            </div>
+            </div>
+            <div className={oFStyles.mainColumn + " " + oFStyles.hOrders}>
+              <p className={oFStyles.contentLeft + " text text_type_main-medium pl-15 pb-2"}>В работе:</p>
+              <div className={oFStyles.mainRow + " pl-15 pr-10"}>
                 {WorkOrders.map((item: TOrderFeed, index: number) => {
                   if (index > 10) {
                     return null;
                   }
                   return (
-                    <li
+                    <section
                       className={oFStyles.feed_orders_work_item}
                       key={item._id}
                     >
                       {item.number}
-                    </li>
+                    </section>
                   );
                 })}
-              </ul>
+              </div>
+              <div className={oFStyles.mainRow + " pl-15"}>
+                {WorkOrders.map((item: TOrderFeed, index: number) => {
+                  if ((index >= 10) && (index < 20)) {
+                    return null;
+                  }
+                  return (
+                    <section
+                      className={oFStyles.feed_orders_work_item}
+                      key={item._id}
+                    >
+                      {item.number}
+                    </section>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
           <div >
-            <p className={"text text_type_main-medium pt-10"}>
+            <p className={"text text_type_main-medium pl-15 pt-3"}>
               Выполнено за все время:
             </p>
-            <p className={"text text_type_digits-large"}>
+            <p className={"text text_type_digits-large pl-15 pb-10"}>
               {(props.dataOrders) ? props.dataOrders.total : ""}
-              {/* ttt */}
-              {/* {wsDataOrders.data ? wsDataOrders.data.total - 1 : "none"} */}
             </p>
           </div>
           <div>
-            <p className={"text text_type_main-medium"}>Выполнено за сегодня:</p>
-            <p className={"text text_type_digits-large"}>
-              {/* ttt */}
-              {/* {wsDataOrders.data ? wsDataOrders.data.totalToday - 1 : "none"} */}
+            <p className={"text text_type_main-medium pl-15"}>Выполнено за сегодня:</p>
+            <p className={"text text_type_digits-large pl-15"}>
               {(props.dataOrders.totalToday) && props.dataOrders.totalToday}
             </p>
           </div>
-       
-      </div>
+      
     </div>
   );
 }

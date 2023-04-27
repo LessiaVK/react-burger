@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useNavigate, useLocation, Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import { getDataUser } from "../../services/thunks";
 import { loginSuccess } from "../../services/selectors";
 import { NavigateComponent } from "./NavigateComponent";
 
-export const ProtectedRouteLogins = ({ element }) => {
+export const ProtectedRouteLogins = (props: any) => {
   const isUserLogin = useSelector(loginSuccess);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,5 +17,5 @@ export const ProtectedRouteLogins = ({ element }) => {
 
   if (isUserLogin) return <NavigateComponent page={location?.state || "/"} />;
 
-  return element;
+  return props.element;
 };

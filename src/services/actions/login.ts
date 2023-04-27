@@ -3,10 +3,10 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
 } from "./actionTypes";
-import { ILoginRequest, ILoginSuccess, ILoginError, TUser } from "./todo";
+import { ILoginRequest, ILoginSuccess, ILoginError } from "./todo";
 
 export const actionLoginRequest = {
-  loginRequest: (data: TUser): ILoginRequest => ({ type: LOGIN_REQUEST, payload: data }),
-  loginSuccess: (data: boolean): ILoginSuccess => ({ type: LOGIN_SUCCESS, payload: data }),
-  loginError: (data: boolean): ILoginError => ({ type: LOGIN_ERROR, payload: data }),
+  loginRequest: (): ILoginRequest => ({ type: LOGIN_REQUEST }),
+  loginSuccess: (): ILoginSuccess => ({ type: LOGIN_SUCCESS }),
+  loginError: (): ILoginError => ({ type: LOGIN_ERROR }),
 };

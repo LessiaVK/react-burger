@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/Modal";
 import bCStyles from "./BurgerConstructor.module.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import {
   constructorSelector,
   currentItemsIDSelector,
@@ -24,7 +24,6 @@ import { getOrderNumber } from "../../services/thunks";
 import { loginSuccess } from "../../services/selectors";
 import { PATH_LOGIN } from "../../utils/constants";
 import { TIngredient } from "../burger-ingredients/BurgerIngredients";
-
 const priceInitState = { totalPrice: 0 };
 
 interface IState {
@@ -111,13 +110,13 @@ const BurgerElement = (props : TIngredientBurger) => {
 };
 
 function BurgerConstructor() {
-  const dispatch = useDispatch() as any;
-  const data = useSelector(constructorSelector) as any;
-  const orderDetailsID = useSelector(currentItemsIDSelector) as any;
-  const orderIdRequest = useSelector(orderRequest) as any;
-  const orderIdFailed = useSelector(orderFailed) as any;
+  const dispatch = useDispatch();
+  const data = useSelector(constructorSelector);
+  const orderDetailsID = useSelector(currentItemsIDSelector);
+  const orderIdRequest = useSelector(orderRequest);
+  const orderIdFailed = useSelector(orderFailed);
 
-  const isUserLogin = useSelector(loginSuccess) as any;
+  const isUserLogin = useSelector(loginSuccess);
   const navigate = useNavigate();
 
   const [{ handlerId }, drop] = useDrop({
@@ -151,9 +150,9 @@ function BurgerConstructor() {
         ];
         flagNotBun = false;
       }
-      data.forEach((element:TIngredient, i: number) => {
+      data.forEach((element:TIngredient, index: number) => {
         if (element.type === "bun" && item.element.type == "bun") {
-          data[i] = item.element;
+          data[index] = item.element;
           flagNotBun = false;
         }
       });
@@ -173,7 +172,7 @@ function BurgerConstructor() {
   let t = new Date();
   let time = t.getTime().toString();
   let elementBorder: TIngredient | undefined;
-  data.map((element : TIngredient, key : string) => {
+  data.map((element: TIngredient) => {
     if (element.type === "bun" && !elementBorder) {
       elementBorder = element;
     }
@@ -195,7 +194,7 @@ function BurgerConstructor() {
   useEffect(() => {
     let price = initTotalPriceState();
     totalPricetDispatcher({ type: "init", price: price.totalPrice });
-    data.map((element: TIngredient, key :string) => {
+    data.map((element: TIngredient) => {
       if (element.type !== "bun") {
         totalPricetDispatcher({ type: "increment", price: element.price });
       }
@@ -203,9 +202,8 @@ function BurgerConstructor() {
   }, [data]);
 
   const onDeleteIngredient = (e: TIngredient) => {
-    let data2 = data.filter(function (element: TIngredient, index: number, arr: []) {
-      return element.dragId != e.dragId;
-    });
+    let data2 = data.filter(
+      (element: TIngredient, index: number) => element.dragId != e.dragId);
 
     dispatch({
       type: GET_CONSTRUCTOR,
@@ -235,14 +233,14 @@ function BurgerConstructor() {
         </div>
       )}
       <div className={bCStyles.bgList + " ml-10"}>
-        {data.map((element: TIngredient, key: string) => {
+        {data.map((element: TIngredient, index: number) => {
           if (element.type !== "bun") {
-            let keyId = key + time;
+            let keyId = index + time;
             return (
-              <div key={key}>
+              <div key={index}>
                 <ElementIngredient
                   keyId={keyId}
-                  index={Number(key)}
+                  index={index}
                   text={element.name ? element.name : ""}
                   price={element.price}
                   thumbnail={element.image}

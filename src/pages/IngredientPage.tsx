@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../utils/hooks";
 import { ingredientsSelector } from "../services/selectors";
 
 import { getIngredients } from "../services/thunks";

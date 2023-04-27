@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../utils/hooks";
 
 import {
   EmailInput,
@@ -15,14 +15,18 @@ import { getRegisterRequest } from "../services/thunks";
 import { PATH_LOGIN } from "../utils/constants";
 
 type TFormEmail = {
-  email :string;
-  password :string;
-  name :string;
-}
+  email: string;
+  password: string;
+  name: string;
+};
 
 export function RegisterPage() {
-  const [form, setValue] = useState<TFormEmail>({ name: "", password: "", email: "" });
-  const dispatch = useDispatch() as any;
+  const [form, setValue] = useState<TFormEmail>({
+    name: "",
+    password: "",
+    email: "",
+  });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onChangePass = (e: any) => {
     setValue({ ...form, password: e.target.value });

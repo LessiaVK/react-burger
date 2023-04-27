@@ -4,9 +4,8 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import modalStyles from "./Modal.module.css";
 import ModalOverlay from "./ModalOverlay";
 import { actionOrderDetails } from "../../services/actions/orderDetails";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { ReactNode } from "react";
-import { getOrderNumber } from "../../services/thunks";
 
 type TModalProps = {
   modalProps: string;
@@ -18,7 +17,7 @@ type TModalProps = {
 };
 
 function Modal(props: TModalProps) {
-  const dispatch = useDispatch() as any;
+  const dispatch = useDispatch();
   const element = document.getElementById(props.modalProps) as
     | Element
     | DocumentFragment;
@@ -52,9 +51,7 @@ function Modal(props: TModalProps) {
               } else if (props.close) {
                 props.close();
               } else {
-                // dispatch(actionIngredientDetails.deleteIngredientDetails());
-                dispatch(actionOrderDetails.orderNumber(false));
-                // dispatch(getOrderNumber());
+                dispatch(actionOrderDetails.orderNumber());
               }
             }}
           >

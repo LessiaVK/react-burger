@@ -1,6 +1,5 @@
 import {
-  ADD_INGREDIENT_DETAILS,
-  DELETE_INGREDIENT_DETAILS,
+  ADD_INGREDIENT_DETAILS
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
 import { TTodoActions } from "../actions/todo";
@@ -12,12 +11,6 @@ export const ingredientReducer = (state = initialState.ingredientReducer, action
       return {
         ...state,
         currentIngredient: action.payload,
-      };
-
-    case DELETE_INGREDIENT_DETAILS:
-      return {
-        ...state,
-        currentIngredient: undefined,
       };
 
     default:
