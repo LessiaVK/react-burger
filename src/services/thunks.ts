@@ -133,6 +133,7 @@ export function getLogout(navigate: NavigateFunction) {
           return res.json();
         } else {
           dispatch(actionLogoutRequest.logoutError());
+          dispatch(actionLoginRequest.loginError());
         }
       })
       .then((data) => {

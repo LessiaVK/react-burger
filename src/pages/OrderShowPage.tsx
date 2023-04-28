@@ -26,11 +26,11 @@ export default function OrderPage() {
     };
   }, [dispatch]);
 
-  const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
+  // const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
 
-  React.useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
+  // React.useEffect(() => {
+  //   dispatch(getIngredients());
+  // }, []);
 
   return (
     <div className={fStyles.contentCenter}>

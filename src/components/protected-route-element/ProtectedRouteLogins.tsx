@@ -10,9 +10,9 @@ export const ProtectedRouteLogins = (props: any) => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  useEffect(() => {
-    dispatch(getDataUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getDataUser());
+  // }, []);
 
   if (isUserLogin) return <NavigateComponent page={location?.state || "/"} />;
 

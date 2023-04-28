@@ -27,7 +27,6 @@ import { getCookie } from "../../utils/cookie";
 import IngredientPage from "../../pages/IngredientPage";
 import OrderPage from "../../pages/OrderShowPage";
 import { ProfileOrdersPage } from "../../pages/ProfileOrdersPage";
-import { OrderFeedDetails } from "../order-feed/OrderFeedDetails";
 import {
   PATH_LOGIN,
   PATH_REGISTER,
@@ -57,12 +56,12 @@ function App() {
   const ModalSwitch2 = () => {
     const location = useLocation();
     let background = location.state && location.state.background;
-    return <>{background ? <FeedPage /> : <OrderFeedDetails />}</>;
+    return <>{background ? <FeedPage /> : <OrderPage />}</>;
   };
   const ModalSwitch3 = () => {
     const location = useLocation();
     let background = location.state && location.state.background;
-    return <>{background ? <ProfileOrdersPage /> : <OrderFeedDetails />} </>;
+    return <>{background ? <ProfileOrdersPage /> : <OrderPage />} </>;
   };
 
   const flag = getCookie("forgot");
