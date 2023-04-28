@@ -43,6 +43,11 @@ function App() {
     let background = location.state && location.state.background;
     return <>{background ? <FeedPage /> : <OrderPage />}</>;
   };
+  const ModalSwitch3 = () => {
+    const location = useLocation();
+    let background = location.state && location.state.background;
+    return <>{background ? <ProfileOrdersPage /> : <OrderPage />} </>;
+  };
 
   const flag = getCookie("forgot");
 
@@ -74,18 +79,17 @@ function App() {
             />
             <Route
               path={PATH_PROFILE + "/orders"}
-              element={<ProtectedRouteElement element={<ProfileOrdersPage />} />}
+              element={
+                <ProtectedRouteElement element={<ProfileOrdersPage />} />
+              }
             />
             <Route
               path={PATH_PROFILE + "/orders/:id"}
-              element={<ProtectedRouteElement element={<ProfilePage />} />}
+              element={<ProtectedRouteElement element={<ModalSwitch3 />} />}
             />
             <Route path={PATH_FEED} element={<FeedPage />} />
-            
-            <Route
-              path={PATH_FEED + "/:id"}
-              element={<ModalSwitch2 />}
-            ></Route>
+
+            <Route path={PATH_FEED + "/:id"} element={<ModalSwitch2 />}></Route>
 
             <Route
               path={PATH_INGREDIENTS + "/:id"}

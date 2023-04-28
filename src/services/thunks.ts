@@ -246,7 +246,9 @@ export function getOrderNumber(orderDetailsID: ReadonlyArray<number>) {
     fetch(BASE_URL + "/orders", {
       method: "POST",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json;charset=utf-8",
+        Authorization: "Bearer " + getCookie("token"),
       },
       body: JSON.stringify({
         ingredients: orderDetailsID,

@@ -117,7 +117,11 @@ const ListIngredients = (props: any) => {
           );
         })}
       </div>
-      <div className={oFStyles.mainRow + " " + oFStyles.row_between + " " + oFStyles.w640}>
+      <div
+        className={
+          oFStyles.mainRow + " " + oFStyles.row_between + " " + oFStyles.w640
+        }
+      >
         <div
           className={
             " text text_type_main-small text_color_inactive pl-10 pt-10 pb-15"
@@ -168,7 +172,11 @@ export const OrderFeedDetails = () => {
         oFStyles.mainColumn + " " + oFStyles.wOrders + " " + oFStyles.toSub
       }
     >
-      <div className={oFStyles.contentLeft + " text text_type_digits-default pl-10"}>
+      <div
+        className={
+          oFStyles.contentLeft + " text text_type_digits-default pl-10"
+        }
+      >
         #{data[0].number}
       </div>
       <div

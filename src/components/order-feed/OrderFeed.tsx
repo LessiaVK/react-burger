@@ -12,7 +12,10 @@ import { ingredientsSelector } from "../../services/selectors";
 import { PATH_FEED } from "../../utils/constants";
 import { OrderFeedDetails } from "./OrderFeedDetails";
 import { getIngredients } from "../../services/thunks";
-import { TDataIngr, TIngredient } from "../burger-ingredients/BurgerIngredients";
+import {
+  TDataIngr,
+  TIngredient,
+} from "../burger-ingredients/BurgerIngredients";
 
 const exampleOrder = {
   success: true,
@@ -51,7 +54,10 @@ type TOrdersProps = {
   keyIndex: any;
 };
 
-const ImageListIngredients = (props: {dataIngradients: TIngredient[], ingredients: string[]}) => {
+const ImageListIngredients = (props: {
+  dataIngradients: TIngredient[];
+  ingredients: string[];
+}) => {
   // console.log("ImageListIngredients",props.dataIngradients, props.ingredients);
   let price = 0;
   let imageList: TIngredient[] = [];
@@ -129,6 +135,22 @@ const Orders = (props: TOrdersProps) => {
   }, []);
 
   const dataIngradients = useSelector(ingredientsSelector);
+  // console.log("location",window.location.pathname);
+  let showStatus = window.location.pathname == "/profile/orders";
+  let style = " ";
+  let statusOrder = "В работе";
+  switch (props.data.status) {
+    case "done":
+      statusOrder = "Выполнен";
+      style = oFStyles.colorOrders;
+      break;
+    case "created":
+      statusOrder = "Создан";
+      style = oFStyles.colorOrdersRed;
+      break;
+    default:
+      break;
+  }
 
   return (
     <div
@@ -144,11 +166,16 @@ const Orders = (props: TOrdersProps) => {
         </div>
       </div>
       <div
-        className={"text text_type_main-medium pb-5 pt-5 " + oFStyles.caption}
+        className={"text text_type_main-medium pb-1 pt-5 " + oFStyles.caption}
         key={props.data._id}
       >
         {props.data.name}
       </div>
+      {showStatus && (
+        <div className={"text text_type_main-small pb-7 " + style}>
+          {statusOrder}
+        </div>
+      )}
       <div className={oFStyles.mainRow + " " + oFStyles.row_between}>
         <ImageListIngredients
           dataIngradients={dataIngradients}

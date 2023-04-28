@@ -26,7 +26,7 @@ export function ProfileOrdersPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let token = getCookie("token");
-  console.log("token", token);
+  // console.log("token", token);
   
 
   useEffect(() => {
@@ -43,12 +43,10 @@ export function ProfileOrdersPage() {
   }));
 
   React.useEffect(() => {
-  //   if (token) {
-  //   dispatch(wsConnectionStart(PATH_WSURLCUSTOMER + "?token=" + token));
-  // }
-    dispatch(wsConnectionStart(PATH_WSURL));
-    
-    return () => {
+    if (token) {
+    dispatch(wsConnectionStart(PATH_WSURLCUSTOMER + "?token=" + token));
+  }
+     return () => {
       dispatch({ type: wsActions.wsClose });
     };
   }, [dispatch]);
@@ -94,7 +92,7 @@ export function ProfileOrdersPage() {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <div className={fStyles.f_order_scroll + " text text_type_main-large "}>
+      <div className={fStyles.f_order_scroll + " text text_type_main-large mt-10"}>
           <OrderFeed orders={orders} />
         </div>
     </div>
