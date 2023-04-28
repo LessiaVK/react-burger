@@ -23,7 +23,7 @@ const ingredientsResolver = (
 ): TIResolver => {
   // console.log("ImageListIngredients",props.dataIngradients, props.ingredients);
   let price: number = 0;
-  let imageList: TIngredient[] = [];
+  let imageList: any = [];
   if (ingredients.length > 0) {
     imageList = ids.map((idIngredient) => {
       const v = ingredients.filter((item) => {
@@ -44,7 +44,8 @@ const ListIngredients = (props: any) => {
     props.ids
   );
   const listIngrsCount: any = [];
-
+    console.log("listIngrs", listIngrs);
+    
   listIngrs.ingredients.map((item) => {
     if (listIngrsCount[item._id]) {
       listIngrsCount[item._id].count++;

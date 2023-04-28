@@ -46,6 +46,7 @@ export type TUserReducer = {
   userRequest: TUser["user"],
   userSuccess: boolean,
   userError: boolean,
+  userIsCheck: boolean,
 }
 export type TUpdateTokenReducer = {
   updateToken: TToken,

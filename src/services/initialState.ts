@@ -40,6 +40,7 @@ export const initialState: TInitialState = {
     userRequest: { email: "", name: "" },
     userSuccess: false,
     userError: false,
+    userIsCheck: false,
   },
   updateTokenReducer: {
     updateToken: { "success": false, "accessToken": '', "refreshToken": '' },

@@ -16,12 +16,14 @@ export const userReducer = (state = initialState.userReducer, action: TTodoActio
         ...state,
         userSuccess: false,
         userError: false,
+        userIsCheck: false,
       };
 
     case USER_SUCCESS:
       return {
         ...state,
         userRequest: action.payload.user,
+        userIsCheck: true,
         userSuccess: true,
         userError: false,
       };
@@ -32,6 +34,7 @@ export const userReducer = (state = initialState.userReducer, action: TTodoActio
         ...state,
         userSuccess: false,
         userError: true,
+        userIsCheck: true,
       };
 
     default:

@@ -40,6 +40,7 @@ export const user = (state: TInitialState) => state.registerReducer.user;
 export const userRequest = (state: TInitialState) => state.userReducer.userRequest;
 export const userSuccess = (state: TInitialState) => state.userReducer.userSuccess;
 export const userError = (state: TInitialState) => state.userReducer.userError;
+export const userIsCheck = (state: TInitialState) => state.userReducer.userIsCheck;
 
 export const updateToken = (state: TInitialState) => state.updateTokenReducer.updateToken;
 export const updateTokenSuccess = (state: TInitialState) =>

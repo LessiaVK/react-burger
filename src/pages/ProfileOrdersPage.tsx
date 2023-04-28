@@ -32,8 +32,8 @@ export function ProfileOrdersPage() {
   useEffect(() => {
     // let token = getCookie("token");
     if (!token && getCookie("refreshToken")) {
-      dispatch(getUpdateToken(getDataUser(navigate)));
-    } else if (token) getDataUser(navigate);
+      dispatch(getUpdateToken(getDataUser()));
+    } else if (token) getDataUser();
     else navigate(PATH_LOGIN, { replace: true });
   }, []);
 

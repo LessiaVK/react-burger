@@ -8,11 +8,10 @@ import { NavigateComponent } from "./NavigateComponent";
 export const ProtectedRouteLogins = (props: any) => {
   const isUserLogin = useSelector(loginSuccess);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(getDataUser(navigate));
+    dispatch(getDataUser());
   }, []);
 
   if (isUserLogin) return <NavigateComponent page={location?.state || "/"} />;

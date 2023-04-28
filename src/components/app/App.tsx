@@ -6,7 +6,12 @@ import {
   Routes,
   Route,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
+import { useDispatch, useSelector } from "../../utils/hooks";
+import { getIngredients } from "../../services/thunks";
+import { getDataUser } from "../../services/thunks";
+import { userIsCheck } from "../../services/selectors";
 
 import ConstructorPage from "../../pages/ConstructorPage";
 import { LoginPage } from "../../pages/LoginPage";
@@ -20,8 +25,9 @@ import { ProtectedRouteElement } from "../protected-route-element/ProtectedRoute
 import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteLogins";
 import { getCookie } from "../../utils/cookie";
 import IngredientPage from "../../pages/IngredientPage";
-import OrderPage from "../../pages/OrderPage";
+import OrderPage from "../../pages/OrderShowPage";
 import { ProfileOrdersPage } from "../../pages/ProfileOrdersPage";
+import { OrderFeedDetails } from "../order-feed/OrderFeedDetails";
 import {
   PATH_LOGIN,
   PATH_REGISTER,
@@ -33,6 +39,16 @@ import {
 } from "../../utils/constants";
 
 function App() {
+  const dispatch = useDispatch();
+  const userIsChecked = useSelector(userIsCheck);
+
+  React.useEffect(() => {
+    dispatch(getIngredients());
+    dispatch(getDataUser());
+    // console.log("useEffect");
+    // console.log("userIsChecked UE", userIsChecked);
+  }, []);
+
   const ModalSwitch = () => {
     const location = useLocation();
     let background = location.state && location.state.background;
@@ -41,18 +57,21 @@ function App() {
   const ModalSwitch2 = () => {
     const location = useLocation();
     let background = location.state && location.state.background;
-    return <>{background ? <FeedPage /> : <OrderPage />}</>;
+    return <>{background ? <FeedPage /> : <OrderFeedDetails />}</>;
   };
   const ModalSwitch3 = () => {
     const location = useLocation();
     let background = location.state && location.state.background;
-    return <>{background ? <ProfileOrdersPage /> : <OrderPage />} </>;
+    return <>{background ? <ProfileOrdersPage /> : <OrderFeedDetails />} </>;
   };
 
   const flag = getCookie("forgot");
-
+  // console.log("userIsChecked", userIsChecked);
+  
   return (
     <div className="App">
+     { userIsChecked &&
+    
       <Router>
         <AppHeader />
         <main className={appStyles.appMain}>
@@ -99,6 +118,7 @@ function App() {
           </Routes>
         </main>
       </Router>
+}
     </div>
   );
 }

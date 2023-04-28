@@ -55,7 +55,7 @@ export function getUpdateToken(callback: any) {
 }
 
 //  для получения данных о пользователе
-export function getDataUser(navigate: NavigateFunction) {
+export function getDataUser() {
   return function (dispatch: AppDispatch) {
     let token = getCookie("token");
     if (token) {
@@ -82,6 +82,7 @@ export function getDataUser(navigate: NavigateFunction) {
           dispatch(actionUserRequest.userError());
         });
     }
+    else dispatch(actionUserRequest.userError());
   };
 }
 

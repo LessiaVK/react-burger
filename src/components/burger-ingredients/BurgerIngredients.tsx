@@ -24,7 +24,7 @@ export type TIngredient = {
   keyId?: string;
   dragId?: string;
   name?: string;
-  type?: string;
+  type: string;
   image: string;
   image_large: string;
   image_mobile: string;
