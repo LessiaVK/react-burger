@@ -2,6 +2,8 @@ import {
   ORDER_NUMBER,
   ORDER_NUMBER_SUCCESS,
   ORDER_NUMBER_ERROR,
+  IS_MODAL,
+  NO_MODAL,
 } from "../actions/actionTypes";
 import { initialState } from "../initialState";
 import { TTodoActions } from "../actions/todo";
@@ -29,6 +31,18 @@ export const orderReducer = (state = initialState.orderReducer, action: TTodoAct
         ...state,
         orderRequest: false,
         orderFailed: true,
+      };
+
+    case IS_MODAL:
+      return {
+        ...state,
+        isModal: true,
+      };
+
+    case NO_MODAL:
+      return {
+        ...state,
+        isModal: false,
       };
 
     default:

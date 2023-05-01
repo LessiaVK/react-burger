@@ -13,6 +13,8 @@ import {
   ORDER_NUMBER,
   ORDER_NUMBER_SUCCESS,
   ORDER_NUMBER_ERROR,
+  IS_MODAL,
+  NO_MODAL,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_ERROR,
@@ -150,6 +152,14 @@ export interface IOrderError {
   readonly type: typeof ORDER_NUMBER_ERROR;
 }
 
+export interface IIsModal {
+  readonly type: typeof IS_MODAL;
+}
+
+export interface INoModal {
+  readonly type: typeof NO_MODAL;
+}
+
 export interface IUpdateToken {
   readonly type: typeof UPDATE_TOKEN;
 }
@@ -226,6 +236,8 @@ export type TTodoActions =
   | IOrderNumber
   | IOrderSuccess
   | IOrderError
+  | IIsModal
+  | INoModal
   | IUpdateToken
   | IUpdateTokenSuccess
   | IUpdateTokenError

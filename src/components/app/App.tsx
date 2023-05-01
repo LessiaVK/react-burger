@@ -25,6 +25,7 @@ import { ProtectedRouteLogins } from "../protected-route-element/ProtectedRouteL
 import { getCookie } from "../../utils/cookie";
 import IngredientPage from "../../pages/IngredientPage";
 import OrderPage from "../../pages/OrderShowPage";
+import OrderCustomerPage from "../../pages/OrderCustomerPage";
 import { ProfileOrdersPage } from "../../pages/ProfileOrdersPage";
 import {
   PATH_LOGIN,
@@ -39,7 +40,7 @@ import {
 function App() {
   const dispatch = useDispatch();
   const userIsChecked = useSelector(userIsCheck);
-
+  
   React.useEffect(() => {
     dispatch(getIngredients());
     dispatch(getDataUser());
@@ -58,7 +59,7 @@ function App() {
   const ModalSwitch3 = () => {
     const location = useLocation();
     let background = location.state && location.state.background;
-    return <>{background ? <ProfileOrdersPage /> : <OrderPage />} </>;
+    return <>{background ? <ProfileOrdersPage /> : <OrderCustomerPage />} </>;
   };
 
   const flag = getCookie("forgot");

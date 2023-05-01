@@ -3,7 +3,6 @@ import { useLocation, RouteProps } from "react-router-dom";
 import { loginSuccess } from "../../services/selectors";
 import { NavigateComponent } from "./NavigateComponent";
 import { PATH_LOGIN } from "../../utils/constants";
-import { PropsWithChildren } from "react";
 
 export type ProtectedRouteProps = {
   element: JSX.Element;

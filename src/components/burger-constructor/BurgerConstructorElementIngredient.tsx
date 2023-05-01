@@ -6,13 +6,14 @@ import { actionBurgerCompound } from "../../services/actions/burgerСompound";
 import { useDispatch, useSelector } from "../../utils/hooks";
 import { constructorSelector } from "../../services/selectors";
 import { TIngredientBurger } from "./BurgerConstructor";
+import { TIngredient } from "../burger-ingredients/BurgerIngredients";
 
 type TDnDCallBack = (dragIndex: number, hoverIndex: number) => any;
 
 export const ElementIngredient = (props: TIngredientBurger) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
-  const data = useSelector(constructorSelector);
+  const data: TIngredient[] = useSelector(constructorSelector);
 
   const moveCard = useCallback<TDnDCallBack>(
     (dragIndex, hoverIndex) => {

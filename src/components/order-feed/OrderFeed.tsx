@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   CurrencyIcon,
@@ -33,30 +33,44 @@ const ImageListIngredients = (props: {
   dataIngradients: TIngredient[];
   ingredients: string[];
 }) => {
-  let price = 0;
-  let imageList: TIngredient[] = [];
-  if (props.dataIngradients.length > 0) {
-    imageList = props.ingredients.map((ingredient: string) => {
-      const v = props.dataIngradients.filter((item: TIngredient) => {
-        return item._id == ingredient;
+  
+  const ingredientsResolver = useMemo(() => {
+    let imageList: TIngredient[] = [];
+    if (props.dataIngradients.length > 0) {
+      imageList = props.ingredients.map((idIngredient: string) => {
+        const v = props.dataIngradients.filter((item) => {
+          return item._id === idIngredient;
+        });
+        return v[0];
       });
-      if (v[0]) {
-        price = price + v[0].price;
-      }
-      return v[0];
-    });
-  }
+    }
+    return imageList;
+  }, [props.dataIngradients, props.ingredients]);
+
+  const sumPrices = useMemo(() => {
+    return ingredientsResolver.length > 0 &&
+      ingredientsResolver[0] === undefined
+      ? ingredientsResolver[1].price
+      : ingredientsResolver.length > 0
+      ? ingredientsResolver.reduce(
+          (sum, ingredient) => sum + ingredient.price,
+          0
+        )
+      : 0;
+  }, [ingredientsResolver]);
+
   let countBun = 0;
   let maxCount = 0;
   let additionalNumber = 0;
+  let imageList: TIngredient[] = [];
 
-  imageList = imageList.filter((item: TIngredient) => {
+  imageList = ingredientsResolver.filter((item: TIngredient) => {
     if (item) {
-      if (item.type == "bun") {
+      if (item.type === "bun") {
         countBun++;
       }
       maxCount++;
-      if (maxCount > 5 && item.type != "bun") {
+      if (maxCount > 5 && item.type !== "bun") {
         additionalNumber++;
       }
 
@@ -95,7 +109,7 @@ const ImageListIngredients = (props: {
         <p
           className={`constructor-element__price text text_type_digits-default`}
         >
-          {price}
+          {sumPrices}
           <CurrencyIcon type="primary" />
         </p>
       </div>
@@ -105,7 +119,6 @@ const ImageListIngredients = (props: {
 
 const Orders = (props: TOrdersProps) => {
   const dataIngradients = useSelector(ingredientsSelector);
-  // console.log("location",window.location.pathname);
   let showStatus = window.location.pathname === "/profile/orders";
   let style = " ";
   let statusOrder = " ";
@@ -162,15 +175,13 @@ const Orders = (props: TOrdersProps) => {
 function OrderFeed(props: any) {
   const location = useLocation();
   const navigate = useNavigate();
-  // console.log("location", location);
-
+ 
   return (
     <div>
       {props.orders.map((ordersElement: TOrderFeed, index: number) => (
         <Link
           key={index}
           to={{
-            // pathname: PATH_FEED + `/${ordersElement.number}`,
             pathname: location.pathname + `/${ordersElement.number}`,
           }}
           state={{ background: location }}

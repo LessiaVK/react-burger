@@ -174,11 +174,10 @@ export function getLoginRequest(form: TFormEmail, navigate: NavigateFunction) {
         dispatch(actionLoginRequest.loginSuccess());
         let authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
-          setCookie("token", authToken, { path: "/", expires: timeExpires });
+          setCookie("token", authToken, { path: navigate(-1), expires: timeExpires });
         }
-        setCookie("refreshToken", data.refreshToken, { path: "/" });
+        setCookie("refreshToken", data.refreshToken, { path: navigate(-1) });
         data.success && dispatch(actionUserRequest.userSuccess(data));
-        // data.success && navigate("/", { replace: true });
       })
       .catch((err) => {
         dispatch(actionLoginRequest.loginError());

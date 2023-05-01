@@ -1,4 +1,3 @@
-import React from "react";
 import modalStyles from "./Modal.module.css";
 import { actionOrderDetails } from "../../services/actions/orderDetails";
 import { useDispatch } from "../../utils/hooks";
@@ -10,11 +9,12 @@ type TModalOverlayProps = {
 
 const ModalOverlay: FC<TModalOverlayProps> = ({ handleClose }) => {
   const dispatch = useDispatch();
-
+  
   return (
     <div
       className={modalStyles.overlay}
       onClick={(e) => {
+        dispatch(actionOrderDetails.isModal());
         if (typeof handleClose === "function") {
           handleClose();
         } else {

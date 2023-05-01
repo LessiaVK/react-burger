@@ -20,6 +20,7 @@ export const initialState: TInitialState = {
     orderNum: 0,
     orderRequest: true,
     orderFailed: false,
+    isModal: false,
   },
   loginReducer: {
     loginRequest: false,

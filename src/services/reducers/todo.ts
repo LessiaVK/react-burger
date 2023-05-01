@@ -26,6 +26,7 @@ export type TOrderReducer = {
   orderNum: number | undefined;
   orderRequest: boolean,
   orderFailed: boolean,
+  isModal: boolean,
 }
 export type TLoginReducer = {
   loginRequest: boolean,

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+import { useParams } from "react-router-dom";
 import {
   CurrencyIcon,
   FormattedDate,
@@ -9,53 +9,26 @@ import { useSelector } from "../../utils/hooks";
 import oFStyles from "./OrderFeed.module.css";
 import { ingredientsSelector } from "../../services/selectors";
 import { TOrderFeed } from "./OrderFeed";
-import { wsOrders, wsConnected } from "../../services/selectors";
+import { wsOrders } from "../../services/selectors";
 import { TIngredient } from "../burger-ingredients/BurgerIngredients";
-
-type TIResolver = {
-  ingredients: TIngredient[];
-  price: number;
-};
 
 type TListIngr = {
   ingredients: TIngredient[];
-  ids: string[];
+  sumPrices: number;
   createdAt: string;
 };
 
-const ingredientsResolver = (
-  ingredients: TIngredient[],
-  ids: string[]
-): TIResolver => {
-  let price: number = 0;
-  let imageList: any = [];
-  if (ingredients.length > 0) {
-    imageList = ids.map((idIngredient) => {
-      const v = ingredients.filter((item) => {
-        return item._id == idIngredient;
-      });
-      if (v.length > 0) {
-        price = price + v[0].price;
-      }
-      return v[0];
-    });
-  }
-  return { ingredients: imageList, price: price };
-};
-
 const ListIngredients = (props: TListIngr) => {
-  const listIngrs: TIResolver = ingredientsResolver(
-    props.ingredients,
-    props.ids
-  );
+  const listIngrs: TIngredient[] = props.ingredients;
   const listIngrsCount: any = [];
-    
-  listIngrs.ingredients.map((item) => {
-    if (listIngrsCount[item._id]) {
-      listIngrsCount[item._id].count++;
-    } else {
-      listIngrsCount[item._id] = item;
-      listIngrsCount[item._id].count = 1;
+  listIngrs.map((item) => {
+    if (item) {
+      if (listIngrsCount[item._id]) {
+        listIngrsCount[item._id].count++;
+      } else {
+        listIngrsCount[item._id] = item;
+        listIngrsCount[item._id].count = 1;
+      }
     }
   });
   const arr = Object.values(listIngrsCount);
@@ -104,8 +77,7 @@ const ListIngredients = (props: TListIngr) => {
                   />
                 </div>
                 <div className={"text text_type_main-small pl-7"}>
-                  {" "}
-                  {item.name}{" "}
+                  {item.name}
                 </div>
               </div>
               <div
@@ -139,7 +111,7 @@ const ListIngredients = (props: TListIngr) => {
           className={`constructor-element__price text text_type_main-small pt-7 pb-15`}
         >
           <div className={`text text_type_digits-default`}>
-            {listIngrs.price}
+            {props.sumPrices}
           </div>
           <CurrencyIcon type="primary" />
         </div>
@@ -153,7 +125,7 @@ export const OrderFeedDetails = () => {
   const dataOrders = useSelector(wsOrders);
 
   let { id } = useParams();
-  
+
   let data: TOrderFeed[] = [];
   data[0] = {
     ingredients: [],
@@ -167,9 +139,36 @@ export const OrderFeedDetails = () => {
 
   if (dataOrders.orders) {
     data = dataOrders.orders.filter((item: TOrderFeed, index: number) => {
-      return String(item.number) == id;
+      return String(item.number) === id;
     });
   }
+
+  const ingredientsBurger = data[0].ingredients;
+
+  const ingredientsResolver = useMemo(() => {
+    let imageList: TIngredient[] = [];
+    if (dataIngradients.length > 0) {
+      imageList = ingredientsBurger.map((idIngredient: string) => {
+        const v = dataIngradients.filter((item) => {
+          return item._id === idIngredient;
+        });
+        return v[0];
+      });
+    }
+    return imageList;
+  }, [dataIngradients, ingredientsBurger]);
+
+  const sumPrices = useMemo(() => {
+    return ingredientsResolver.length > 0 &&
+      ingredientsResolver[0] === undefined
+      ? ingredientsResolver[1].price
+      : ingredientsResolver.length > 0
+      ? ingredientsResolver.reduce(
+          (sum, ingredient) => sum + ingredient.price,
+          0
+        )
+      : 0;
+  }, [ingredientsResolver]);
 
   return (
     <div
@@ -177,44 +176,50 @@ export const OrderFeedDetails = () => {
         oFStyles.mainColumn + " " + oFStyles.wOrders + " " + oFStyles.toSub
       }
     >
-      <div
-        className={
-          oFStyles.contentLeft + " text text_type_digits-default pl-10"
-        }
-      >
-        {(data[0].number) && ("#" + data[0].number)}
-      </div>
-      <div
-        className={
-          oFStyles.alignLeft +
-          " text text_type_main-medium pl-10 pr-10 pb-3 pt-5"
-        }
-      >
-        {data[0].name}
-      </div>
-      <div
-        className={
-          oFStyles.alignLeft +
-          " " +
-          oFStyles.colorOrders +
-          " text text_type_main-small pl-10 pr-10 pb-2"
-        }
-      >
-        {data[0].status == "done" ? "Выполнен" : "В работе"}
-      </div>
-      <div
-        className={
-          oFStyles.alignLeft +
-          " text text_type_main-medium pl-10 pr-10 pb-3 pt-8"
-        }
-      >
-        Состав:
-      </div>
-      <ListIngredients
-        ingredients={dataIngradients}
-        ids={data[0].ingredients}
-        createdAt={data[0].createdAt}
-      />
+      {data[0] && (
+        <>
+          <div
+            className={
+              oFStyles.contentLeft + " text text_type_digits-default pl-10"
+            }
+          >
+            {"#" + data[0].number}
+          </div>
+          <div
+            className={
+              oFStyles.alignLeft +
+              " text text_type_main-medium pl-10 pr-10 pb-3 pt-5"
+            }
+          >
+            {"#" + data[0].name}
+          </div>
+          <div
+            className={
+              oFStyles.alignLeft +
+              " " +
+              oFStyles.colorOrders +
+              " text text_type_main-small pl-10 pr-10 pb-2"
+            }
+          >
+            {data[0].status == "done" ? "Выполнен" : "В работе"}
+          </div>
+          <div
+            className={
+              oFStyles.alignLeft +
+              " text text_type_main-medium pl-10 pr-10 pb-3 pt-8"
+            }
+          >
+            Состав:
+          </div>
+          {sumPrices && (
+            <ListIngredients
+              ingredients={ingredientsResolver}
+              sumPrices={sumPrices}
+              createdAt={data[0].createdAt}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };

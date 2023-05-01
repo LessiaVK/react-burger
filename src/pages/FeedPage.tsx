@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import { wsConnectionStart } from "../services/actions/wsActions";
 import fStyles from "./FeedPage.module.css";
@@ -6,19 +7,28 @@ import OrderFeed from "../components/order-feed/OrderFeed";
 import OrderFeedBoard from "../components/order-feed/OrderFeedBoard";
 import { PATH_WSURL } from "../utils/constants";
 import { wsActions } from "../services/store";
+import { isModal } from "../services/selectors";
+import { actionOrderDetails } from "../services/actions/orderDetails";
 
 export function FeedPage() {
   const dispatch = useDispatch();
+  const modal = useSelector(isModal);
+  const location = useLocation();
 
   const { wsDataOrders } = useSelector((store) => ({
     wsDataOrders: store.wsReducer.orders,
   }));
 
   React.useEffect(() => {
-    dispatch(wsConnectionStart(PATH_WSURL));
-    return () => {
-      dispatch({ type: wsActions.wsClose });
-    };
+    if (!modal && location.state == null) {
+      dispatch(wsConnectionStart(PATH_WSURL));
+
+      return () => {
+        dispatch({ type: wsActions.wsClose });
+      };
+    } else {
+      dispatch(actionOrderDetails.noModal());
+    }
   }, [dispatch]);
 
   const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];

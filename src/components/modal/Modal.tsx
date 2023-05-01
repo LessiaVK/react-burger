@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import modalStyles from "./Modal.module.css";
@@ -35,7 +35,7 @@ function Modal(props: TModalProps) {
     return () => {
       window.removeEventListener("keydown", handleEsc);
     };
-  }, []);
+  }, []); // notice the empty array hear, this is optional
 
   return createPortal(
     <>
@@ -46,6 +46,7 @@ function Modal(props: TModalProps) {
           <div
             className={modalStyles.close}
             onClick={(e) => {
+              dispatch(actionOrderDetails.isModal());
               if (props.handleClose) {
                 props.handleClose();
               } else if (props.close) {

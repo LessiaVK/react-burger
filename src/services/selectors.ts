@@ -21,6 +21,7 @@ export const fetchcurrentItemsID = (state: TInitialState) =>
 export const orderNumber = (state: TInitialState) => state.orderReducer.orderNum;
 export const orderRequest = (state: TInitialState) => state.orderReducer.orderRequest;
 export const orderFailed = (state: TInitialState) => state.orderReducer.orderFailed;
+export const isModal = (state: TInitialState) => state.orderReducer.isModal;
 
 export const loginRequest = (state: TInitialState) => state.loginReducer.loginRequest;
 export const loginSuccess = (state: TInitialState) => state.loginReducer.loginSuccess;

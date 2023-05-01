@@ -23,17 +23,15 @@ export function ProfilePage() {
   const dispatch = useDispatch();
   const userForm = useSelector(userRequest);
   const [editUser, seteditUser] = useState<boolean>(false);
+  const [flagSave, setflagSave] = useState<boolean>(false);
 
   const cancel = () => {
     setValue({ ...form, email: userForm.email, name: userForm.name });
     seteditUser(false);
   };
 
-  const onChangeEdit = () => {
-    seteditUser(false);
-  };
-
   const update = (e: React.FormEvent<HTMLFormElement>) => {
+    setflagSave(true);
     e.preventDefault();
     let token = getCookie("token");
     if (!token && getCookie("refreshToken")) {
@@ -48,7 +46,11 @@ export function ProfilePage() {
   };
   const onChangePass = (e: any) => {
     setValue({ ...form, password: e.target.value });
-    seteditUser(true);
+    if (!flagSave) seteditUser(true);
+    else {
+      setflagSave(false);
+      seteditUser(false);
+    }
   };
   const onChangeEmail = (e: any) => {
     setValue({ ...form, email: e.target.value });
@@ -65,7 +67,6 @@ export function ProfilePage() {
 
   useEffect(() => {
     setValue({ ...form, email: userForm.email, name: userForm.name });
-    onChangeEdit();
   }, [userForm]);
 
   return (

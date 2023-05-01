@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import { getLogout } from "../services/thunks";
@@ -16,10 +16,14 @@ import { wsActions } from "../services/store";
 import { wsConnectionStart } from "../services/actions/wsActions";
 import OrderFeed from "../components/order-feed/OrderFeed";
 import fStyles from "./FeedPage.module.css";
+import { actionOrderDetails } from "../services/actions/orderDetails";
+import { isModal } from "../services/selectors";
 
 export function ProfileOrdersPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
+  const modal = useSelector(isModal);
   let token = getCookie("token");
 
   useEffect(() => {
@@ -35,12 +39,16 @@ export function ProfileOrdersPage() {
   }));
 
   React.useEffect(() => {
-    if (token) {
-      dispatch(wsConnectionStart(PATH_WSURLCUSTOMER + "?token=" + token));
+    if (!modal && location.state == null) {
+      if (token) {
+        dispatch(wsConnectionStart(PATH_WSURLCUSTOMER + "?token=" + token));
+      }
+      return () => {
+        dispatch({ type: wsActions.wsClose });
+      };
+    } else {
+      dispatch(actionOrderDetails.noModal());
     }
-    return () => {
-      dispatch({ type: wsActions.wsClose });
-    };
   }, [dispatch]);
 
   const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
