@@ -31,12 +31,12 @@
 .fMainCol {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .fMainRow {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .fListStart {

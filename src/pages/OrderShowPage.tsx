@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "../utils/hooks";
 
-import { getIngredients } from "../services/thunks";
 import { OrderFeedDetails } from "../components/order-feed/OrderFeedDetails";
 
 import fStyles from "./FeedPage.module.css";

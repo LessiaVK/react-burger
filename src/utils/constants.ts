@@ -8,3 +8,4 @@ export const PATH_FEED = "/feed";
 export const PATH_INGREDIENTS = "/ingredients";
 export const PATH_WSURL = "wss://norma.nomoreparties.space/orders/all";
 export const PATH_WSURLCUSTOMER = "wss://norma.nomoreparties.space/orders";
+export const TOPZINDEX = 150;

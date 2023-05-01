@@ -6,7 +6,6 @@ import {
   Routes,
   Route,
   useLocation,
-  useNavigate,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "../../utils/hooks";
 import { getIngredients } from "../../services/thunks";
@@ -44,8 +43,6 @@ function App() {
   React.useEffect(() => {
     dispatch(getIngredients());
     dispatch(getDataUser());
-    // console.log("useEffect");
-    // console.log("userIsChecked UE", userIsChecked);
   }, []);
 
   const ModalSwitch = () => {
@@ -65,59 +62,60 @@ function App() {
   };
 
   const flag = getCookie("forgot");
-  // console.log("userIsChecked", userIsChecked);
-  
+
   return (
     <div className="App">
-     { userIsChecked &&
-    
-      <Router>
-        <AppHeader />
-        <main className={appStyles.appMain}>
-          <Routes>
-            <Route path="/" element={<ConstructorPage />} />
-            <Route
-              path={PATH_LOGIN}
-              element={<ProtectedRouteLogins element={<LoginPage />} />}
-            />
-            <Route
-              path={PATH_REGISTER}
-              element={<ProtectedRouteLogins element={<RegisterPage />} />}
-            />
-            <Route
-              path={PATH_FORGOT}
-              element={<ProtectedRouteLogins element={<ForgotPassword />} />}
-            />
-            {flag == "1" && (
-              <Route path={PATH_RESET} element={<ResetPassword />} />
-            )}
-            <Route
-              path={PATH_PROFILE}
-              element={<ProtectedRouteElement element={<ProfilePage />} />}
-            />
-            <Route
-              path={PATH_PROFILE + "/orders"}
-              element={
-                <ProtectedRouteElement element={<ProfileOrdersPage />} />
-              }
-            />
-            <Route
-              path={PATH_PROFILE + "/orders/:id"}
-              element={<ProtectedRouteElement element={<ModalSwitch3 />} />}
-            />
-            <Route path={PATH_FEED} element={<FeedPage />} />
+      {userIsChecked && (
+        <Router>
+          <AppHeader />
+          <main className={appStyles.appMain}>
+            <Routes>
+              <Route path="/" element={<ConstructorPage />} />
+              <Route
+                path={PATH_LOGIN}
+                element={<ProtectedRouteLogins element={<LoginPage />} />}
+              />
+              <Route
+                path={PATH_REGISTER}
+                element={<ProtectedRouteLogins element={<RegisterPage />} />}
+              />
+              <Route
+                path={PATH_FORGOT}
+                element={<ProtectedRouteLogins element={<ForgotPassword />} />}
+              />
+              {flag == "1" && (
+                <Route path={PATH_RESET} element={<ResetPassword />} />
+              )}
+              <Route
+                path={PATH_PROFILE}
+                element={<ProtectedRouteElement element={<ProfilePage />} />}
+              />
+              <Route
+                path={PATH_PROFILE + "/orders"}
+                element={
+                  <ProtectedRouteElement element={<ProfileOrdersPage />} />
+                }
+              />
+              <Route
+                path={PATH_PROFILE + "/orders/:id"}
+                element={<ProtectedRouteElement element={<ModalSwitch3 />} />}
+              />
+              <Route path={PATH_FEED} element={<FeedPage />} />
 
-            <Route path={PATH_FEED + "/:id"} element={<ModalSwitch2 />}></Route>
+              <Route
+                path={PATH_FEED + "/:id"}
+                element={<ModalSwitch2 />}
+              ></Route>
 
-            <Route
-              path={PATH_INGREDIENTS + "/:id"}
-              element={<ModalSwitch />}
-            ></Route>
-            <Route path="*" element={<NotFound404 />} />
-          </Routes>
-        </main>
-      </Router>
-}
+              <Route
+                path={PATH_INGREDIENTS + "/:id"}
+                element={<ModalSwitch />}
+              ></Route>
+              <Route path="*" element={<NotFound404 />} />
+            </Routes>
+          </main>
+        </Router>
+      )}
     </div>
   );
 }

@@ -17,11 +17,16 @@ type TIResolver = {
   price: number;
 };
 
+type TListIngr = {
+  ingredients: TIngredient[];
+  ids: string[];
+  createdAt: string;
+};
+
 const ingredientsResolver = (
   ingredients: TIngredient[],
   ids: string[]
 ): TIResolver => {
-  // console.log("ImageListIngredients",props.dataIngradients, props.ingredients);
   let price: number = 0;
   let imageList: any = [];
   if (ingredients.length > 0) {
@@ -38,13 +43,12 @@ const ingredientsResolver = (
   return { ingredients: imageList, price: price };
 };
 
-const ListIngredients = (props: any) => {
+const ListIngredients = (props: TListIngr) => {
   const listIngrs: TIResolver = ingredientsResolver(
     props.ingredients,
     props.ids
   );
   const listIngrsCount: any = [];
-    console.log("listIngrs", listIngrs);
     
   listIngrs.ingredients.map((item) => {
     if (listIngrsCount[item._id]) {
@@ -109,7 +113,7 @@ const ListIngredients = (props: any) => {
                   oFStyles.wOrdersAuto + " " + oFStyles.mainRow + ` pr-10 pb-3`
                 }
               >
-                <div className="text text_type_digits-default pr-4">
+                <div className="text text_type_digits-default pr-3">
                   {item.count + " X " + item.price}
                 </div>
                 <CurrencyIcon type="primary" />
@@ -149,7 +153,7 @@ export const OrderFeedDetails = () => {
   const dataOrders = useSelector(wsOrders);
 
   let { id } = useParams();
-
+  
   let data: TOrderFeed[] = [];
   data[0] = {
     ingredients: [],
@@ -178,7 +182,7 @@ export const OrderFeedDetails = () => {
           oFStyles.contentLeft + " text text_type_digits-default pl-10"
         }
       >
-        #{data[0].number}
+        {(data[0].number) && ("#" + data[0].number)}
       </div>
       <div
         className={

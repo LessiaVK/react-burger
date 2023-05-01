@@ -6,7 +6,7 @@
 .bgMain {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .bgListStart {
@@ -23,7 +23,7 @@
 
 .bgFooter {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   width: 600px;
 }

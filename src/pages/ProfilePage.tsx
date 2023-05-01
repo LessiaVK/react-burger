@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
@@ -22,11 +22,18 @@ export function ProfilePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userForm = useSelector(userRequest);
+  const [editUser, seteditUser] = useState<boolean>(false);
+
   const cancel = () => {
     setValue({ ...form, email: userForm.email, name: userForm.name });
+    seteditUser(false);
   };
 
-  const update = (e:React.FormEvent<HTMLFormElement>) => {
+  const onChangeEdit = () => {
+    seteditUser(false);
+  };
+
+  const update = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let token = getCookie("token");
     if (!token && getCookie("refreshToken")) {
@@ -37,12 +44,15 @@ export function ProfilePage() {
 
   const onChangeName = (e: any) => {
     setValue({ ...form, name: e.target.value });
+    seteditUser(true);
   };
   const onChangePass = (e: any) => {
     setValue({ ...form, password: e.target.value });
+    seteditUser(true);
   };
   const onChangeEmail = (e: any) => {
     setValue({ ...form, email: e.target.value });
+    seteditUser(true);
   };
 
   useEffect(() => {
@@ -55,6 +65,7 @@ export function ProfilePage() {
 
   useEffect(() => {
     setValue({ ...form, email: userForm.email, name: userForm.name });
+    onChangeEdit();
   }, [userForm]);
 
   return (
@@ -63,7 +74,12 @@ export function ProfilePage() {
         <p className="pb-4">
           <Link
             to={PATH_PROFILE}
-            className={profileStyles.textWhite + " text text_type_main-medium"}
+            className={
+              profileStyles.decoration +
+              " " +
+              profileStyles.textWhite +
+              " text text_type_main-medium"
+            }
           >
             Профиль
           </Link>
@@ -71,7 +87,10 @@ export function ProfilePage() {
         <p className="pb-4">
           <Link
             to={PATH_PROFILE + "/orders"}
-            className="text text_type_main-medium text_color_inactive"
+            className={
+              profileStyles.decoration +
+              " text text_type_main-medium text_color_inactive"
+            }
           >
             История заказов
           </Link>
@@ -120,19 +139,21 @@ export function ProfilePage() {
             size={"default"}
             extraClass="ml-1 pb-6"
           />
-          <div className={profileStyles.inputsFlexRowCenter}>
-            <Button
-              htmlType="reset"
-              type="primary"
-              size="medium"
-              extraClass="ml-10 mr-10"
-            >
-              Отменить
-            </Button>
-            <Button htmlType="submit" type="primary" size="medium">
-              Сохранить
-            </Button>
-          </div>
+          {editUser && (
+            <div className={profileStyles.inputsFlexRowCenter}>
+              <Button
+                htmlType="reset"
+                type="primary"
+                size="medium"
+                extraClass="ml-10 mr-10"
+              >
+                Отменить
+              </Button>
+              <Button htmlType="submit" type="primary" size="medium">
+                Сохранить
+              </Button>
+            </div>
+          )}
         </div>
       </form>
     </div>

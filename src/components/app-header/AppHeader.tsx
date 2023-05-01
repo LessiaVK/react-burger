@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Logo,
@@ -35,16 +34,16 @@ function AppHeader() {
   }
 
   return (
-    <header className={appHeaderStyles.appHeaderMain + " pt-10"}>
-      <div className={appHeaderStyles.appHeaderNet + " ml-10"}>
-        <div className={appHeaderStyles.appHeaderNet + " ml-5 mb-4 mr-2"}>
+    <header className={appHeaderStyles.appHeaderMain + " mt-10 ml-10 mr-10"}>
+      <div className={appHeaderStyles.buttonMenuContent + " pb-4 pr-2"}>
+        <div className={appHeaderStyles.buttonMenuContentLeft + " pt-4 pr-20"}>
           <div
-            className={appHeaderStyles.buttonMenu + " ml-10 mt-4 mr-2"}
+            className={appHeaderStyles.buttonMenuContentLeft + " pt-4 pr-2"}
             onClick={(e) => {
               navigate("/");
             }}
           >
-            <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
+            <div className={appHeaderStyles.buttonMenuContentLeft + " pr-2"}>
               <BurgerIcon
                 type={
                   currentSelectMenu === "constructor" ? "primary" : "secondary"
@@ -60,12 +59,12 @@ function AppHeader() {
             </p>
           </div>
           <div
-            className={appHeaderStyles.buttonMenu + " mt-4"}
+            className={appHeaderStyles.buttonMenu}
             onClick={(e) => {
               navigate(PATH_FEED);
             }}
           >
-            <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
+            <div className={appHeaderStyles.buttonMenuContent + " pl-5 pr-2"}>
               <ListIcon
                 type={currentSelectMenu === "list" ? "primary" : "secondary"}
               />
@@ -78,34 +77,29 @@ function AppHeader() {
               Лента заказов
             </p>
           </div>
+        </div>
+        <div className={appHeaderStyles.logo + " pl-6 pr-15"}>
+          <Logo />
+        </div>
 
-          <div className={appHeaderStyles.logo + " ml-15 mr-15"}>
-            <Logo />
+        <div
+          className={appHeaderStyles.buttonMenu + " pt-4 pl-30"}
+          onClick={(e) => {
+            navigate(PATH_PROFILE);
+          }}
+        >
+          <div className={appHeaderStyles.buttonMenuContent + " pl-5 pr-2"}>
+            <ProfileIcon
+              type={currentSelectMenu === "profile" ? "primary" : "secondary"}
+            />
           </div>
-
-          <div className={appHeaderStyles.appHeaderNet}>
-            <div
-              className={appHeaderStyles.buttonMenu + " mt-4 ml-30"}
-              onClick={(e) => {
-                navigate(PATH_PROFILE);
-              }}
-            >
-              <div className={appHeaderStyles.buttonMenuContent + " ml-5 mr-2"}>
-                <ProfileIcon
-                  type={
-                    currentSelectMenu === "profile" ? "primary" : "secondary"
-                  }
-                />
-              </div>
-              <p
-                className={
-                  currentSelectMenu === "profile" ? currentClass : baseClass
-                }
-              >
-                Личный кабинет
-              </p>
-            </div>
-          </div>
+          <p
+            className={
+              currentSelectMenu === "profile" ? currentClass : baseClass
+            }
+          >
+            Личный кабинет
+          </p>
         </div>
       </div>
     </header>

@@ -30,7 +30,7 @@ export const wsSendMessage = (message: any) => {
   };
 };
 
-export const wsConnectionError = (data: boolean | undefined) => {
+export const wsConnectionError = (data: boolean | null) => {
   return {
     type: WS_CONNECTION_ERROR,
   };

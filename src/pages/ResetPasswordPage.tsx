@@ -34,7 +34,6 @@ const resetRequest = async (form: TFormEmail, navigate: NavigateFunction) => {
   )
     .then((res) => res.json())
     .then((data) => {
-      // console.log("codeRequest data", data);
       data.success && navigate(PATH_LOGIN, { replace: true });
     });
 };

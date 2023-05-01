@@ -4,17 +4,14 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "../../utils/hooks";
+import { useSelector } from "../../utils/hooks";
 import Modal from "../modal/Modal";
 
 import oFStyles from "./OrderFeed.module.css";
 import { ingredientsSelector } from "../../services/selectors";
-import { PATH_FEED } from "../../utils/constants";
 import { OrderFeedDetails } from "./OrderFeedDetails";
-import { getIngredients } from "../../services/thunks";
-import {
-  TIngredient,
-} from "../burger-ingredients/BurgerIngredients";
+import { TIngredient } from "../burger-ingredients/BurgerIngredients";
+import { TOPZINDEX } from "../../utils/constants";
 
 export type TOrderFeed = {
   ingredients: string[];
@@ -28,15 +25,14 @@ export type TOrderFeed = {
 };
 
 type TOrdersProps = {
-  data: any;
-  keyIndex: any;
+  data: TOrderFeed;
+  keyIndex: number;
 };
 
 const ImageListIngredients = (props: {
   dataIngradients: TIngredient[];
   ingredients: string[];
 }) => {
-  // console.log("ImageListIngredients",props.dataIngradients, props.ingredients);
   let price = 0;
   let imageList: TIngredient[] = [];
   if (props.dataIngradients.length > 0) {
@@ -53,28 +49,26 @@ const ImageListIngredients = (props: {
   let countBun = 0;
   let maxCount = 0;
   let additionalNumber = 0;
-  // console.log("props.ingredients",props.ingredients, props.dataIngradients);
 
   imageList = imageList.filter((item: TIngredient) => {
-    // console.log("item", item);
     if (item) {
-    if (item.type == "bun") {
-      countBun++;
-    }
-    maxCount++;
-    if (maxCount > 5 && item.type != "bun") {
-      additionalNumber++;
-    }
+      if (item.type == "bun") {
+        countBun++;
+      }
+      maxCount++;
+      if (maxCount > 5 && item.type != "bun") {
+        additionalNumber++;
+      }
 
-    return (item.type != "bun" || countBun == 1) && maxCount <= 5;
-}
+      return (item.type !== "bun" || countBun === 1) && maxCount <= 5;
+    }
   });
 
   return (
     <>
       <div className={"text text_type_digits-default  " + oFStyles.imageList}>
         {imageList.map((item: any, index: Number) => {
-          const n: Number = 150 - Number(index);
+          const n: Number = TOPZINDEX - Number(index);
           const zIndex: React.CSSProperties = { zIndex: n.toString() };
 
           return (
@@ -110,14 +104,9 @@ const ImageListIngredients = (props: {
 };
 
 const Orders = (props: TOrdersProps) => {
-  const dispatch = useDispatch();
-  React.useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
-
   const dataIngradients = useSelector(ingredientsSelector);
   // console.log("location",window.location.pathname);
-  let showStatus = window.location.pathname == "/profile/orders";
+  let showStatus = window.location.pathname === "/profile/orders";
   let style = " ";
   let statusOrder = " ";
   switch (props.data.status) {
@@ -177,7 +166,7 @@ function OrderFeed(props: any) {
 
   return (
     <div>
-      {props.orders.map((ordersElement: any, index: number) => (
+      {props.orders.map((ordersElement: TOrderFeed, index: number) => (
         <Link
           key={index}
           to={{

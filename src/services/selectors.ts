@@ -4,8 +4,6 @@ export const ingredientsSelector = (state: TInitialState) =>
   state.fetchDataReducer.ingredients;
 export const fetchIngredientsSelector = (state: TInitialState) =>
   state.fetchDataReducer.ingredients;
-// export const fetchIngredientsSelector = (state: TInitialState) =>
-//   state.fetchDataReducer.fetchIngredients;
 export const fetchIngredientsError = (state: TInitialState) =>
   state.fetchDataReducer.fetchIngredientsError;
 export const fetchIngredientsRequest = (state: TInitialState) =>

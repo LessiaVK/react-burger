@@ -3,14 +3,13 @@ import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-comp
 import { useDrag, useDrop } from "react-dnd";
 import { useRef, useCallback } from "react";
 import { actionBurgerCompound } from "../../services/actions/burgerСompound";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../utils/hooks";
 import { constructorSelector } from "../../services/selectors";
-import { TIngredient } from "../burger-ingredients/BurgerIngredients";
 import { TIngredientBurger } from "./BurgerConstructor";
 
-type TDnDCallBack = (dragIndex: number , hoverIndex: number)  => any;
+type TDnDCallBack = (dragIndex: number, hoverIndex: number) => any;
 
-export const ElementIngredient = (props:TIngredientBurger) => {
+export const ElementIngredient = (props: TIngredientBurger) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const data = useSelector(constructorSelector);
@@ -42,12 +41,11 @@ export const ElementIngredient = (props:TIngredientBurger) => {
       };
     },
 
-    hover(item :any, monitor) {
+    hover(item: any, monitor) {
       if (!ref.current) {
         return;
       }
-      // console.log("useDrop", props.index, item.index, monitor);
-      if (props.index != item.index) {
+      if (props.index !== item.index) {
         moveCard(props.index, item.index);
         item.index = props.index;
       }
@@ -62,7 +60,7 @@ export const ElementIngredient = (props:TIngredientBurger) => {
         key={props.keyId}
         text={props.text}
         price={props.price}
-        thumbnail={props.thumbnail ? props.thumbnail: "" }
+        thumbnail={props.thumbnail ? props.thumbnail : ""}
         handleClose={props.handleClose}
       />
     </div>

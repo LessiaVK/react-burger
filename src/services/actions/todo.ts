@@ -97,7 +97,7 @@ export interface IFetchIngredientsRequest {
 
 export interface IAddIngredientDetails {
   readonly type: typeof ADD_INGREDIENT_DETAILS;
-  readonly payload: TIngredient | undefined;
+  readonly payload: TIngredient | null;
 }
 
 export interface ILoginRequest {
@@ -176,7 +176,6 @@ export interface IUserError {
   readonly type: typeof USER_ERROR;
 }
 
-
 // ------------
 export interface IWsConnectionStart {
   readonly type: typeof WS_CONNECTION_START;
@@ -196,7 +195,7 @@ export interface IWsSendMessage {
 }
 export interface IWsConnectionError {
   readonly type: typeof WS_CONNECTION_ERROR;
-  payload: boolean | undefined;
+  payload: boolean | null;
 }
 export interface IWsConnectionClosed {
   readonly type: typeof WS_CONNECTION_CLOSED;

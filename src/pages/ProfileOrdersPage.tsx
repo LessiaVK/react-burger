@@ -1,58 +1,49 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import { getLogout } from "../services/thunks";
-import { getDataUser, getUpdateUser } from "../services/thunks";
-import { userRequest } from "../services/selectors";
-
-import {
-  EmailInput,
-  PasswordInput,
-  Input,
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { getDataUser } from "../services/thunks";
 import profileStyles from "./ProfilePage.module.css";
 import { getCookie } from "../utils/cookie";
 import { getUpdateToken } from "../services/thunks";
-import { PATH_LOGIN, PATH_PROFILE, PATH_WSURLCUSTOMER, PATH_WSURL } from "../utils/constants";
+import {
+  PATH_LOGIN,
+  PATH_PROFILE,
+  PATH_WSURLCUSTOMER,
+} from "../utils/constants";
 import { wsActions } from "../services/store";
 import { wsConnectionStart } from "../services/actions/wsActions";
 import OrderFeed from "../components/order-feed/OrderFeed";
 import fStyles from "./FeedPage.module.css";
 
-
 export function ProfileOrdersPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let token = getCookie("token");
-  // console.log("token", token);
-  
 
   useEffect(() => {
-    // let token = getCookie("token");
     if (!token && getCookie("refreshToken")) {
       dispatch(getUpdateToken(getDataUser()));
     } else if (token) getDataUser();
     else navigate(PATH_LOGIN, { replace: true });
   }, []);
 
-  const { wsDataOrders, wsConnected } = useSelector((store) => ({
+  const { wsDataOrders } = useSelector((store) => ({
     wsDataOrders: store.wsReducer.orders,
     wsConnected: store.wsReducer.wsConnected,
   }));
 
   React.useEffect(() => {
     if (token) {
-    dispatch(wsConnectionStart(PATH_WSURLCUSTOMER + "?token=" + token));
-  }
-     return () => {
+      dispatch(wsConnectionStart(PATH_WSURLCUSTOMER + "?token=" + token));
+    }
+    return () => {
       dispatch({ type: wsActions.wsClose });
     };
   }, [dispatch]);
 
   const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
-  
 
   return (
     <div className={profileStyles.inputsFlexRow}>
@@ -60,7 +51,10 @@ export function ProfileOrdersPage() {
         <p className="pb-4">
           <Link
             to={PATH_PROFILE}
-            className={" text text_type_main-medium text_color_inactive"}
+            className={
+              profileStyles.decoration +
+              " text text_type_main-medium text_color_inactive"
+            }
           >
             Профиль
           </Link>
@@ -68,7 +62,12 @@ export function ProfileOrdersPage() {
         <p className="pb-4">
           <Link
             to={PATH_PROFILE + "/orders"}
-            className={profileStyles.textWhite + " text text_type_main-medium"}
+            className={
+              profileStyles.decoration +
+              " " +
+              profileStyles.textWhite +
+              " text text_type_main-medium"
+            }
           >
             История заказов
           </Link>
@@ -92,9 +91,11 @@ export function ProfileOrdersPage() {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <div className={fStyles.f_order_scroll + " text text_type_main-large mt-10"}>
-          <OrderFeed orders={orders} />
-        </div>
+      <div
+        className={fStyles.f_order_scroll + " text text_type_main-large mt-10"}
+      >
+        <OrderFeed orders={orders} />
+      </div>
     </div>
   );
 }

@@ -13,7 +13,7 @@ export const initialState: TInitialState = {
   },
   ingredientReducer: {
     isOpenModal: false,
-    currentIngredient: undefined,
+    currentIngredient: null,
   },
   orderReducer: {
     currentOrder: {},
@@ -48,7 +48,7 @@ export const initialState: TInitialState = {
     updateTokenError: false,
   },
   wsReducer: {
-    error: undefined,
+    error: null,
     orders: {},
     wsConnected: false,
     dataIsReady: false,

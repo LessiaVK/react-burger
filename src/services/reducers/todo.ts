@@ -19,7 +19,7 @@ export type TBurgerReducer = {
 }
 export type TIngredientReducer = {
   isOpenModal: boolean;
-  currentIngredient: TIngredient | undefined;
+  currentIngredient: TIngredient | null;
 }
 export type TOrderReducer = {
   currentOrder: any,
@@ -54,7 +54,7 @@ export type TUpdateTokenReducer = {
   updateTokenError: boolean,
 }
 export type TWsReducer = {
-  error: boolean | undefined,
+  error: boolean | null,
   orders: any,
   wsConnected: boolean,
   dataIsReady: boolean,

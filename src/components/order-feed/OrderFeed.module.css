@@ -28,7 +28,6 @@
   border: 2px #4C4CFF solid;
   height: 50px;
   width: 50px;
-  /* object-fit: cover; */
   margin-right: -12px;
   background-color: black;
 }
@@ -38,7 +37,6 @@
   border: 2px #4C4CFF solid;
   height: 50px;
   width: 50px;
-  /* object-fit: cover; */
   background-color: black;
 }
 
@@ -53,7 +51,6 @@
 }
 
 .elementMenu {
-  /* width: 280px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,16 +61,12 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  /* align-items: center; */
-  /* justify-content: center; */
 }
 
 .mainColumn {
   width: 280px;
   display: flex;
   flex-direction: column;
-  /* align-items: center;
-  justify-content: center; */
 }
 
 .alignCenter {
@@ -171,7 +164,7 @@
 .oFMain {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .oFListStart {
@@ -187,9 +180,6 @@
 }
 
 .oFeedDetal {
-  /* display: flex;
-  flex-direction: column; */
-  /* gap: 10px; */
   overflow-y: scroll;
   max-height: 255px;
 }
@@ -202,7 +192,6 @@
   padding: 16px 16px;
   max-width: 536px;
   margin-bottom: 20px;
-  align-items: start;
 }
 
 .caption {

@@ -41,7 +41,7 @@ export type TIngredientBurger = {
   text: string;
   thumbnail: string | undefined;
   price: number;
-  type?: 'top' | 'bottom';
+  type?: "top" | "bottom";
   isLocked?: boolean;
   extraClass?: string;
   image_mobile?: any;
@@ -82,8 +82,7 @@ function OrderDetails() {
   );
 }
 
-
-const BurgerElement = (props : TIngredientBurger) => {
+const BurgerElement = (props: TIngredientBurger) => {
   const [{ isHover }, dropTargerElementRef] = useDrop({
     accept: "ingredient",
     collect: (monitor) => ({
@@ -91,7 +90,6 @@ const BurgerElement = (props : TIngredientBurger) => {
     }),
 
     drop(item) {
-      // console.log("dropTargerElementRef");
       // console.log(item);
     },
   });
@@ -102,7 +100,7 @@ const BurgerElement = (props : TIngredientBurger) => {
         isLocked={true}
         text={props.text}
         price={props.price}
-        thumbnail={props.thumbnail ? props.thumbnail: ""}
+        thumbnail={props.thumbnail ? props.thumbnail : ""}
         extraClass="ml-6"
       />
     </div>
@@ -121,7 +119,6 @@ function BurgerConstructor() {
 
   const [{ handlerId }, drop] = useDrop({
     accept: "ingredient",
-    // canDrop: true,
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
@@ -138,19 +135,18 @@ function BurgerConstructor() {
     }),
 
     drop(item: any) {
-      // console.log("drop", item, data);
       let buter: TIngredient[] = [];
       let flagNotBun = true;
       if (item.element.type == "bun") {
-        let ingred = data.filter((item: TIngredient) => item.type !== 'bun');
+        let ingred = data.filter((item: TIngredient) => item.type !== "bun");
         buter = [
-          { ...item.element, dragId: uuid() } ,
+          { ...item.element, dragId: uuid() },
           ...ingred,
           { ...item.element, dragId: uuid() },
         ];
         flagNotBun = false;
       }
-      data.forEach((element:TIngredient, index: number) => {
+      data.forEach((element: TIngredient, index: number) => {
         if (element.type === "bun" && item.element.type == "bun") {
           data[index] = item.element;
           flagNotBun = false;
@@ -203,7 +199,8 @@ function BurgerConstructor() {
 
   const onDeleteIngredient = (e: TIngredient) => {
     let data2 = data.filter(
-      (element: TIngredient, index: number) => element.dragId != e.dragId);
+      (element: TIngredient, index: number) => element.dragId != e.dragId
+    );
 
     dispatch({
       type: GET_CONSTRUCTOR,
@@ -223,7 +220,7 @@ function BurgerConstructor() {
             price={elementBorder.price}
             thumbnail={elementBorder.image_mobile}
             // extraClass="ml-6"
-            keyId={'0'}
+            keyId={"0"}
           />
         )}
       </div>
@@ -278,7 +275,7 @@ function BurgerConstructor() {
           onClick={(e) => {
             if (isUserLogin) {
               totalPriceState.totalPrice > 0 &&
-              dispatch(getOrderNumber(orderDetailsID));
+                dispatch(getOrderNumber(orderDetailsID));
             } else {
               navigate(PATH_LOGIN);
             }

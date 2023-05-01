@@ -3,12 +3,11 @@ import { TTodoActions } from "../actions/todo";
 import { TWsReducer } from "./todo";
 
 export const wsReducer = (state = initialState.wsReducer, action: TTodoActions): TWsReducer => {
-  // console.log("wsReducer",action.type,action.payload);
   switch (action.type) {
     case "WS_CONNECTION_SUCCESS":
       return {
         ...state,
-        error: undefined,
+        error: null,
         wsConnected: true,
       };
 
@@ -22,7 +21,7 @@ export const wsReducer = (state = initialState.wsReducer, action: TTodoActions):
     case "WS_CONNECTION_CLOSED":
       return {
         ...state,
-        error: undefined,
+        error: null,
         wsConnected: false,
       };
 
@@ -30,7 +29,7 @@ export const wsReducer = (state = initialState.wsReducer, action: TTodoActions):
 
       return {
         ...state,
-        error: undefined,
+        error: null,
         orders: action.payload,
         dataIsReady: true,
       };

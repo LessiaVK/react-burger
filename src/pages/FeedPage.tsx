@@ -1,7 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "../utils/hooks";
 import { wsConnectionStart } from "../services/actions/wsActions";
-import { wsOrders, wsConnected } from "../services/selectors";
 import fStyles from "./FeedPage.module.css";
 import OrderFeed from "../components/order-feed/OrderFeed";
 import OrderFeedBoard from "../components/order-feed/OrderFeedBoard";
@@ -11,9 +10,8 @@ import { wsActions } from "../services/store";
 export function FeedPage() {
   const dispatch = useDispatch();
 
-  const { wsDataOrders, wsConnected } = useSelector((store) => ({
+  const { wsDataOrders } = useSelector((store) => ({
     wsDataOrders: store.wsReducer.orders,
-    wsConnected: store.wsReducer.wsConnected,
   }));
 
   React.useEffect(() => {

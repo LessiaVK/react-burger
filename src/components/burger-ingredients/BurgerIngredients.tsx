@@ -15,7 +15,6 @@ import {
   currentIngredientSelector,
 } from "../../services/selectors";
 import { useDrag } from "react-dnd";
-import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 import { PATH_INGREDIENTS } from "../../utils/constants";
 import { RefObject } from "react";
 
@@ -55,11 +54,11 @@ export type TDataIngr = {
   key?: string;
 };
 
-const ShowIngredient = (props:{element: TIngredient}) => {
+const ShowIngredient = (props: { element: TIngredient }) => {
   const element = props.element;
   return (
     <>
-    <img
+      <img
         className={bIStyles.sizeImg}
         src={element.image}
         alt={"Изображение ингредиента"}
@@ -100,8 +99,8 @@ const ShowIngredient = (props:{element: TIngredient}) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export const IngredientDetails = () => {
   let element = useSelector(currentIngredientSelector);
@@ -110,7 +109,6 @@ export const IngredientDetails = () => {
   if (id) {
     let data = dataIngradients.filter((item: TIngredient) => item._id == id);
     if (data.length === 1) {
-      //console.log("data", data[0]);
       element = data[0];
     }
   }
@@ -164,10 +162,7 @@ const ElementMenu = (props: TElementMenuProps) => {
             className={`constructor-element__price text text_type_digits-default`}
           >
             {props.element.price}
-            <CurrencyIcon
-              // className={bIStyles.sizeIcon}
-              type="primary"
-            />
+            <CurrencyIcon type="primary" />
           </p>
           <p>{props.element.name}</p>
         </div>
@@ -240,7 +235,6 @@ function BurgerIngredients() {
 
   const onClickTab = (e: string) => {
     setCurrent(e);
-    // console.log("onClickTab",e,bunRef);
 
     switch (e) {
       case "one":
