@@ -38,7 +38,7 @@ function AppHeader() {
       <div className={appHeaderStyles.buttonMenuContent + " pb-4 pr-2"}>
         <div className={appHeaderStyles.buttonMenuContentLeft + " pt-4 pr-20"}>
           <div
-            className={appHeaderStyles.buttonMenuContentLeft + " pt-4 pr-2"}
+            className={appHeaderStyles.buttonMenuContentLeft + " pt-4  pr-2"}
             onClick={(e) => {
               navigate("/");
             }}

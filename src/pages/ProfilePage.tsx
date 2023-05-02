@@ -26,7 +26,7 @@ export function ProfilePage() {
   const [flagSave, setflagSave] = useState<boolean>(false);
 
   const cancel = () => {
-    setValue({ ...form, email: userForm.email, name: userForm.name });
+    setValue({ ...form, email: userForm.email, name: userForm.name, password: "" });
     seteditUser(false);
   };
 

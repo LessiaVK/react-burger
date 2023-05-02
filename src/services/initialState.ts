@@ -16,7 +16,7 @@ export const initialState: TInitialState = {
     currentIngredient: null,
   },
   orderReducer: {
-    currentOrder: {},
+    currentOrder: null,
     orderNum: 0,
     orderRequest: true,
     orderFailed: false,
@@ -50,7 +50,7 @@ export const initialState: TInitialState = {
   },
   wsReducer: {
     error: null,
-    orders: {},
+    orders: [],
     wsConnected: false,
     dataIsReady: false,
   }
