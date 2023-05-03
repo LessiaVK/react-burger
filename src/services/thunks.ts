@@ -18,56 +18,61 @@ import { TFormEmail } from "../pages/LoginPage";
 type TApplicationActions = TTodoActions;
 export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;
 
-const timeExpires = 1 * 60;
+const timeExpires = 20 * 60;
 
 //  для обновления токена
-export function getUpdateToken(callback: any) {
+export function getUpdateToken(callback?: any) {
   return function (dispatch: AppDispatch) {
     let refreshToken = getCookie("refreshToken");
-    dispatch(actionUpdateToken.updateToken());
-    fetch(BASE_URL + "/auth/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: refreshToken }),
-    })
-      .then((res) => {
-        if (res && res.ok) {
-          return res.json();
-        } else {
+    if (refreshToken) {
+      dispatch(actionUpdateToken.updateToken());
+      fetch(BASE_URL + "/auth/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: refreshToken }),
+      })
+        .then((res) => {
+          if (res.status === 401) {
+            dispatch(actionLoginRequest.loginError());
+          }
+          if (res && res.ok) {
+            return res.json();
+          } else {
+            dispatch(actionUpdateToken.updateTokenError());
+          }
+        })
+        .then((data) => {
+          dispatch(actionUpdateToken.updateTokenSuccess(data));
+          let authToken = data.accessToken.split("Bearer ")[1];
+          if (authToken) {
+            setCookie("token", authToken, { path: "/", expires: timeExpires });
+          }
+          setCookie("refreshToken", data.refreshToken, { path: "/" });
+          if (callback) dispatch(callback);
+        })
+        .catch((err) => {
           dispatch(actionUpdateToken.updateTokenError());
-        }
-      })
-      .then((data) => {
-        dispatch(actionUpdateToken.updateTokenSuccess(data));
-        let authToken = data.accessToken.split("Bearer ")[1];
-        if (authToken) {
-          setCookie("token", authToken, { path: "/", expires: timeExpires });
-        }
-        setCookie("refreshToken", data.refreshToken, { path: "/" });
-        console.log("callback1");
-        dispatch(callback);
-        console.log("callback2");
-        
-      })
-      .catch((err) => {
-        dispatch(actionUpdateToken.updateTokenError());
-      });
+        });
+    } else {
+      dispatch(actionUpdateToken.updateTokenError());
+    }
   };
 }
 
 //  для получения данных о пользователе
 export function getDataUser() {
-  console.log("getDataUser");
-  
   return function (dispatch: AppDispatch) {
     let token = getCookie("token");
     let refreshToken = getCookie("refreshToken");
-    console.log("token", token);
-    console.log("refreshToken", refreshToken);
-    
-    if (token) {
+    if (!refreshToken) {
+      dispatch(actionUserRequest.userError());
+    }
+    else if (!token) {
+      dispatch(getUpdateToken(getDataUser()));
+    }
+    else {
       dispatch(actionUserRequest.userRequest());
       fetch(BASE_URL + "/auth/user", {
         method: "GET",
@@ -77,6 +82,9 @@ export function getDataUser() {
         },
       })
         .then((res) => {
+          if (res.status === 403) {
+            dispatch(getUpdateToken(getDataUser()));
+          }
           if (res && res.ok) {
             return res.json();
           } else {
@@ -88,11 +96,16 @@ export function getDataUser() {
           dispatch(actionLoginRequest.loginSuccess());
         })
         .catch((err) => {
+          if (err.status === 403) {
+            dispatch(getUpdateToken(getDataUser()));
+            console.log(err);
+          }
+          if (err.message === "jwt expired" || err.message === "jwt malformed") {
+            dispatch(getUpdateToken(getDataUser()));
+          }
           dispatch(actionUserRequest.userError());
         });
     }
-    // else if (getCookie("refreshToken")) getUpdateToken(getDataUser());
-    else dispatch(actionUserRequest.userError());
   };
 }
 
@@ -100,7 +113,14 @@ export function getDataUser() {
 export function getUpdateUser(form: TDataUser) {
   return function (dispatch: AppDispatch) {
     let token = getCookie("token");
-    if (token) {
+    let refreshToken = getCookie("refreshToken");
+    if (!refreshToken) {
+      dispatch(actionUserRequest.userError());
+    }
+    else if (!token) {
+      dispatch(getUpdateToken(getDataUser()));
+    }
+    else {
       dispatch(actionUserRequest.userRequest());
       fetch(BASE_URL + "/auth/user", {
         method: "PATCH",
@@ -111,6 +131,9 @@ export function getUpdateUser(form: TDataUser) {
         body: JSON.stringify(form),
       })
         .then((res) => {
+          if (res.status === 403) {
+            dispatch(getUpdateToken(getUpdateUser(form)));
+          }
           if (res && res.ok) {
             return res.json();
           } else {
@@ -121,6 +144,14 @@ export function getUpdateUser(form: TDataUser) {
           dispatch(actionUserRequest.userSuccess(data));
         })
         .catch((err) => {
+          if (err.status === 403) {
+            dispatch(getUpdateToken(getUpdateUser(form)));
+            console.log(err);
+          }
+          if (err.message === "jwt expired") {
+            dispatch(getUpdateToken(getUpdateUser(form)));
+            console.log(err);
+          }
           dispatch(actionUserRequest.userError());
         });
     }
@@ -266,6 +297,9 @@ export function getOrderNumber(orderDetailsID: ReadonlyArray<number>) {
       }),
     })
       .then((res) => {
+        if (res.status === 403) {
+          dispatch(getUpdateToken(getOrderNumber(orderDetailsID)));
+        }
         if (res && res.ok) {
           return res.json();
         } else {
@@ -276,6 +310,14 @@ export function getOrderNumber(orderDetailsID: ReadonlyArray<number>) {
         dispatch(actionOrderDetails.orderNumberSuccess(json.order.number));
       })
       .catch((err) => {
+        if (err.status === 403) {
+          dispatch(getUpdateToken(getOrderNumber(orderDetailsID)));
+          console.log(err);
+        }
+        if (err.message === "jwt expired") {
+          dispatch(getUpdateToken(getOrderNumber(orderDetailsID)));
+          console.log(err);
+        }
         dispatch(actionOrderDetails.orderNumberError());
       });
   };

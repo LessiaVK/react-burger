@@ -15,7 +15,9 @@ export const ProtectedRouteElement: React.FC<ProtectedRouteProps> = ({
   const location = useLocation();
 
   if (!isUserLogin) {
-    return <NavigateComponent page={PATH_LOGIN} location={location?.pathname} />;
+    return (
+      <NavigateComponent page={PATH_LOGIN} location={location?.pathname} />
+    );
   }
   return element;
 };

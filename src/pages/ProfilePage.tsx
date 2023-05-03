@@ -13,9 +13,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import profileStyles from "./ProfilePage.module.css";
-import { getCookie } from "../utils/cookie";
-import { getUpdateToken } from "../services/thunks";
-import { PATH_LOGIN, PATH_PROFILE } from "../utils/constants";
+import { PATH_PROFILE } from "../utils/constants";
 
 export function ProfilePage() {
   const [form, setValue] = useState({ password: "", email: "", name: "" });
@@ -26,18 +24,19 @@ export function ProfilePage() {
   const [flagSave, setflagSave] = useState<boolean>(false);
 
   const cancel = () => {
-    setValue({ ...form, email: userForm.email, name: userForm.name, password: "" });
+    setValue({
+      ...form,
+      email: userForm.email,
+      name: userForm.name,
+      password: "",
+    });
     seteditUser(false);
   };
 
   const update = (e: React.FormEvent<HTMLFormElement>) => {
     setflagSave(true);
     e.preventDefault();
-    let token = getCookie("token");
-    if (!token && getCookie("refreshToken")) {
-      dispatch(getUpdateToken(getUpdateUser(form)));
-    } else if (token) dispatch(getUpdateUser(form));
-    else navigate(PATH_LOGIN, { replace: true });
+    dispatch(getUpdateUser(form));
   };
 
   const onChangeName = (e: any) => {
