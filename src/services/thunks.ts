@@ -91,7 +91,7 @@ export function getDataUser() {
           dispatch(actionUserRequest.userError());
         });
     }
-    else if (getCookie("refreshToken")) getUpdateToken(getDataUser());
+    // else if (getCookie("refreshToken")) getUpdateToken(getDataUser());
     else dispatch(actionUserRequest.userError());
   };
 }
