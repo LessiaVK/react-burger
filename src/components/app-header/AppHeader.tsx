@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "../../utils/hooks";
+import { wsActions } from "../../services/store";
 import {
   Logo,
   BurgerIcon,
@@ -10,6 +12,7 @@ import { PATH_PROFILE, PATH_FEED } from "../../utils/constants";
 
 function AppHeader() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   let currentSelectMenu = "";
   const currentClass =
     appHeaderStyles.buttonMenuContent + " text text_type_main-small";
@@ -40,6 +43,7 @@ function AppHeader() {
           <div
             className={appHeaderStyles.buttonMenuContentLeft + " pt-4  pr-2"}
             onClick={(e) => {
+              dispatch({ type: wsActions.wsClose });
               navigate("/");
             }}
           >
@@ -85,6 +89,7 @@ function AppHeader() {
         <div
           className={appHeaderStyles.buttonMenu + " pt-4 pl-30"}
           onClick={(e) => {
+            dispatch({ type: wsActions.wsClose });
             navigate(PATH_PROFILE);
           }}
         >

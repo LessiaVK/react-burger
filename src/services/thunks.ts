@@ -18,7 +18,7 @@ import { TFormEmail } from "../pages/LoginPage";
 type TApplicationActions = TTodoActions;
 export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;
 
-const timeExpires = 20 * 60;
+const timeExpires = 1 * 60;
 
 //  для обновления токена
 export function getUpdateToken(callback: any) {
@@ -46,7 +46,10 @@ export function getUpdateToken(callback: any) {
           setCookie("token", authToken, { path: "/", expires: timeExpires });
         }
         setCookie("refreshToken", data.refreshToken, { path: "/" });
+        console.log("callback1");
         dispatch(callback);
+        console.log("callback2");
+        
       })
       .catch((err) => {
         dispatch(actionUpdateToken.updateTokenError());
@@ -56,8 +59,14 @@ export function getUpdateToken(callback: any) {
 
 //  для получения данных о пользователе
 export function getDataUser() {
+  console.log("getDataUser");
+  
   return function (dispatch: AppDispatch) {
     let token = getCookie("token");
+    let refreshToken = getCookie("refreshToken");
+    console.log("token", token);
+    console.log("refreshToken", refreshToken);
+    
     if (token) {
       dispatch(actionUserRequest.userRequest());
       fetch(BASE_URL + "/auth/user", {
@@ -82,6 +91,7 @@ export function getDataUser() {
           dispatch(actionUserRequest.userError());
         });
     }
+    else if (getCookie("refreshToken")) getUpdateToken(getDataUser());
     else dispatch(actionUserRequest.userError());
   };
 }

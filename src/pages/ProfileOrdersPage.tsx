@@ -1,55 +1,33 @@
-import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import { getLogout } from "../services/thunks";
-import { getDataUser } from "../services/thunks";
 import profileStyles from "./ProfilePage.module.css";
 import { getCookie } from "../utils/cookie";
-import { getUpdateToken } from "../services/thunks";
 import {
-  PATH_LOGIN,
   PATH_PROFILE,
   PATH_WSURLCUSTOMER,
 } from "../utils/constants";
-import { wsActions } from "../services/store";
 import { wsConnectionStart } from "../services/actions/wsActions";
 import OrderFeed from "../components/order-feed/OrderFeed";
 import fStyles from "./FeedPage.module.css";
-import { actionOrderDetails } from "../services/actions/orderDetails";
-import { isModal } from "../services/selectors";
 
 export function ProfileOrdersPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
-  const modal = useSelector(isModal);
   let token = getCookie("token");
-
-  useEffect(() => {
-    if (!token && getCookie("refreshToken")) {
-      dispatch(getUpdateToken(getDataUser()));
-    } else if (token) getDataUser();
-    else navigate(PATH_LOGIN, { replace: true });
-  }, []);
 
   const { wsDataOrders } = useSelector((store) => ({
     wsDataOrders: store.wsReducer.orders,
     wsConnected: store.wsReducer.wsConnected,
   }));
 
-  React.useEffect(() => {
-    if (!modal && location.state == null) {
-      if (token) {
-        dispatch(wsConnectionStart(PATH_WSURLCUSTOMER + "?token=" + token));
-      }
-      return () => {
-        dispatch({ type: wsActions.wsClose });
-      };
-    } else {
-      dispatch(actionOrderDetails.noModal());
+  useEffect(() => {
+    if (token) {
+      dispatch(wsConnectionStart(PATH_WSURLCUSTOMER + "?token=" + token));
     }
-  }, [dispatch]);
+  }, []);
 
   const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
 

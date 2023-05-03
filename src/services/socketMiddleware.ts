@@ -23,37 +23,47 @@ export const socketMiddleware = (wsUrl: string, wsActions: WsActions): Middlewar
         wsClose,
         wsPingPong,
       } = wsActions;
+      if (socket == null || socket.url !== action.payload) {
+        if (type === wsStart) {
+          socket = new WebSocket(action.payload);
 
-      if (type === wsStart) {
-        socket = new WebSocket(action.payload);
+          socket.onopen = (event) => {
+            if (socket) {
+              console.log("socket.readyState 1", socket);
 
-        socket.onopen = (event) => {
-          
-          
-          dispatch({ type: onOpen, payload: event });
-        };
+              if (socket.readyState !== 1) {
+                console.log("real open", socket.readyState);
+                dispatch({ type: onOpen, payload: event });
+              }
+            }
+          };
 
-        socket.onerror = (event) => {
-          dispatch({ type: onError, payload: event });
-        };
+          socket.onerror = (event) => {
+            dispatch({ type: onError, payload: event });
+          };
 
-        socket.onmessage = (event) => {
-          const { data } = event;
-         
-          const parseData = JSON.parse(data);
-          dispatch({
-            type: onGetMessage,
-            payload: parseData
-          });
-        };
+          socket.onmessage = (event) => {
+            const { data } = event;
 
-        socket.onclose = (event) => {
-          dispatch({ type: onClose, payload: event });
-        };
+            const parseData = JSON.parse(data);
+            dispatch({
+              type: onGetMessage,
+              payload: parseData
+            });
+          };
+
+          socket.onclose = (event) => {
+            dispatch({ type: onClose, payload: event });
+          };
+        }
       }
       if (wsClose && type === wsClose && socket) {
-        socket.close();
-        socket = null;
+        console.log("socket.wsClose", socket);
+
+        if (socket.readyState === 1) {
+          socket.close();
+          socket = null;
+        }
       }
 
       if (wsSendMessage && type === wsSendMessage && socket) {

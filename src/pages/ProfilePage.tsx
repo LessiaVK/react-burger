@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import { getLogout } from "../services/thunks";
-import { getDataUser, getUpdateUser } from "../services/thunks";
+import { getUpdateUser } from "../services/thunks";
 import { userRequest } from "../services/selectors";
 
 import {
@@ -56,14 +56,6 @@ export function ProfilePage() {
     setValue({ ...form, email: e.target.value });
     seteditUser(true);
   };
-
-  useEffect(() => {
-    let token = getCookie("token");
-    if (!token && getCookie("refreshToken")) {
-      dispatch(getUpdateToken(getDataUser()));
-    } else if (token) getDataUser();
-    else navigate(PATH_LOGIN, { replace: true });
-  }, []);
 
   useEffect(() => {
     setValue({ ...form, email: userForm.email, name: userForm.name });
