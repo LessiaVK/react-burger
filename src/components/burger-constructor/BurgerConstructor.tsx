@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/Modal";
 import bCStyles from "./BurgerConstructor.module.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import {
   constructorSelector,
   currentItemsIDSelector,
@@ -24,7 +24,6 @@ import { getOrderNumber } from "../../services/thunks";
 import { loginSuccess } from "../../services/selectors";
 import { PATH_LOGIN } from "../../utils/constants";
 import { TIngredient } from "../burger-ingredients/BurgerIngredients";
-
 const priceInitState = { totalPrice: 0 };
 
 interface IState {
@@ -35,6 +34,19 @@ interface IAction {
   price: number;
   type: "init" | "increment" | "decrement";
 }
+
+export type TIngredientBurger = {
+  index: number;
+  keyId: string | undefined;
+  text: string;
+  thumbnail: string | undefined;
+  price: number;
+  type?: "top" | "bottom";
+  isLocked?: boolean;
+  extraClass?: string;
+  image_mobile?: any;
+  handleClose?: () => void;
+};
 
 function reducer(state: IState, action: IAction) {
   switch (action.type) {
@@ -70,19 +82,7 @@ function OrderDetails() {
   );
 }
 
-
-export type TIngredientBurger = {
-  index: string;
-  text: string;
-  thumbnail: string;
-  price: number;
-  type?: 'top' | 'bottom';
-  isLocked?: boolean;
-  extraClass?: string;
-  handleClose?: () => void;
-};
-
-const BurgerElement = (props : TIngredientBurger) => {
+const BurgerElement = (props: TIngredientBurger) => {
   const [{ isHover }, dropTargerElementRef] = useDrop({
     accept: "ingredient",
     collect: (monitor) => ({
@@ -90,7 +90,6 @@ const BurgerElement = (props : TIngredientBurger) => {
     }),
 
     drop(item) {
-      // console.log("dropTargerElementRef");
       // console.log(item);
     },
   });
@@ -101,7 +100,7 @@ const BurgerElement = (props : TIngredientBurger) => {
         isLocked={true}
         text={props.text}
         price={props.price}
-        thumbnail={props.thumbnail ? props.thumbnail: ""}
+        thumbnail={props.thumbnail ? props.thumbnail : ""}
         extraClass="ml-6"
       />
     </div>
@@ -109,18 +108,17 @@ const BurgerElement = (props : TIngredientBurger) => {
 };
 
 function BurgerConstructor() {
-  const dispatch = useDispatch() as any;
-  const data = useSelector(constructorSelector) as any;
-  const orderDetailsID = useSelector(currentItemsIDSelector) as any;
-  const orderIdRequest = useSelector(orderRequest) as any;
-  const orderIdFailed = useSelector(orderFailed) as any;
+  const dispatch = useDispatch();
+  const data = useSelector(constructorSelector);
+  const orderDetailsID = useSelector(currentItemsIDSelector);
+  const orderIdRequest = useSelector(orderRequest);
+  const orderIdFailed = useSelector(orderFailed);
 
-  const isUserLogin = useSelector(loginSuccess) as any;
+  const isUserLogin = useSelector(loginSuccess);
   const navigate = useNavigate();
 
   const [{ handlerId }, drop] = useDrop({
     accept: "ingredient",
-    // canDrop: true,
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
@@ -137,21 +135,20 @@ function BurgerConstructor() {
     }),
 
     drop(item: any) {
-      // console.log("drop", item, data);
-      let buter = [{}];
+      let buter: TIngredient[] = [];
       let flagNotBun = true;
       if (item.element.type == "bun") {
         let ingred = data.filter((item: TIngredient) => item.type !== "bun");
         buter = [
-          { ...item.element, dragId: uuid() } ,
+          { ...item.element, dragId: uuid() },
           ...ingred,
           { ...item.element, dragId: uuid() },
         ];
         flagNotBun = false;
       }
-      data.forEach((element:TIngredient, i: number) => {
-        if (element.type == "bun" && item.element.type == "bun") {
-          data[i] = item.element;
+      data.forEach((element: TIngredient, index: number) => {
+        if (element.type === "bun" && item.element.type == "bun") {
+          data[index] = item.element;
           flagNotBun = false;
         }
       });
@@ -170,8 +167,8 @@ function BurgerConstructor() {
 
   let t = new Date();
   let time = t.getTime().toString();
-  let elementBorder: any;
-  data.map((element : TIngredient, key : string) => {
+  let elementBorder: TIngredient | undefined;
+  data.map((element: TIngredient) => {
     if (element.type === "bun" && !elementBorder) {
       elementBorder = element;
     }
@@ -193,7 +190,7 @@ function BurgerConstructor() {
   useEffect(() => {
     let price = initTotalPriceState();
     totalPricetDispatcher({ type: "init", price: price.totalPrice });
-    data.map((element: TIngredient, key :string) => {
+    data.map((element: TIngredient) => {
       if (element.type !== "bun") {
         totalPricetDispatcher({ type: "increment", price: element.price });
       }
@@ -201,9 +198,9 @@ function BurgerConstructor() {
   }, [data]);
 
   const onDeleteIngredient = (e: TIngredient) => {
-    let data2 = data.filter(function (element: TIngredient, index: number, arr: []) {
-      return element.dragId != e.dragId;
-    });
+    let data2 = data.filter(
+      (element: TIngredient, index: number) => element.dragId != e.dragId
+    );
 
     dispatch({
       type: GET_CONSTRUCTOR,
@@ -223,6 +220,7 @@ function BurgerConstructor() {
             price={elementBorder.price}
             thumbnail={elementBorder.image_mobile}
             // extraClass="ml-6"
+            keyId={"0"}
           />
         )}
       </div>
@@ -232,14 +230,14 @@ function BurgerConstructor() {
         </div>
       )}
       <div className={bCStyles.bgList + " ml-10"}>
-        {data.map((element: TIngredient, key: string) => {
+        {data.map((element: TIngredient, index: number) => {
           if (element.type !== "bun") {
-            let keyId = key + time;
+            let keyId = index + time;
             return (
-              <div key={key}>
+              <div key={index}>
                 <ElementIngredient
                   keyId={keyId}
-                  index={Number(key)}
+                  index={index}
                   text={element.name ? element.name : ""}
                   price={element.price}
                   thumbnail={element.image}
@@ -277,7 +275,7 @@ function BurgerConstructor() {
           onClick={(e) => {
             if (isUserLogin) {
               totalPriceState.totalPrice > 0 &&
-              dispatch(getOrderNumber(orderDetailsID));
+                dispatch(getOrderNumber(orderDetailsID));
             } else {
               navigate(PATH_LOGIN);
             }

@@ -5,9 +5,8 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import Modal from "../modal/Modal";
-import PropTypes from "prop-types";
 
 import bIStyles from "./BurgerIngredients.module.css";
 import {
@@ -16,24 +15,30 @@ import {
   currentIngredientSelector,
 } from "../../services/selectors";
 import { useDrag } from "react-dnd";
-import { actionIngredientDetails } from "../../services/actions/ingredientDetails";
 import { PATH_INGREDIENTS } from "../../utils/constants";
 import { RefObject } from "react";
-import { StringLiteralLike } from "typescript";
 
 export type TIngredient = {
   _id?: string | any;
   keyId?: string;
   dragId?: string;
   name?: string;
-  type?: string;
-  image?: string;
+  type: string;
+  image: string;
+  image_large: string;
+  image_mobile: string;
   price: number;
-  index:number;
-  text:string;
-  thumbnail:string | undefined;
-  key?:string;
+  index: number;
+  text: string;
+  thumbnail: string;
+  key?: string;
+  ref1?: RefObject<HTMLParagraphElement>;
+  data?: any;
   handleClose?: () => void;
+  calories: string;
+  proteins: string;
+  fat: string;
+  carbohydrates: string;
 };
 
 export type TDataIngr = {
@@ -42,29 +47,17 @@ export type TDataIngr = {
   ref1?: RefObject<HTMLParagraphElement>;
   type?: string;
   image?: string;
-  price?: string;
+  price: number;
   data?: any;
-  index?:string;
-  text?:string;
-  key?:string;
+  index?: string;
+  text?: string;
+  key?: string;
 };
 
-
-
-export const IngredientDetails = () => {
-  let element = useSelector(currentIngredientSelector) as any;
-  const dataIngradients = useSelector(ingredientsSelector) as any;
-  let { id } = useParams();
-  if (id) {
-    let data = dataIngradients.filter((item: TDataIngr) => item._id == id);
-    if (data.length === 1) {
-      //console.log("data", data[0]);
-      element = data[0];
-    }
-  }
-
+const ShowIngredient = (props: { element: TIngredient }) => {
+  const element = props.element;
   return (
-    <div className={bIStyles.sizeMain + " mb-10"}>
+    <>
       <img
         className={bIStyles.sizeImg}
         src={element.image}
@@ -105,6 +98,24 @@ export const IngredientDetails = () => {
           </p>
         </div>
       </div>
+    </>
+  );
+};
+
+export const IngredientDetails = () => {
+  let element = useSelector(currentIngredientSelector);
+  const dataIngradients = useSelector(ingredientsSelector);
+  let { id } = useParams();
+  if (id) {
+    let data = dataIngradients.filter((item: TIngredient) => item._id == id);
+    if (data.length === 1) {
+      element = data[0];
+    }
+  }
+
+  return (
+    <div className={bIStyles.sizeMain + " mb-10"}>
+      {element && <ShowIngredient element={element} />};
     </div>
   );
 };
@@ -116,10 +127,9 @@ type TElementMenuProps = {
 
 const ElementMenu = (props: TElementMenuProps) => {
   const orderList = useSelector(constructorSelector);
-  const dispatch = useDispatch();
   const location = useLocation();
   const count = orderList.filter(
-    (item: TDataIngr) => item._id == props.element._id
+    (item: TIngredient) => item._id == props.element._id
   ).length;
   const [{ opacity }, dragRef] = useDrag({
     type: "ingredient",
@@ -152,10 +162,7 @@ const ElementMenu = (props: TElementMenuProps) => {
             className={`constructor-element__price text text_type_digits-default`}
           >
             {props.element.price}
-            <CurrencyIcon
-              // className={bIStyles.sizeIcon}
-              type="primary"
-            />
+            <CurrencyIcon type="primary" />
           </p>
           <p>{props.element.name}</p>
         </div>
@@ -164,24 +171,22 @@ const ElementMenu = (props: TElementMenuProps) => {
   );
 };
 
-const ShowIngredients = (props: TDataIngr) => {
+const ShowIngredients = (props: any) => {
   const data = useSelector(ingredientsSelector);
   const dataForShow = data.filter(
-    (elem: TDataIngr) => elem.type === props.type
+    (elem: TIngredient) => elem.type === props.type
   );
   let t = new Date();
   let time = t.getTime().toString();
   return (
     <>
       <div data-group="group" className={bIStyles.main}>
-        <p 
-        ref={props.ref1} 
-        className="text text_type_main-medium pb-10 pt-10">
+        <p ref={props.ref1} className="text text_type_main-medium pb-10 pt-10">
           {props.name}
         </p>
       </div>
       <div className={bIStyles.bIDescription2}>
-        {dataForShow.map((element: TDataIngr, key: string) => {
+        {dataForShow.map((element: any, key: number) => {
           let keyId = props.type + key + time;
 
           return (
@@ -200,7 +205,6 @@ function BurgerIngredients() {
   const location = useLocation();
   const navigate = useNavigate();
   const data = useSelector(ingredientsSelector);
-  const currentIngredient = useSelector(currentIngredientSelector);
   const [current, setCurrent] = React.useState("one");
 
   const groupList = document.querySelectorAll<HTMLElement>("[data-group]");
@@ -231,8 +235,7 @@ function BurgerIngredients() {
 
   const onClickTab = (e: string) => {
     setCurrent(e);
-    // console.log("onClickTab",e,bunRef);
-    
+
     switch (e) {
       case "one":
         handleScroll(bunRef.current);
@@ -265,20 +268,26 @@ function BurgerIngredients() {
         </Tab>
       </div>
       <div id="ShowIngredients" className={bIStyles.biScroll} onScroll={scroll}>
-        <ShowIngredients name="Булки" type="bun" data={data} 
-        ref1={bunRef} 
+        <ShowIngredients
+          name="Булки"
+          type="bun"
+          data={data}
+          ref1={bunRef}
+          price={0}
         />
         <ShowIngredients
           name="Соусы"
           type="sauce"
           data={data}
           ref1={sauceRef}
+          price={0}
         />
         <ShowIngredients
           name="Начинки"
           type="main"
           data={data}
           ref1={mainRef}
+          price={0}
         />
       </div>
       {location.state && (

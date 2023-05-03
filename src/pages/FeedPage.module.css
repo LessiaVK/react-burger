@@ -1,0 +1,54 @@
+
+.feed_orders {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.contentCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 140px;
+}
+
+.feed_orders_list {
+  list-style: none;
+  margin: 0 60px 0 0;
+  padding: 0;
+  overflow-y: scroll;
+  width: 48%;
+  height: 80vh;
+}
+
+.fWBig {
+  width: 1200px;
+}
+.fWHalf {
+  width: 600px;
+}
+
+.fMainCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.fMainRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.fListStart {
+  gap: 10px;
+  margin-top: 140px;
+}
+
+.f_order_scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: scroll;
+  max-height: 660px;
+  width: 600px;
+}

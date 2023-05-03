@@ -1,15 +1,15 @@
 .inputsFlexColumn {
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .inputsFlexRow {
   display: flex;
   flex-direction: row;
-  justify-content: start;
-  align-items:start;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .inputsFlexRowCenter {
@@ -21,6 +21,10 @@
 
 .link {
   color: #4C4CFF;
+}
+
+.decoration {
+  text-decoration: none;
 }
 
 .wCol {
