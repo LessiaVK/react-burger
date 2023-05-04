@@ -18,7 +18,7 @@ export function FeedPage() {
   }, []);
 
   const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
-
+  
   return (
     <div className={fStyles.fMainCol + " " + fStyles.fWBig}>
       <div

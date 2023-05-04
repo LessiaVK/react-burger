@@ -105,6 +105,7 @@ const ShowIngredient = (props: { element: TIngredient }) => {
 export const IngredientDetails = () => {
   let element = useSelector(currentIngredientSelector);
   const dataIngradients = useSelector(ingredientsSelector);
+  
   let { id } = useParams();
   if (id) {
     let data = dataIngradients.filter((item: TIngredient) => item._id == id);

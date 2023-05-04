@@ -66,7 +66,7 @@ function App() {
 
   return (
     <div className="App">
-      {userIsChecked && (
+      {(userIsChecked || (document.location.pathname === '/feed')) && (
         <Router>
           <AppHeader />
           <main className={appStyles.appMain}>
