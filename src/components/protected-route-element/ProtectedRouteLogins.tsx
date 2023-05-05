@@ -7,7 +7,8 @@ export const ProtectedRouteLogins = (props: any) => {
   const isUserLogin = useSelector(loginSuccess);
   const location = useLocation();
 
-  if (isUserLogin) return <NavigateComponent page={location?.state || "/"} />;
+  // if (isUserLogin) return <NavigateComponent page={location?.state || "/"} />;
+  if (isUserLogin) return <NavigateComponent page={location?.pathname || "/"} />;
 
   return props.element;
 };

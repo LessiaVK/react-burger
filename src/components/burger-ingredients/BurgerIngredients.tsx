@@ -150,6 +150,7 @@ const ElementMenu = (props: TElementMenuProps) => {
       className={bIStyles.elementMenu + " " + bIStyles.textWhite}
       ref={dragRef}
       style={{ opacity }}
+      test-id='ingredient'
     >
       <div className={bIStyles.elementMenu}>
         <img src={props.element.image} alt="Изображение ингредиента" />

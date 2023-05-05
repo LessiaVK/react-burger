@@ -44,6 +44,7 @@ function App() {
   React.useEffect(() => {
     dispatch(getIngredients());
     dispatch(getDataUser());
+    /* eslint-disable */
   }, []);
 
   const ModalSwitch = () => {
@@ -84,7 +85,7 @@ function App() {
                 path={PATH_FORGOT}
                 element={<ProtectedRouteLogins element={<ForgotPassword />} />}
               />
-              {flag == "1" && (
+              {flag === "1" && (
                 <Route path={PATH_RESET} element={<ResetPassword />} />
               )}
               <Route

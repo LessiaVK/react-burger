@@ -61,7 +61,7 @@ export function ProfilePage() {
   }, [userForm]);
 
   return (
-    <div className={profileStyles.inputsFlexRow}>
+    <div className={profileStyles.inputsFlexRow} test-id="profilePage">
       <div className={profileStyles.inputsFlexColumn + " mr-15 pt-20"}>
         <p className="pb-4">
           <Link

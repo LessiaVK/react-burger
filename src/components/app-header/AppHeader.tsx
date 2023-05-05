@@ -102,6 +102,7 @@ function AppHeader() {
             className={
               currentSelectMenu === "profile" ? currentClass : baseClass
             }
+            test-id="profile"
           >
             Личный кабинет
           </p>

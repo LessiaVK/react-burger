@@ -15,7 +15,7 @@ import {
   orderRequest,
   orderFailed,
 } from "../../services/selectors";
-import { useDrop, useDrag } from "react-dnd";
+import { useDrop } from "react-dnd";
 import uuid from "react-uuid";
 import { GET_CONSTRUCTOR } from "../../services/actions/actionTypes";
 import { ElementIngredient } from "./BurgerConstructorElementIngredient";
@@ -137,7 +137,7 @@ function BurgerConstructor() {
     drop(item: any) {
       let buter: TIngredient[] = [];
       let flagNotBun = true;
-      if (item.element.type == "bun") {
+      if (item.element.type === "bun") {
         let ingred = data.filter((item: TIngredient) => item.type !== "bun");
         buter = [
           { ...item.element, dragId: uuid() },
@@ -147,7 +147,7 @@ function BurgerConstructor() {
         flagNotBun = false;
       }
       data.forEach((element: TIngredient, index: number) => {
-        if (element.type === "bun" && item.element.type == "bun") {
+        if (element.type === "bun" && item.element.type === "bun") {
           data[index] = item.element;
           flagNotBun = false;
         }
@@ -195,11 +195,12 @@ function BurgerConstructor() {
         totalPricetDispatcher({ type: "increment", price: element.price });
       }
     });
+    /* eslint-disable */
   }, [data]);
 
   const onDeleteIngredient = (e: TIngredient) => {
     let data2 = data.filter(
-      (element: TIngredient, index: number) => element.dragId != e.dragId
+      (element: TIngredient, index: number) => element.dragId !== e.dragId
     );
 
     dispatch({
@@ -209,7 +210,7 @@ function BurgerConstructor() {
   };
 
   return (
-    <div className={bCStyles.bgMain} ref={dropTargerRef}>
+    <div className={bCStyles.bgMain} ref={dropTargerRef} test-id="buter" >
       <div className={bCStyles.bgListStart + " ml-10 mb-2"}>
         {elementBorder && (
           <BurgerElement
@@ -224,8 +225,8 @@ function BurgerConstructor() {
           />
         )}
       </div>
-      {data.length == 0 && (
-        <div className={bCStyles.text + " text text_type_main-default ml-10"}>
+      {data.length === 0 && (
+        <div className={bCStyles.text + " text text_type_main-default ml-10"} test-id="emptyBurger">
           Соберите свой бургер. Перетащите нужные ингредиенты
         </div>
       )}
