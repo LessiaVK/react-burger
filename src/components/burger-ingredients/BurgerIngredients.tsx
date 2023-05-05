@@ -105,7 +105,7 @@ const ShowIngredient = (props: { element: TIngredient }) => {
 export const IngredientDetails = () => {
   let element = useSelector(currentIngredientSelector);
   const dataIngradients = useSelector(ingredientsSelector);
-  
+
   let { id } = useParams();
   if (id) {
     let data = dataIngradients.filter((item: TIngredient) => item._id == id);
@@ -150,7 +150,7 @@ const ElementMenu = (props: TElementMenuProps) => {
       className={bIStyles.elementMenu + " " + bIStyles.textWhite}
       ref={dragRef}
       style={{ opacity }}
-      test-id='ingredient'
+      test-id="ingredient"
     >
       <div className={bIStyles.elementMenu}>
         <img src={props.element.image} alt="Изображение ингредиента" />

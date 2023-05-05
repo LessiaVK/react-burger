@@ -210,7 +210,7 @@ function BurgerConstructor() {
   };
 
   return (
-    <div className={bCStyles.bgMain} ref={dropTargerRef} test-id="buter" >
+    <div className={bCStyles.bgMain} ref={dropTargerRef} test-id="buter">
       <div className={bCStyles.bgListStart + " ml-10 mb-2"}>
         {elementBorder && (
           <BurgerElement
@@ -226,7 +226,10 @@ function BurgerConstructor() {
         )}
       </div>
       {data.length === 0 && (
-        <div className={bCStyles.text + " text text_type_main-default ml-10"} test-id="emptyBurger">
+        <div
+          className={bCStyles.text + " text text_type_main-default ml-10"}
+          test-id="emptyBurger"
+        >
           Соберите свой бургер. Перетащите нужные ингредиенты
         </div>
       )}

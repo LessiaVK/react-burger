@@ -15,6 +15,7 @@ export function FeedPage() {
 
   React.useEffect(() => {
     dispatch(wsConnectionStart(PATH_WSURL));
+    /* eslint-disable */
   }, []);
 
   const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];

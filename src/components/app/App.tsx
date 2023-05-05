@@ -40,7 +40,7 @@ import {
 function App() {
   const dispatch = useDispatch();
   const userIsChecked = useSelector(userIsCheck);
-  
+
   React.useEffect(() => {
     dispatch(getIngredients());
     dispatch(getDataUser());
@@ -67,7 +67,7 @@ function App() {
 
   return (
     <div className="App">
-      {(userIsChecked || (document.location.pathname === '/feed')) && (
+      {(userIsChecked || document.location.pathname === "/feed") && (
         <Router>
           <AppHeader />
           <main className={appStyles.appMain}>
