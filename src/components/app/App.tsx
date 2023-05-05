@@ -2,7 +2,7 @@ import React from "react";
 import appStyles from "./App.module.css";
 import AppHeader from "../app-header/AppHeader";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   useLocation,
