@@ -5,5 +5,11 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
+    baseUrl: 'http://localhost:3000/',
+    
   },
+  env: {
+    email: "lvk01@yandex.ru",
+    password: '123456',
+  }
 });

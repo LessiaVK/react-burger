@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "../../utils/hooks";
 import { wsActions } from "../../services/store";
 import {
@@ -13,12 +13,13 @@ import { PATH_PROFILE, PATH_FEED } from "../../utils/constants";
 function AppHeader() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
   let currentSelectMenu = "";
   const currentClass =
     appHeaderStyles.buttonMenuContent + " text text_type_main-small";
   const baseClass = currentClass + " text_color_inactive";
 
-  const location = window.location;
   switch (location.pathname) {
     case "/":
       currentSelectMenu = "constructor";
