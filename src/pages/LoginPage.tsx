@@ -13,9 +13,9 @@ import loginStyles from "./LoginPage.module.css";
 import { PATH_REGISTER } from "../utils/constants";
 
 export type TFormEmail = {
-  email :string;
-  password :string;
-}
+  email: string;
+  password: string;
+};
 
 export function LoginPage() {
   const [form, setValue] = useState<TFormEmail>({ password: "", email: "" });
@@ -43,20 +43,24 @@ export function LoginPage() {
         }
       >
         <p className="text text_type_main-medium pt-20">Вход</p>
-        <EmailInput
-          placeholder={"E-mail"}
-          onChange={onChangeEmail}
-          value={form.email}
-          size={"default"}
-          extraClass="ml-1"
-        />
-        <PasswordInput
-          placeholder={"Пароль"}
-          onChange={onChangePass}
-          value={form.password}
-          size={"default"}
-          extraClass="ml-1"
-        />
+        <div test-id="email">
+          <EmailInput
+            placeholder={"E-mail"}
+            onChange={onChangeEmail}
+            value={form.email}
+            size={"default"}
+            extraClass="ml-1"
+          />
+        </div>
+        <div test-id="password">
+          <PasswordInput
+            placeholder={"Пароль"}
+            onChange={onChangePass}
+            value={form.password}
+            size={"default"}
+            extraClass="ml-1"
+          />
+        </div>
         <Button htmlType="submit" type="primary" size="medium">
           Войти
         </Button>

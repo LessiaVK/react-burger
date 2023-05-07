@@ -15,10 +15,11 @@ export function FeedPage() {
 
   React.useEffect(() => {
     dispatch(wsConnectionStart(PATH_WSURL));
+    /* eslint-disable */
   }, []);
 
   const orders = wsDataOrders["orders"] ? wsDataOrders.orders : [];
-
+  
   return (
     <div className={fStyles.fMainCol + " " + fStyles.fWBig}>
       <div

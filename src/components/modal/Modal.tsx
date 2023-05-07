@@ -40,11 +40,12 @@ function Modal(props: TModalProps) {
   return createPortal(
     <>
       <ModalOverlay handleClose={props.close} />
-      <div className={modalStyles.modal_window}>
+      <div className={modalStyles.modal_window} test-id="modals">
         <div className={modalStyles.cap + " text text_type_main-large p-10"}>
           <p>{props.caption} </p>
           <div
             className={modalStyles.close}
+            test-id="modalClose"
             onClick={(e) => {
               dispatch(actionOrderDetails.isModal());
               if (props.handleClose) {

@@ -2,7 +2,7 @@ import React from "react";
 import appStyles from "./App.module.css";
 import AppHeader from "../app-header/AppHeader";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   useLocation,
@@ -40,10 +40,11 @@ import {
 function App() {
   const dispatch = useDispatch();
   const userIsChecked = useSelector(userIsCheck);
-  
+
   React.useEffect(() => {
     dispatch(getIngredients());
     dispatch(getDataUser());
+    /* eslint-disable */
   }, []);
 
   const ModalSwitch = () => {
@@ -66,7 +67,7 @@ function App() {
 
   return (
     <div className="App">
-      {userIsChecked && (
+      {(userIsChecked || document.location.pathname === "/feed") && (
         <Router>
           <AppHeader />
           <main className={appStyles.appMain}>
@@ -84,7 +85,7 @@ function App() {
                 path={PATH_FORGOT}
                 element={<ProtectedRouteLogins element={<ForgotPassword />} />}
               />
-              {flag == "1" && (
+              {flag === "1" && (
                 <Route path={PATH_RESET} element={<ResetPassword />} />
               )}
               <Route

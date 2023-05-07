@@ -48,15 +48,13 @@ const ImageListIngredients = (props: {
   }, [props.dataIngradients, props.ingredients]);
 
   const sumPrices = useMemo(() => {
-    return ingredientsResolver.length > 0 &&
-      ingredientsResolver[0] === undefined
-      ? ingredientsResolver[1].price
-      : ingredientsResolver.length > 0
-      ? ingredientsResolver.reduce(
-          (sum, ingredient) => sum + ingredient.price,
-          0
-        )
-      : 0;
+    let priceTot = 0;
+    if (ingredientsResolver.length > 0) {
+      ingredientsResolver.forEach((element) => {
+        if (element) priceTot = element.price;
+      });
+    };
+      return priceTot;
   }, [ingredientsResolver]);
 
   let countBun = 0;

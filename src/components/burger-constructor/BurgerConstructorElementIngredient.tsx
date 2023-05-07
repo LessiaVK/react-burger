@@ -55,7 +55,7 @@ export const ElementIngredient = (props: TIngredientBurger) => {
   dragRef(dropRef(ref));
 
   return (
-    <div ref={ref}>
+    <div test-id="buter" ref={ref}>
       <DragIcon type="primary" />
       <ConstructorElement
         key={props.keyId}
